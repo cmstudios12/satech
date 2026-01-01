@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | SATECH ENTERPRISE</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --navy: #0b1f3b;
+            --blue: #1f4fd8;
+            --light: #f6f8fc;
+            --text: #222;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            background: #f6f8fc;
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fff;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .back-btn {
+            background: var(--blue);
+            color: #fff;
+            padding: .6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        /* HERO */
+        .hero {
+            background: #fff;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+
+        .hero h1 {
+            color: var(--navy);
+        }
+
+        /* CART */
+        .cart-section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            flex-wrap: wrap;
+        }
+
+        .cart-item img {
+            width: 90px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .item-info {
+            flex: 1;
+            padding: 0 1rem;
+        }
+
+        .qty-delete {
+            display: flex;
+            gap: .5rem;
+            margin-top: .4rem;
+        }
+
+        .qty-input {
+            width: 55px;
+            padding: .3rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .delete-btn {
+            background: red;
+            color: #fff;
+            border: none;
+            padding: .4rem .6rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* TOTAL */
+        .promo-total {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .promo-section input {
+            padding: .6rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .promo-section button {
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            padding: .6rem 1.2rem;
+            border-radius: 50px;
+        }
+
+        .total-section {
+            background: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            min-width: 220px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            padding: .9rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* MODAL */
+        .checkout-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .checkout-modal {
+            background: #fff;
+            max-width: 420px;
+            width: 95%;
+            border-radius: 16px;
+            padding: 1.5rem;
+            animation: pop .3s ease;
+        }
+
+        @keyframes pop {
+            from { transform: scale(.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .checkout-modal h2 {
+            color: var(--navy);
+        }
+
+        .payment-box {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            font-size: .9rem;
+        }
+
+        .close-btn {
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            padding: .6rem 1.4rem;
+            border-radius: 50px;
+            float: right;
+            cursor: pointer;
+        }
+
+        @media(max-width:768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html"><img src="logo.png" class="logo"></a>
+    <a href="index.html" class="back-btn">← Back</a>
+</header>
+
+<section class="hero">
+    <h1>Your Shopping Cart</h1>
+    <p>Review items before checkout</p>
+</section>
+
+<section class="cart-section" id="cartSection"></section>
+
+<div class="promo-total">
+    <div class="promo-section">
+        <input type="text" id="promoCode" placeholder="Promo code">
+        <button onclick="applyPromo()">Apply</button>
+    </div>
+
+    <div class="total-section">
+        <strong>Total: R<span id="totalPrice">0</span></strong>
+        <br><br>
+        <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+</div>
+
+<!-- CHECKOUT POPUP -->
+<div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-modal">
+        <h2>Complete Payment</h2>
+
+        <div class="payment-box">
+            <p><strong>Bank:</strong> TymeBank</p>
+            <p><strong>Account Name:</strong> SATECH ENTERPRISE</p>
+            <p><strong>Account Number:</strong> 51131411363</p>
+            <p><strong>Branch Code:</strong> 678910</p>
+            <p><strong>Reference:</strong> <span id="paymentRef"></span></p>
+        </div>
+
+        <p><strong>Total Due:</strong> R<span id="checkoutTotal"></span></p>
+        <br>
+        <p>📌 Send proof of payment to:</p>
+        <p>Email: payments@satech.co.za</p>
+        <p>WhatsApp: +27 76 864 1645</p>
+
+        <br>
+        <button class="close-btn" onclick="closeCheckout()">Close</button>
+    </div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+        const c = document.getElementById('cartSection');
+        c.innerHTML = '';
+        if (!cart.length) {
+            c.innerHTML = '<p>Your cart is empty.</p>';
+            document.getElementById('totalPrice').innerText = 0;
+            return;
+        }
+
+        cart.forEach((item, i) => {
+            c.innerHTML += `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div class="item-info">
+                        <strong>${item.name}</strong>
+                        <p>Code: ${item.code}</p>
+                        <div class="qty-delete">
+                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
+                            <button class="delete-btn" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <strong>R${item.price * item.qty}</strong>
+                </div>
+            `;
+        });
+        updateTotal();
+    }
+
+    function updateQty(i, v) {
+        cart[i].qty = parseInt(v);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function deleteItem(i) {
+        cart.splice(i, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function updateTotal() {
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        document.getElementById('totalPrice').innerText = total.toLocaleString();
+    }
+
+    function applyPromo() {
+        alert("Promo feature coming soon 🔥");
+    }
+
+    function openCheckout() {
+        if (!cart.length) {
+            alert("Cart is empty");
+            return;
+        }
+        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        document.getElementById("checkoutTotal").innerText = total.toLocaleString();
+        document.getElementById("paymentRef").innerText = "SATECH-" + Math.floor(Math.random()*900000+100000);
+        document.getElementById("checkoutOverlay").style.display = "flex";
+    }
+
+    function closeCheckout() {
+        document.getElementById("checkoutOverlay").style.display = "none";
+    }
+
+    renderCart();
+</script>
+
+</body>
+</html>

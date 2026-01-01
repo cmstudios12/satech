@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Repairs | SATECH ENTERPRISE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --navy:#0b1f3b;
+  --blue:#1f4fd8;
+  --light:#f6f8fc;
+  --text:#222;
+  --radius:14px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Segoe UI, Arial, sans-serif;
+  background:#fff;
+  color:var(--text);
+  line-height:1.6;
+}
+
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.nav{
+  max-width:1200px;
+  margin:auto;
+  padding:1rem 1.5rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{height:40px}
+
+.back-btn{
+  background:var(--blue);
+  color:#fff;
+  padding:.7rem 1.4rem;
+  border-radius:50px;
+  font-weight:600;
+}
+
+/* HERO */
+.hero{
+  background:var(--light);
+  padding:4rem 1.5rem;
+}
+
+.hero-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:center;
+}
+
+.hero h1{
+  font-size:3rem;
+  color:var(--navy);
+}
+
+.hero p{
+  margin:1.2rem 0 2rem;
+  max-width:520px;
+  color:#555;
+}
+
+.hero img{
+  width:100%;
+  max-width:460px;
+}
+
+/* SECTION */
+.section{
+  padding:4rem 1.5rem;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  color:var(--navy);
+  margin-bottom:2.5rem;
+}
+
+/* SERVICES GRID */
+.services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:2rem;
+}
+
+.service{
+  border:1px solid #e5e7eb;
+  border-radius:var(--radius);
+  padding:1.5rem;
+  background:#fff;
+  transition:.25s;
+}
+
+.service:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+.service h3{
+  font-size:1.1rem;
+  color:var(--navy);
+  margin-bottom:.8rem;
+}
+
+.service p{
+  color:#555;
+  margin-bottom:.8rem;
+}
+
+.service .price{
+  font-weight:700;
+  color:var(--blue);
+}
+
+/* CTA */
+.cta{
+  background:var(--navy);
+  color:#fff;
+  text-align:center;
+  padding:3.5rem 1.5rem;
+}
+
+.cta h2{font-size:2rem}
+
+.cta p{margin:1rem 0 1.8rem}
+
+.cta a{
+  background:#fff;
+  color:var(--navy);
+  padding:.9rem 1.6rem;
+  border-radius:50px;
+  font-weight:600;
+}
+
+/* FOOTER */
+footer{
+  background:#081426;
+  color:#fff;
+  padding:3.5rem 1.5rem;
+}
+
+.footer-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2rem;
+}
+
+footer h4{margin-bottom:.8rem}
+footer p{font-size:.9rem;opacity:.85}
+
+/* MOBILE */
+@media(max-width:850px){
+  .hero-wrap{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .hero img{margin:auto}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="SATECH ENTERPRISE">
+    </a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-wrap">
+    <div>
+      <h1>Expert Repairs for Devices</h1>
+      <p>
+        Professional laptop & phone repairs, software troubleshooting, diagnostics and performance upgrades. Trusted by businesses & individuals.
+      </p>
+    </div>
+    <img src="rep.png" alt="Device Repairs">
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Our Repair Services</h2>
+    <div class="services">
+
+      <div class="service">
+        <h3>Laptop Screen Replacement</h3>
+        <p>Broken or cracked screens replaced quickly with high-quality panels.</p>
+        <div class="price">From R1,299</div>
+      </div>
+
+      <div class="service">
+        <h3>Laptop Hardware & Software</h3>
+        <p>Upgrades, virus removal, OS reinstall, and hardware fixes.</p>
+        <div class="price">From R899</div>
+      </div>
+
+      <div class="service">
+        <h3>Phone Screen & Back Cover</h3>
+        <p>Original parts replacement for iPhones & Android devices.</p>
+        <div class="price">From R699</div>
+      </div>
+
+      <div class="service">
+        <h3>Battery Replacement</h3>
+        <p>Fast battery replacement for laptops and smartphones.</p>
+        <div class="price">From R499</div>
+      </div>
+
+      <div class="service">
+        <h3>Software Troubleshooting</h3>
+        <p>Resolve software issues, slow devices, virus removal.</p>
+        <div class="price">From R299</div>
+      </div>
+
+      <div class="service">
+        <h3>Diagnostics & Optimization</h3>
+        <p>Performance checks, speed optimization, and system cleanup.</p>
+        <div class="price">From R199</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Need a Repair? Contact Us Now!</h2>
+  <p>Book your repair and let our experts handle it efficiently.</p>
+  <a href="contact.html">Contact Support</a>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>SATECH ENTERPRISE</h4>
+      <p>Gadgets, accessories & repairs you can trust.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <p>New Laptops</p>
+      <p>Refurbished Laptops</p>
+      <p>iPhones</p>
+      <p>Accessories</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <p>Laptop Repairs</p>
+      <p>Phone Repairs</p>
+      <p>Software Troubleshooting</p>
+    </div>
+    <div>
+      <h4>Powered By</h4>
+      <p>CMSTUDIO</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

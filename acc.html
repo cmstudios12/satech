@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Accessories | SATECH ENTERPRISE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        :root {
+            --navy: #0b1f3b;
+            --blue: #1f4fd8;
+            --light: #f6f8fc;
+            --text: #222;
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            background: #fff;
+            color: var(--text);
+            line-height: 1.6
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        /* HEADER */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .logo {
+            height: 40px
+        }
+
+        .back-btn {
+            background: var(--blue);
+            color: #fff;
+            padding: .7rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600
+        }
+
+        .cart-btn {
+            color: #000000;
+            padding: .7rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer
+        }
+
+        .cart-btn span {
+            background: #fff;
+            color: var(--navy);
+            padding: 2px 6px;
+            border-radius: 50%
+        }
+
+        /* HERO */
+        .hero {
+            background: var(--light);
+            padding: 4rem 1.5rem
+        }
+
+        .hero-wrap {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 3rem
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--navy)
+        }
+
+        .hero p {
+            margin: 1.2rem 0 2rem;
+            max-width: 520px;
+            color: #555
+        }
+
+        .hero img {
+            width: 100%;
+            max-width: 460px
+        }
+
+        /* SECTION */
+        .section {
+            padding: 4rem 1.5rem
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--navy);
+            margin-bottom: 2.5rem
+        }
+
+        /* PRODUCTS */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem
+        }
+
+        .product {
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            background: #fff;
+            transition: .25s;
+            display: flex;
+            flex-direction: column
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .08)
+        }
+
+        .product-img {
+            height: 180px;
+            background: #f3f4f8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem
+        }
+
+        .product-img img {
+            max-height: 130px
+        }
+
+        .product h3 {
+            font-size: 1.05rem;
+            color: var(--navy)
+        }
+
+        .price {
+            margin: .6rem 0 1rem;
+            font-weight: 700;
+            color: var(--blue)
+        }
+
+        .add-cart {
+            width: 100%;
+            padding: .7rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--navy);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .add-cart:hover {
+            background: var(--blue)
+        }
+
+        /* CTA */
+        .cta {
+            background: var(--navy);
+            color: #fff;
+            text-align: center;
+            padding: 3.5rem 1.5rem
+        }
+
+        .cta h2 {
+            font-size: 2rem
+        }
+
+        .cta p {
+            margin: 1rem 0 1.8rem
+        }
+
+        .cta a {
+            background: #fff;
+            color: var(--navy);
+            padding: .9rem 1.6rem;
+            border-radius: 50px;
+            font-weight: 600
+        }
+
+        /* FOOTER */
+        footer {
+            background: #081426;
+            color: #fff;
+            padding: 3.5rem 1.5rem
+        }
+
+        .footer-wrap {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem
+        }
+
+        footer h4 {
+            margin-bottom: .8rem
+        }
+
+        footer p,
+        footer a {
+            font-size: .9rem;
+            opacity: .85
+        }
+
+        /* CART POPUP */
+        .cart-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--blue);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+            z-index: 9999
+        }
+
+        .cart-popup.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        /* CART ICON ANIMATION */
+        .cart-btn.animate {
+            animation: bounce 0.5s
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.3)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        /* MOBILE */
+        @media(max-width:850px) {
+            .hero-wrap {
+                grid-template-columns: 1fr;
+                text-align: center
+            }
+
+            .hero img {
+                margin: auto
+            }
+
+            .products {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav">
+            <a href="index.html"><img src="logo.png" class="logo" alt="SATECH ENTERPRISE"></a>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <a href="cart.html" class="cart-btn" id="cartIcon"><i class="fa-solid fa-cart-shopping"></i> <span
+                    id="cartCount">0</span></a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-wrap">
+            <div>
+                <h1>Tech Accessories</h1>
+                <p>High-quality accessories to protect, power and enhance your devices. Compatible with laptops, phones
+                    & smart devices.</p>
+            </div>
+            <img src="acccc.png" alt="Accessories">
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Available Accessories</h2>
+            <div class="products">
+
+                <div class="product">
+                    <div class="product-img"><img src="images/a1.png"></div>
+                    <h3>Laptop Bag</h3>
+                    <div class="price">R499</div><button class="add-cart"
+                        onclick="addToCart('Laptop Bag','ACC1',499,'images/a1.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a2.png"></div>
+                    <h3>Wireless Mouse</h3>
+                    <div class="price">R299</div><button class="add-cart"
+                        onclick="addToCart('Wireless Mouse','ACC2',299,'images/a2.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a3.png"></div>
+                    <h3>Keyboard & Mouse Combo</h3>
+                    <div class="price">R499</div><button class="add-cart"
+                        onclick="addToCart('Keyboard & Mouse Combo','ACC3',499,'images/a3.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a4.png"></div>
+                    <h3>Laptop Charger</h3>
+                    <div class="price">R699</div><button class="add-cart"
+                        onclick="addToCart('Laptop Charger','ACC4',699,'images/a4.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a5.png"></div>
+                    <h3>Screen Protector</h3>
+                    <div class="price">R149</div><button class="add-cart"
+                        onclick="addToCart('Screen Protector','ACC5',149,'images/a5.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a6.png"></div>
+                    <h3>Phone Pouch</h3>
+                    <div class="price">R199</div><button class="add-cart"
+                        onclick="addToCart('Phone Pouch','ACC6',199,'images/a6.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a7.png"></div>
+                    <h3>USB-C Cable</h3>
+                    <div class="price">R149</div><button class="add-cart"
+                        onclick="addToCart('USB-C Cable','ACC7',149,'images/a7.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a8.png"></div>
+                    <h3>Power Bank 20,000mAh</h3>
+                    <div class="price">R799</div><button class="add-cart"
+                        onclick="addToCart('Power Bank 20,000mAh','ACC8',799,'images/a8.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a9.png"></div>
+                    <h3>Bluetooth Earphones</h3>
+                    <div class="price">R599</div><button class="add-cart"
+                        onclick="addToCart('Bluetooth Earphones','ACC9',599,'images/a9.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="images/a10.png"></div>
+                    <h3>Laptop Cooling Pad</h3>
+                    <div class="price">R399</div><button class="add-cart"
+                        onclick="addToCart('Laptop Cooling Pad','ACC10',399,'images/a10.png')">Add to Cart</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Need Help Choosing Accessories?</h2>
+        <p>Our experts will recommend the right gear for your device.</p>
+        <a href="contact.html">Contact Support</a>
+    </section>
+
+    <footer>
+        <div class="footer-wrap">
+            <div>
+                <h4>SATECH ENTERPRISE</h4>
+                <p>Gadgets, accessories & repairs you can trust.</p>
+            </div>
+            <div>
+                <h4>Shop</h4>
+                <p>New Laptops</p>
+                <p>Refurbished Laptops</p>
+                <p>iPhones</p>
+                <p>Accessories</p>
+            </div>
+            <div>
+                <h4>Services</h4>
+                <p>Laptop Repairs</p>
+                <p>Phone Repairs</p>
+            </div>
+            <div>
+                <h4>Powered By</h4>
+                <p>CMSTUDIO</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- POPUP -->
+    <div id="cartPopup" class="cart-popup">Added to cart!</div>
+
+    <script>
+        function addToCart(name, code, price, img) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let existing = cart.find(item => item.code === code);
+            if (existing) { existing.qty += 1; } else { cart.push({ name, code, price, img, qty: 1 }); }
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // update cart count
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            // show popup
+            const popup = document.getElementById('cartPopup');
+            popup.textContent = name + ' added to cart!';
+            popup.classList.add('show');
+            setTimeout(() => { popup.classList.remove('show'); }, 2000);
+
+            // animate cart icon
+            const cartIcon = document.getElementById('cartIcon');
+            cartIcon.classList.add('animate');
+            setTimeout(() => { cartIcon.classList.remove('animate'); }, 500);
+        }
+
+        // init cart count
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        document.getElementById('cartCount').textContent = savedCart.reduce((sum, item) => sum + item.qty, 0);
+    </script>
+
+</body>
+
+</html>

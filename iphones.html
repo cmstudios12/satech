@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>iPhones | SATECH ENTERPRISE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        :root {
+            --navy: #0b1f3b;
+            --blue: #1f4fd8;
+            --light: #f6f8fc;
+            --text: #222;
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Segoe UI, Arial, sans-serif;
+            background: #fff;
+            color: var(--text);
+            line-height: 1.6
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        /* HEADER */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 1000
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .logo {
+            height: 40px
+        }
+
+        .back-btn {
+            background: var(--blue);
+            color: #fff;
+            padding: .7rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600
+        }
+
+        .cart-btn {
+            color: #000000;
+            padding: .7rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer
+        }
+
+        .cart-btn span {
+            background: #fff;
+            color: var(--navy);
+            padding: 2px 6px;
+            border-radius: 50%
+        }
+
+        /* HERO */
+        .hero {
+            background: var(--light);
+            padding: 4rem 1.5rem
+        }
+
+        .hero-wrap {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 3rem
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--navy)
+        }
+
+        .hero p {
+            margin: 1.2rem 0 2rem;
+            max-width: 520px;
+            color: #555
+        }
+
+        .hero img {
+            width: 100%;
+            max-width: 460px
+        }
+
+        /* SECTION */
+        .section {
+            padding: 4rem 1.5rem
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--navy);
+            margin-bottom: 2.5rem
+        }
+
+        /* PRODUCTS */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem
+        }
+
+        .product {
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            background: #fff;
+            transition: .25s;
+            display: flex;
+            flex-direction: column
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .08)
+        }
+
+        .product-img {
+            height: 200px;
+            background: #f3f4f8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem
+        }
+
+        .product-img img {
+            max-height: 160px
+        }
+
+        .product h3 {
+            font-size: 1.05rem;
+            color: var(--navy)
+        }
+
+        .price {
+            margin: .6rem 0 1rem;
+            font-weight: 700;
+            color: var(--blue)
+        }
+
+        .add-cart {
+            width: 100%;
+            padding: .7rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--navy);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .add-cart:hover {
+            background: var(--blue)
+        }
+
+        /* CTA */
+        .cta {
+            background: var(--navy);
+            color: #fff;
+            text-align: center;
+            padding: 3.5rem 1.5rem
+        }
+
+        .cta h2 {
+            font-size: 2rem
+        }
+
+        .cta p {
+            margin: 1rem 0 1.8rem
+        }
+
+        .cta a {
+            background: #fff;
+            color: var(--navy);
+            padding: .9rem 1.6rem;
+            border-radius: 50px;
+            font-weight: 600
+        }
+
+        /* FOOTER */
+        footer {
+            background: #081426;
+            color: #fff;
+            padding: 3.5rem 1.5rem
+        }
+
+        .footer-wrap {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem
+        }
+
+        footer h4 {
+            margin-bottom: .8rem
+        }
+
+        footer p,
+        footer a {
+            font-size: .9rem;
+            opacity: .85
+        }
+
+        /* CART POPUP */
+        .cart-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--blue);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px);
+            z-index: 9999
+        }
+
+        .cart-popup.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        /* CART ICON ANIMATION */
+        .cart-btn.animate {
+            animation: bounce 0.5s
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.3)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        /* MOBILE */
+        @media(max-width:850px) {
+            .hero-wrap {
+                grid-template-columns: 1fr;
+                text-align: center
+            }
+
+            .hero p {
+                margin: auto
+            }
+
+            .hero img {
+                margin: auto
+            }
+
+            .products {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav">
+            <a href="index.html"><img src="logo.png" class="logo" alt="SATECH ENTERPRISE"></a>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <a href="cart.html" class="cart-btn" id="cartIcon"><i class="fa-solid fa-cart-shopping"></i> <span
+                    id="cartCount">0</span></a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-wrap">
+            <div>
+                <h1>Apple iPhones</h1>
+                <p>Original iPhones, new & used, tested, verified and ready to perform. From iPhone 7 to the latest Pro
+                    Max models.</p>
+            </div>
+            <img src="ios.png" alt="iPhones">
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Available iPhones</h2>
+            <div class="products">
+
+                <!-- Example iPhones -->
+                <div class="product">
+                    <div class="product-img"><img src="i7.png"></div>
+                    <h3>iPhone 7</h3>
+                    <div class="price">R2,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone 7','IP7',2999,'i7.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i8.png"></div>
+                    <h3>iPhone 8</h3>
+                    <div class="price">R3,499</div><button class="add-cart"
+                        onclick="addToCart('iPhone 8','IP8',3499,'i8.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="ix.png"></div>
+                    <h3>iPhone X</h3>
+                    <div class="price">R4,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone X','IPX',4999,'ix.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="ixr.png"></div>
+                    <h3>iPhone XR</h3>
+                    <div class="price">R5,499</div><button class="add-cart"
+                        onclick="addToCart('iPhone XR','IPXR',5499,'ixr.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="ixs.png"></div>
+                    <h3>iPhone XS</h3>
+                    <div class="price">R24,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone XS','IPSX',24999,'ixs.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i11.png"></div>
+                    <h3>iPhone 11</h3>
+                    <div class="price">R5,499</div><button class="add-cart"
+                        onclick="addToCart('iPhone 11','IPXR',5499,'i11.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i12.png"></div>
+                    <h3>iPhone 12</h3>
+                    <div class="price">R24,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone 12','IPSX',24999,'i12.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i13.png"></div>
+                    <h3>iPhone 13</h3>
+                    <div class="price">R5,499</div><button class="add-cart"
+                        onclick="addToCart('iPhone 13','IP13',5499,'i13.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i14.png"></div>
+                    <h3>iPhone 14</h3>
+                    <div class="price">R24,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone 14','IPSX',24999,'i14.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i15.png"></div>
+                    <h3>iPhone 15</h3>
+                    <div class="price">R5,499</div><button class="add-cart"
+                        onclick="addToCart('iPhone 15','IPXR',5499,'i15.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i16.png"></div>
+                    <h3>iPhone 16</h3>
+                    <div class="price">R24,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone 16','IPSX',24999,'i16.png')">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <div class="product-img"><img src="i17.png"></div>
+                    <h3>iPhone 17</h3>
+                    <div class="price">R24,999</div><button class="add-cart"
+                        onclick="addToCart('iPhone 17','IPSX',24999,'i17.png')">Add to Cart</button>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Need Screen Replacement or Repairs?</h2>
+        <p>We fix screens, back covers, batteries & software issues.</p>
+        <a href="contact.html">Book a Repair</a>
+    </section>
+
+    <footer>
+        <div class="footer-wrap">
+            <div>
+                <h4>SATECH ENTERPRISE</h4>
+                <p>Premium Apple devices & expert repairs.</p>
+            </div>
+            <div>
+                <h4>Shop</h4>
+                <p><a href="new-laptops.html">New Laptops</a></p>
+                <p><a href="refurbished-laptops.html">Refurbished Laptops</a></p>
+                <p><a href="iphones.html">iPhones</a></p>
+            </div>
+            <div>
+                <h4>Services</h4>
+                <p>Phone Repairs</p>
+                <p>Diagnostics</p>
+            </div>
+            <div>
+                <h4>Powered By</h4>
+                <p>CMSTUDIO</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- POPUP -->
+    <div id="cartPopup" class="cart-popup">Added to cart!</div>
+
+    <script>
+        function addToCart(name, code, price, img) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let existing = cart.find(item => item.code === code);
+            if (existing) { existing.qty += 1; } else { cart.push({ name, code, price, img, qty: 1 }); }
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // update cart count
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            // show popup
+            const popup = document.getElementById('cartPopup');
+            popup.textContent = name + ' added to cart!';
+            popup.classList.add('show');
+            setTimeout(() => { popup.classList.remove('show'); }, 2000);
+
+            // animate cart icon
+            const cartIcon = document.getElementById('cartIcon');
+            cartIcon.classList.add('animate');
+            setTimeout(() => { cartIcon.classList.remove('animate'); }, 500);
+        }
+
+        // init cart count
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        document.getElementById('cartCount').textContent = savedCart.reduce((sum, item) => sum + item.qty, 0);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About Us | SATECH ENTERPRISE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --navy:#0b1f3b;
+  --blue:#1f4fd8;
+  --light:#f6f8fc;
+  --text:#222;
+  --radius:14px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Segoe UI, Arial, sans-serif;
+  background:#fff;
+  color:var(--text);
+  line-height:1.6;
+}
+
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.nav{
+  max-width:1200px;
+  margin:auto;
+  padding:1rem 1.5rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{height:40px}
+
+.back-btn{
+  background:var(--blue);
+  color:#fff;
+  padding:.7rem 1.4rem;
+  border-radius:50px;
+  font-weight:600;
+}
+
+/* HERO */
+.hero{
+  background:var(--light);
+  padding:4rem 1.5rem;
+}
+
+.hero-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:center;
+}
+
+.hero h1{
+  font-size:3rem;
+  color:var(--navy);
+}
+
+.hero p{
+  margin:1.2rem 0 2rem;
+  max-width:520px;
+  color:#555;
+}
+
+.hero img{
+  width:100%;
+  max-width:460px;
+  border-radius:12px;
+}
+
+/* ABOUT SECTIONS */
+.section{
+  padding:4rem 1.5rem;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  color:var(--navy);
+  margin-bottom:2.5rem;
+}
+
+.about-text{
+  max-width:800px;
+  margin:auto;
+  text-align:center;
+  font-size:1rem;
+  color:#555;
+  line-height:1.8;
+  margin-bottom:3rem;
+}
+
+.values{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:2rem;
+}
+
+.value-box{
+  background:var(--light);
+  padding:2rem;
+  border-radius:var(--radius);
+  text-align:center;
+  border:1px solid #e5e7eb;
+  transition:.25s;
+}
+
+.value-box:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+.value-box h3{
+  font-size:1.2rem;
+  color:var(--navy);
+  margin-bottom:1rem;
+}
+
+.value-box p{
+  color:#555;
+  font-size:.95rem;
+}
+
+/* FOOTER */
+footer{
+  background:#081426;
+  color:#fff;
+  padding:3.5rem 1.5rem;
+}
+
+.footer-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2rem;
+}
+
+footer h4{margin-bottom:.8rem}
+footer p{font-size:.9rem;opacity:.85}
+
+/* MOBILE */
+@media(max-width:850px){
+  .hero-wrap{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .hero img{margin:auto}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="SATECH ENTERPRISE">
+    </a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-wrap">
+    <div>
+      <h1>About SATECH ENTERPRISE</h1>
+      <p>We combine the latest technology solutions with expert repair services to deliver value, trust, and efficiency to businesses and individuals alike.</p>
+    </div>
+    <img src="about.png" alt="About SATECH">
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Our Mission & Vision</h2>
+    <p class="about-text">
+      Our mission is to provide premium refurbished and new gadgets, reliable technical repairs, and exceptional customer support. We envision a tech-savvy South Africa where every device is efficiently maintained and accessible.
+    </p>
+
+    <div class="values">
+      <div class="value-box">
+        <h3>Quality</h3>
+        <p>We prioritize high-quality products and professional repair services for lasting satisfaction.</p>
+      </div>
+      <div class="value-box">
+        <h3>Integrity</h3>
+        <p>Honest pricing, transparent services, and trustworthiness are at our core.</p>
+      </div>
+      <div class="value-box">
+        <h3>Innovation</h3>
+        <p>We embrace modern technology trends to keep our solutions ahead of the curve.</p>
+      </div>
+      <div class="value-box">
+        <h3>Customer Care</h3>
+        <p>Our customers are our priority. We deliver personal support and timely solutions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>SATECH ENTERPRISE</h4>
+      <p>Gadgets, accessories & repairs you can trust.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <p>New Laptops</p>
+      <p>Refurbished Laptops</p>
+      <p>iPhones</p>
+      <p>Accessories</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <p>Laptop Repairs</p>
+      <p>Phone Repairs</p>
+      <p>Software Troubleshooting</p>
+    </div>
+    <div>
+      <h4>Powered By</h4>
+      <p>CMSTUDIO</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

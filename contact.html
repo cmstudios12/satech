@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us | SATECH ENTERPRISE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<style>
+:root{
+  --navy:#0b1f3b;
+  --blue:#1f4fd8;
+  --light:#f6f8fc;
+  --text:#222;
+  --radius:12px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Segoe UI, Arial, sans-serif;
+  background:#fff;
+  color:var(--text);
+  line-height:1.6;
+}
+
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.nav{
+  max-width:1200px;
+  margin:auto;
+  padding:1rem 1.5rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{height:40px}
+
+.back-btn{
+  background:var(--blue);
+  color:#fff;
+  padding:.7rem 1.4rem;
+  border-radius:50px;
+  font-weight:600;
+}
+
+/* HERO */
+.hero{
+  background:var(--light);
+  padding:4rem 1.5rem;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:3rem;
+  color:var(--navy);
+  margin-bottom:1rem;
+}
+
+.hero p{
+  color:#555;
+  font-size:1.1rem;
+}
+
+/* CONTACT INFO */
+.contact-section{
+  padding:4rem 1.5rem;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.contact-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2rem;
+  margin-bottom:3rem;
+}
+
+.card{
+  background:var(--light);
+  padding:2rem;
+  border-radius:var(--radius);
+  text-align:center;
+  border:1px solid #e5e7eb;
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 35px rgba(0,0,0,.08);
+}
+
+.card i{
+  font-size:2rem;
+  color:var(--blue);
+  margin-bottom:1rem;
+}
+
+.card h4{
+  margin-bottom:.5rem;
+  color:var(--navy);
+}
+
+.card p{
+  font-size:.95rem;
+  color:#555;
+}
+
+/* CONTACT FORM */
+.contact-form{
+  background:var(--light);
+  padding:2rem;
+  border-radius:var(--radius);
+  border:1px solid #e5e7eb;
+  max-width:700px;
+  margin:auto 0;
+}
+
+.contact-form h3{
+  margin-bottom:1.5rem;
+  text-align:center;
+  color:var(--navy);
+}
+
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  padding:.8rem 1rem;
+  margin-bottom:1rem;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:1rem;
+}
+
+.contact-form button{
+  background:var(--blue);
+  color:#fff;
+  padding:.9rem 1.5rem;
+  border:none;
+  border-radius:50px;
+  font-weight:600;
+  cursor:pointer;
+  width:100%;
+}
+
+/* MAP */
+.map{
+  margin-top:3rem;
+  border-radius:12px;
+  overflow:hidden;
+  height:400px;
+}
+
+/* FOOTER */
+footer{
+  background:#081426;
+  color:#fff;
+  padding:3.5rem 1.5rem;
+}
+
+.footer-wrap{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2rem;
+}
+
+footer h4{margin-bottom:.8rem}
+footer p{font-size:.9rem;opacity:.85}
+
+/* MOBILE */
+@media(max-width:850px){
+  .contact-cards{
+    grid-template-columns:1fr;
+  }
+  .hero h1{font-size:2.2rem}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="SATECH ENTERPRISE">
+    </a>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Contact SATECH ENTERPRISE</h1>
+  <p>Have questions? Reach out to us! We are always ready to help you with products, repairs, or technical support.</p>
+</section>
+
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-cards">
+      <div class="card">
+        <i class="fas fa-map-marker-alt"></i>
+        <h4>Our Location</h4>
+        <p>Emalahleni, Mpumalanga, South Africa</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-envelope"></i>
+        <h4>Email Us</h4>
+        <p>info@satech.co.za</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-phone"></i>
+        <h4>Call Us</h4>
+        <p>+27 76 864 1645</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-clock"></i>
+        <h4>Working Hours</h4>
+        <p>Mon - Fri: 8AM - 6PM<br>Sat: 9AM - 2PM</p>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <h3>Send Us a Message</h3>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.987616469678!2d29.46416451524115!3d-26.523461983151654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e957b44df25d6b7%3A0x76b80e062f2a2d06!2sEmalahleni%2C%20Mpumalanga%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1700000000000!5m2!1sen!2sza" 
+      width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>SATECH ENTERPRISE</h4>
+      <p>Gadgets, accessories & repairs you can trust.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <p>New Laptops</p>
+      <p>Refurbished Laptops</p>
+      <p>iPhones</p>
+      <p>Accessories</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <p>Laptop Repairs</p>
+      <p>Phone Repairs</p>
+      <p>Software Troubleshooting</p>
+    </div>
+    <div>
+      <h4>Powered By</h4>
+      <p>CMSTUDIO</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

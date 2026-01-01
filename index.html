@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SATECH ENTERPRISE | Gadgets & Repairs</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-pVPRFq3O4QZ2k6TFnepEfl27GXYnDK6UBXz0sA+J+hZwX0zVRJdV1pJxR6NE6kGQpmM5HJZc8R0TzjS+7D2Qag=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --navy: #0b1c2d;
+      --blue: #1e5eff;
+      --light: #ffffff;
+      --muted: #f4f6f8;
+      --text: #1a1a1a;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit
+    }
+
+    img {
+      max-width: 100%;
+      display: block
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--light);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* NAV CONTAINER */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem 1.5rem;
+    }
+
+    /* Logo */
+    .brand img.logo {
+      height: 48px;
+      max-width: 160px;
+      object-fit: contain;
+    }
+
+    /* NAV LINKS CENTERED */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--navy);
+      position: relative;
+      padding: .4rem 0;
+      font-weight: 500;
+    }
+
+    /* Hover underline */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue);
+      transition: .25s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Dropdown */
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-item a i {
+      margin-left: 4px;
+      transition: .25s;
+      font-size: 0.6rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 120%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+      padding: .5rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: .3s;
+      min-width: 220px;
+      z-index: 999;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: .5rem 1.2rem;
+      font-size: .95rem;
+      color: var(--navy);
+    }
+
+    .dropdown a:hover {
+      background: var(--muted);
+    }
+
+    /* Show dropdown on hover */
+    .nav-item:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .icon-btn,
+    .cart-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--navy);
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .icon-btn:hover,
+    .cart-btn:hover {
+      background: var(--blue);
+      transform: scale(1.1);
+    }
+
+    .cart-btn {
+      padding: 0 12px;
+      border-radius: 30px;
+      gap: 6px;
+    }
+
+    .cart-count {
+      background: #fff;
+      color: var(--navy);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 50%;
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--navy);
+      border-radius: 10px;
+    }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      padding: 1.5rem;
+      gap: 1rem;
+      background: var(--light);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dropdown-mobile {
+      display: none;
+      flex-direction: column;
+      gap: .5rem;
+      padding-left: 1rem;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    /* Desktop hover stays */
+    @media (min-width: 901px) {
+      .nav-item:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile dropdown */
+    @media (max-width: 900px) {
+      .dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+        box-shadow: none;
+        border: none;
+        padding-left: 1rem;
+      }
+
+      .nav-item.active .dropdown {
+        display: block;
+      }
+
+      .dropdown-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #f8fbff, #eef4ff);
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 4rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+      color: var(--navy);
+    }
+
+    .hero p {
+      margin: 1.2rem 0;
+      color: #555
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .9rem 1.6rem;
+      border-radius: 50px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* PRODUCT IMAGE */
+    .product-img {
+      background: #f8f9fb;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      height: 180px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img img {
+      max-height: 140px;
+      width: auto;
+      object-fit: contain;
+      transition: transform .25s ease;
+    }
+
+    /* Subtle hover effect (professional) */
+    .product:hover .product-img img {
+      transform: scale(1.05);
+    }
+
+
+    /* SECTIONS */
+    section {
+      padding: 4rem 1.5rem
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--navy);
+    }
+
+    /* PRODUCTS */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .product {
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product h3 {
+      margin: .8rem 0;
+      color: var(--navy)
+    }
+
+    .price {
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: .8rem;
+    }
+
+    .add-cart {
+      border: none;
+      background: var(--navy);
+      color: #fff;
+      padding: .7rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .service {
+      background: var(--muted);
+      padding: 2rem;
+      border-radius: var(--radius);
+    }
+
+    /* CART DRAWER */
+    .cart {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 350px;
+      height: 100vh;
+      background: #fff;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, .1);
+      padding: 1.5rem;
+      transition: .3s;
+      display: flex;
+      flex-direction: column;
+      z-index: 2000;
+    }
+
+    .cart.active {
+      right: 0
+    }
+
+    .cart h2 {
+      margin-bottom: 1rem
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow: auto
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: .9rem;
+    }
+
+    .checkout {
+      margin-top: 1rem;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: #fff;
+      padding: 3rem 1.5rem;
+    }
+
+    footer .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .hero-inner {
+        grid-template-columns: 1fr
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      .hamburger {
+        display: flex
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="nav">
+
+      <!-- Logo -->
+      <div class="brand">
+        <a href="index.html">
+          <img src="logo.png" alt="SATECH ENTERPRISE Logo" class="logo" />
+        </a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="refurb.html">Refurbished Laptops</a>
+        <a href="new.html">New Laptops</a>
+        <a href="iphones.html">iPhones</a>
+        <a href="acc.html">Accessories</a>
+        <a href="repair.html">Repairs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="nav-actions">
+        <a href="#" class="icon-btn"><i class="fa-solid fa-user"></i></a>
+
+        <!-- Cart Button -->
+        <a href="cart.html" class="cart-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="refurb.html">Refurbished Laptops</a>
+        <a href="new.html">New Laptops</a>
+        <a href="iphones.html">iPhones</a>
+        <a href="acc.html">Accessories</a>
+        <a href="repair.html">Repairs</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+  </header>
+
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Premium Gadgets & Reliable Repairs</h1>
+        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
+          and individuals.</p>
+        <a href="#products" class="btn">Shop Now</a>
+      </div>
+      <img src="gadgets.png" alt="Gadgets" />
+    </div>
+  </section>
+
+  <section id="products">
+    <div class="container">
+      <h2 class="section-title">Popular Products</h2>
+
+      <div class="products">
+
+        <div class="product">
+          <div class="product-img">
+            <img src="hp.png" alt="Refurbished Laptop">
+          </div>
+          <h3>Refurbished Laptop</h3>
+          <div class="price">R6.999,99</div>
+          <button class="add-cart" onclick="addToCart('Refurbished Laptop',6999)">
+            Add to Cart
+          </button>
+        </div>
+
+        <div class="product">
+          <div class="product-img">
+            <img src="i13.png" alt="iPhone 13 Pro">
+          </div>
+          <h3>iPhone 13 Pro</h3>
+          <div class="price">R10.999,99</div>
+          <button class="add-cart" onclick="addToCart('iPhone 13 Pro',12999)">
+            Add to Cart
+          </button>
+        </div>
+
+        <div class="product">
+          <div class="product-img">
+            <img src="smart.png" alt="Smart Watch">
+          </div>
+          <h3>Smart Watch</h3>
+          <div class="price">R999,99</div>
+          <button class="add-cart" onclick="addToCart('Smart Watch',1499)">
+            Add to Cart
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title">Technical Services</h2>
+      <div class="services">
+        <div class="service">Laptop Software & Hardware Repairs</div>
+        <div class="service">Phone Screen & Back Cover Replacement</div>
+        <div class="service">Diagnostics & Performance Upgrades</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact Us</h2>
+      <p>Email: info@satech.co.za<br />Phone: +27 81 840 1398</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div>
+        <h3>SATECH ENTERPRISE</h3>
+        <p>Powered by <a href="cmstudio.online">CMSTUDIO</a></p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <p>Shop • Repairs • Support</p>
+      </div>
+      <div>
+        <h4>Secure Payments</h4>
+        <p>Card • EFT • PayFast (Coming Soon)</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart" id="cart">
+    <h2>Your Cart</h2>
+    <div class="cart-items" id="cartItems"></div>
+    <button class="checkout">Proceed to Checkout</button>
+  </div>
+
+  <script>
+    const cart = [];
+
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    }
+
+    function toggleCart() {
+      document.getElementById('cart').classList.toggle('active');
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      document.getElementById('cartCount').innerText = cart.length;
+      renderCart();
+    }
+
+    function renderCart() {
+      const items = document.getElementById('cartItems');
+      items.innerHTML = '';
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span>${item.name}</span><span>R${item.price}</span>`;
+        items.appendChild(div);
+      });
+    }
+
+
+    // Mobile dropdown toggle
+    document.querySelectorAll('.mobile-menu .nav-item > a').forEach(item => {
+      item.addEventListener('click', e => {
+        const dropdown = item.nextElementSibling;
+        if (dropdown && dropdown.classList.contains('dropdown-mobile')) {
+          e.preventDefault();
+          dropdown.classList.toggle('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
