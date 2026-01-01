@@ -2,24 +2,22 @@
 <html lang="en">
 
 <head>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1e5eff">
-
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="logo.png">
-
-
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SATECH ENTERPRISE | Gadgets & Repairs</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    integrity="sha512-pVPRFq3O4QZ2k6TFnepEfl27GXYnDK6UBXz0sA+J+hZwX0zVRJdV1pJxR6NE6kGQpmM5HJZc8R0TzjS+7D2Qag=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- PWA / Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e5eff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
+    /* ======= ROOT & GLOBAL ======= */
     :root {
       --navy: #0b1c2d;
       --blue: #1e5eff;
@@ -32,7 +30,7 @@
     * {
       box-sizing: border-box;
       margin: 0;
-      padding: 0
+      padding: 0;
     }
 
     body {
@@ -44,15 +42,15 @@
 
     a {
       text-decoration: none;
-      color: inherit
+      color: inherit;
     }
 
     img {
       max-width: 100%;
-      display: block
+      display: block;
     }
 
-    /* HEADER */
+    /* ======= HEADER ======= */
     header {
       position: sticky;
       top: 0;
@@ -61,7 +59,6 @@
       border-bottom: 1px solid #e5e7eb;
     }
 
-    /* NAV CONTAINER */
     .nav {
       display: flex;
       align-items: center;
@@ -71,14 +68,12 @@
       padding: 1rem 1.5rem;
     }
 
-    /* Logo */
     .brand img.logo {
       height: 48px;
       max-width: 160px;
       object-fit: contain;
     }
 
-    /* NAV LINKS CENTERED */
     .nav-links {
       display: flex;
       align-items: center;
@@ -93,7 +88,6 @@
       font-weight: 500;
     }
 
-    /* Hover underline */
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -107,52 +101,6 @@
 
     .nav-links a:hover::after {
       width: 100%;
-    }
-
-    /* Dropdown */
-    .nav-item {
-      position: relative;
-    }
-
-    .nav-item a i {
-      margin-left: 4px;
-      transition: .25s;
-      font-size: 0.6rem;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 120%;
-      left: 0;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
-      padding: .5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: .3s;
-      min-width: 220px;
-      z-index: 999;
-    }
-
-    .dropdown a {
-      display: block;
-      padding: .5rem 1.2rem;
-      font-size: .95rem;
-      color: var(--navy);
-    }
-
-    .dropdown a:hover {
-      background: var(--muted);
-    }
-
-    /* Show dropdown on hover */
-    .nav-item:hover .dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
     }
 
     .nav-actions {
@@ -201,7 +149,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    /* Hamburger */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -216,7 +163,6 @@
       border-radius: 10px;
     }
 
-    /* MOBILE MENU */
     .mobile-menu {
       display: none;
       flex-direction: column;
@@ -226,53 +172,11 @@
       border-bottom: 1px solid #e5e7eb;
     }
 
-    .dropdown-mobile {
-      display: none;
-      flex-direction: column;
-      gap: .5rem;
-      padding-left: 1rem;
-    }
-
     .mobile-menu.active {
       display: flex;
     }
 
-    /* Desktop hover stays */
-    @media (min-width: 901px) {
-      .nav-item:hover .dropdown {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-    }
-
-    /* Mobile dropdown */
-    @media (max-width: 900px) {
-      .dropdown {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        display: none;
-        box-shadow: none;
-        border: none;
-        padding-left: 1rem;
-      }
-
-      .nav-item.active .dropdown {
-        display: block;
-      }
-
-      .dropdown-toggle {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-      }
-    }
-
-
-    /* HERO */
+    /* ======= HERO ======= */
     .hero {
       background: linear-gradient(135deg, #f8fbff, #eef4ff);
     }
@@ -295,7 +199,7 @@
 
     .hero p {
       margin: 1.2rem 0;
-      color: #555
+      color: #555;
     }
 
     .btn {
@@ -307,49 +211,7 @@
       font-weight: 600;
     }
 
-    /* PRODUCT IMAGE */
-    .product-img {
-      background: #f8f9fb;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      height: 180px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .product-img img {
-      max-height: 140px;
-      width: auto;
-      object-fit: contain;
-      transition: transform .25s ease;
-    }
-
-    /* Subtle hover effect (professional) */
-    .product:hover .product-img img {
-      transform: scale(1.05);
-    }
-
-
-    /* SECTIONS */
-    section {
-      padding: 4rem 1.5rem
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto
-    }
-
-    .section-title {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: var(--navy);
-    }
-
-    /* PRODUCTS */
+    /* ======= PRODUCTS ======= */
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -365,9 +227,30 @@
       justify-content: space-between;
     }
 
+    .product-img {
+      background: var(--muted);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img img {
+      max-height: 140px;
+      object-fit: contain;
+      transition: transform .25s ease;
+    }
+
+    .product:hover .product-img img {
+      transform: scale(1.05);
+    }
+
     .product h3 {
       margin: .8rem 0;
-      color: var(--navy)
+      color: var(--navy);
     }
 
     .price {
@@ -385,20 +268,7 @@
       cursor: pointer;
     }
 
-    /* SERVICES */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .service {
-      background: var(--muted);
-      padding: 2rem;
-      border-radius: var(--radius);
-    }
-
-    /* CART DRAWER */
+    /* ======= CART ======= */
     .cart {
       position: fixed;
       top: 0;
@@ -415,16 +285,16 @@
     }
 
     .cart.active {
-      right: 0
+      right: 0;
     }
 
     .cart h2 {
-      margin-bottom: 1rem
+      margin-bottom: 1rem;
     }
 
     .cart-items {
       flex: 1;
-      overflow: auto
+      overflow: auto;
     }
 
     .cart-item {
@@ -445,7 +315,7 @@
       cursor: pointer;
     }
 
-    /* FOOTER */
+    /* ======= FOOTER ======= */
     footer {
       background: var(--navy);
       color: #fff;
@@ -458,18 +328,18 @@
       gap: 2rem;
     }
 
-    /* RESPONSIVE */
+    /* ======= RESPONSIVE ======= */
     @media(max-width:900px) {
       .hero-inner {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
       }
 
       .nav-links {
-        display: none
+        display: none;
       }
 
       .hamburger {
-        display: flex
+        display: flex;
       }
     }
   </style>
@@ -477,17 +347,13 @@
 
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="nav">
-
-      <!-- Logo -->
       <div class="brand">
-        <a href="index.html">
-          <img src="logo.png" alt="SATECH ENTERPRISE Logo" class="logo" />
-        </a>
+        <a href="index.html"><img src="logo.png" alt="SATECH Logo" class="logo" /></a>
       </div>
 
-      <!-- Desktop Nav -->
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="refurb.html">Refurbished Laptops</a>
@@ -499,16 +365,12 @@
         <a href="contact.html">Contact</a>
       </nav>
 
-      <!-- Actions -->
       <div class="nav-actions">
         <a href="#" class="icon-btn"><i class="fa-solid fa-user"></i></a>
-
-        <!-- Cart Button -->
-        <a href="cart.html" class="cart-btn">
+        <a href="#" class="cart-btn" onclick="toggleCart()">
           <i class="fa-solid fa-cart-shopping"></i>
           <span class="cart-count" id="cartCount">0</span>
         </a>
-
         <div class="hamburger" onclick="toggleMenu()">
           <span></span>
           <span></span>
@@ -516,8 +378,6 @@
         </div>
       </div>
 
-
-      <!-- Mobile Menu -->
       <div class="mobile-menu" id="mobileMenu">
         <a href="index.html">Home</a>
         <a href="refurb.html">Refurbished Laptops</a>
@@ -528,65 +388,50 @@
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </div>
+    </div>
   </header>
 
-
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-inner">
       <div>
         <h1>Premium Gadgets & Reliable Repairs</h1>
-        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
-          and individuals.</p>
+        <p>Refurbished & new laptops, iPhones, smart devices, and professional repairs, trusted by businesses and individuals.</p>
         <a href="#products" class="btn">Shop Now</a>
       </div>
       <img src="gadgets.png" alt="Gadgets" />
     </div>
   </section>
 
+  <!-- PRODUCTS -->
   <section id="products">
     <div class="container">
       <h2 class="section-title">Popular Products</h2>
 
       <div class="products">
-
         <div class="product">
-          <div class="product-img">
-            <img src="hp.png" alt="Refurbished Laptop">
-          </div>
+          <div class="product-img"><img src="hp.png" alt="Refurbished Laptop"></div>
           <h3>Refurbished Laptop</h3>
-          <div class="price">R6.999,99</div>
-          <button class="add-cart" onclick="addToCart('Refurbished Laptop',6999)">
-            Add to Cart
-          </button>
+          <div class="price">R6,999.99</div>
+          <button class="add-cart" onclick="addToCart('Refurbished Laptop',6999)">Add to Cart</button>
         </div>
-
         <div class="product">
-          <div class="product-img">
-            <img src="i13.png" alt="iPhone 13 Pro">
-          </div>
+          <div class="product-img"><img src="i13.png" alt="iPhone 13 Pro"></div>
           <h3>iPhone 13 Pro</h3>
-          <div class="price">R10.999,99</div>
-          <button class="add-cart" onclick="addToCart('iPhone 13 Pro',12999)">
-            Add to Cart
-          </button>
+          <div class="price">R10,999.99</div>
+          <button class="add-cart" onclick="addToCart('iPhone 13 Pro',12999)">Add to Cart</button>
         </div>
-
         <div class="product">
-          <div class="product-img">
-            <img src="smart.png" alt="Smart Watch">
-          </div>
+          <div class="product-img"><img src="smart.png" alt="Smart Watch"></div>
           <h3>Smart Watch</h3>
-          <div class="price">R999,99</div>
-          <button class="add-cart" onclick="addToCart('Smart Watch',1499)">
-            Add to Cart
-          </button>
+          <div class="price">R999.99</div>
+          <button class="add-cart" onclick="addToCart('Smart Watch',1499)">Add to Cart</button>
         </div>
-
       </div>
     </div>
   </section>
 
-
+  <!-- SERVICES -->
   <section id="services">
     <div class="container">
       <h2 class="section-title">Technical Services</h2>
@@ -598,18 +443,20 @@
     </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact">
     <div class="container">
       <h2 class="section-title">Contact Us</h2>
-      <p>Email: info@satech.co.za<br />Phone: +27 81 840 1398</p>
+      <p>Email: info@satech.co.za<br>Phone: +27 81 840 1398</p>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div>
         <h3>SATECH ENTERPRISE</h3>
-        <p>Powered by <a href="cmstudio.online">CMSTUDIO</a></p>
+        <p>Powered by <a href="cmstudio.online" style="color:#fff">CMSTUDIO</a></p>
       </div>
       <div>
         <h4>Quick Links</h4>
@@ -622,29 +469,32 @@
     </div>
   </footer>
 
+  <!-- CART -->
   <div class="cart" id="cart">
     <h2>Your Cart</h2>
     <div class="cart-items" id="cartItems"></div>
     <button class="checkout">Proceed to Checkout</button>
   </div>
 
+  <!-- SCRIPTS -->
   <script>
-    const cart = [];
-
+    // Menu toggle
     function toggleMenu() {
       document.getElementById('mobileMenu').classList.toggle('active');
     }
 
+    // Cart toggle
     function toggleCart() {
       document.getElementById('cart').classList.toggle('active');
     }
 
+    // Cart logic
+    const cart = [];
     function addToCart(name, price) {
       cart.push({ name, price });
       document.getElementById('cartCount').innerText = cart.length;
       renderCart();
     }
-
     function renderCart() {
       const items = document.getElementById('cartItems');
       items.innerHTML = '';
@@ -656,28 +506,13 @@
       });
     }
 
-
-    // Mobile dropdown toggle
-    document.querySelectorAll('.mobile-menu .nav-item > a').forEach(item => {
-      item.addEventListener('click', e => {
-        const dropdown = item.nextElementSibling;
-        if (dropdown && dropdown.classList.contains('dropdown-mobile')) {
-          e.preventDefault();
-          dropdown.classList.toggle('active');
-        }
-      });
-    });
-
-
-
+    // Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
         .then(() => console.log('Service Worker Registered'))
-        .catch(err => console.log('Service Worker registration failed:', err));
+        .catch(err => console.log('SW registration failed:', err));
     }
-
-
   </script>
-</body>
 
+</body>
 </html>
