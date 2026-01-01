@@ -1,4 +1,4 @@
-const cacheName = "satech-cache-v1";
+const cacheName = "satech-cache-v2";
 const assets = [
   "/",                
   "/index.html",      
@@ -25,3 +25,4 @@ self.addEventListener("fetch", event => {
     caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
+
