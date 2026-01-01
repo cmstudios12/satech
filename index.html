@@ -5,11 +5,11 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e5eff">
 
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SATECH ENTERPRISE | Gadgets & Repairs</title>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-pVPRFq3O4QZ2k6TFnepEfl27GXYnDK6UBXz0sA+J+hZwX0zVRJdV1pJxR6NE6kGQpmM5HJZc8R0TzjS+7D2Qag=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -664,11 +664,14 @@
     });
 
 
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js")
-        .then(() => console.log("Service Worker Registered"))
-        .catch(err => console.log("Service Worker registration failed:", err));
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch(err => console.log('Service Worker registration failed:', err));
     }
+
+
   </script>
 </body>
 
