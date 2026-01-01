@@ -1,11 +1,9 @@
-const cacheName = "satech-cache-v2"; // change v1 → v2
+const cacheName = "satech-cache-v1";
 const assets = [
-  "/",                     // root index
-  "/index.html",           // homepage
-  "/style.css",            // your CSS
-  "/script.js",            // JS file (your main scripts)
-  "/logo.png",             // your logo
-  "/toplap.png",           // hero image
+  "/",                
+  "/index.html",      
+  "/logo.png",       
+  "/toplap.png",      
   "/Dell_Latitude_5400.png",
   "/HP_ProBook_450_G6.png",
   "/Lenovo-T480.png",
@@ -16,14 +14,14 @@ const assets = [
   "/HP_Pavilion_14.png"
 ];
 
-self.addEventListener("install", e => {
-  e.waitUntil(
+self.addEventListener("install", event => {
+  event.waitUntil(
     caches.open(cacheName).then(cache => cache.addAll(assets))
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(resp => resp || fetch(e.request))
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
