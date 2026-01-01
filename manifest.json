@@ -1,11 +1,11 @@
 {
   "name": "SATECH ENTERPRISE",
   "short_name": "SATECH",
-  "description": "Refurbished laptops, high-performance tech",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e5eff",
+  "description": "Refurbished laptops, high-performance tech",
   "icons": [
     {
       "src": "logo.png",
