@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart | SATECH ENTERPRISE</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
     <style>
         :root {
             --navy: #0b1f3b;
@@ -60,7 +59,7 @@
             background: #fff;
             padding: 2rem 1.5rem;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
         }
 
         .hero h1 {
@@ -84,7 +83,7 @@
             background: #fff;
             padding: 1rem;
             border-radius: var(--radius);
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
             flex-wrap: wrap;
         }
 
@@ -121,7 +120,7 @@
             cursor: pointer;
         }
 
-        /* TOTAL */
+        /* TOTAL & PROMO */
         .promo-total {
             max-width: 1200px;
             margin: auto;
@@ -144,13 +143,14 @@
             border: none;
             padding: .6rem 1.2rem;
             border-radius: 50px;
+            cursor: pointer;
         }
 
         .total-section {
             background: #fff;
             padding: 1rem 1.5rem;
             border-radius: var(--radius);
-            box-shadow: 0 4px 12px rgba(0,0,0,.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
             min-width: 220px;
         }
 
@@ -165,11 +165,23 @@
             cursor: pointer;
         }
 
+        .delivery-info {
+            margin-top: .5rem;
+            font-size: .9rem;
+            color: #555;
+        }
+
+        .delivery-info .cancelled {
+            text-decoration: line-through;
+            color: red;
+            margin-right: .5rem;
+        }
+
         /* MODAL */
         .checkout-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,.55);
+            background: rgba(0, 0, 0, .55);
             display: none;
             align-items: center;
             justify-content: center;
@@ -178,7 +190,7 @@
 
         .checkout-modal {
             background: #fff;
-            max-width: 420px;
+            max-width: 500px;
             width: 95%;
             border-radius: 16px;
             padding: 1.5rem;
@@ -186,8 +198,15 @@
         }
 
         @keyframes pop {
-            from { transform: scale(.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(.9);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
         }
 
         .checkout-modal h2 {
@@ -212,6 +231,21 @@
             cursor: pointer;
         }
 
+        .checkout-modal input,
+        .checkout-modal textarea,
+        .checkout-modal select {
+            width: 100%;
+            padding: .6rem;
+            margin: .5rem 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .checkout-modal label {
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
         @media(max-width:768px) {
             .cart-item {
                 flex-direction: column;
@@ -223,124 +257,193 @@
 
 <body>
 
-<header>
-    <a href="dashboard.html"><img src="logo.png" class="logo"></a>
-    <a href="dashboard.html" class="back-btn">← Back</a>
-</header>
+    <header>
+        <a href="dashboard.html"><img src="logo.png" class="logo"></a>
+        <a href="dashboard.html" class="back-btn">← Back</a>
+    </header>
 
-<section class="hero">
-    <h1>Your Shopping Cart</h1>
-    <p>Review items before checkout</p>
-</section>
+    <section class="hero">
+        <h1>Your Shopping Cart</h1>
+        <p>Review items before checkout</p>
+    </section>
 
-<section class="cart-section" id="cartSection"></section>
+    <section class="cart-section" id="cartSection"></section>
 
-<div class="promo-total">
-    <div class="promo-section">
-        <input type="text" id="promoCode" placeholder="Promo code">
-        <button onclick="applyPromo()">Apply</button>
-    </div>
-
-    <div class="total-section">
-        <strong>Total: R<span id="totalPrice">0</span></strong>
-        <br><br>
-        <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
-    </div>
-</div>
-
-<!-- CHECKOUT POPUP -->
-<div class="checkout-overlay" id="checkoutOverlay">
-    <div class="checkout-modal">
-        <h2>Complete Payment</h2>
-
-        <div class="payment-box">
-            <p><strong>Bank:</strong> TymeBank</p>
-            <p><strong>Account Name:</strong> SATECH ENTERPRISE</p>
-            <p><strong>Account Number:</strong> 51131411363</p>
-            <p><strong>Branch Code:</strong> 678910</p>
-            <p><strong>Reference:</strong> <span id="paymentRef"></span></p>
+    <div class="promo-total">
+        <div class="promo-section">
+            <input type="text" id="promoCode" placeholder="Promo code">
+            <button onclick="applyPromo()">Apply</button>
         </div>
 
-        <p><strong>Total Due:</strong> R<span id="checkoutTotal"></span></p>
-        <br>
-        <p>📌 Send proof of payment to:</p>
-        <p>Email: payments@satech.co.za</p>
-        <p>WhatsApp: +27 76 864 1645</p>
-
-        <br>
-        <button class="close-btn" onclick="closeCheckout()">Close</button>
+        <div class="total-section">
+            <strong>Total: R<span id="totalPrice">0</span></strong>
+            <div class="delivery-info" id="deliveryInfo"></div>
+            <br>
+            <button class="checkout-btn" onclick="openCheckout()">Proceed to Checkout</button>
+        </div>
     </div>
-</div>
 
-<script>
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    <!-- CHECKOUT POPUP -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-modal">
+            <h2>Enter Delivery Details</h2>
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="John Doe" required>
+            <label>Street Address</label>
+            <input type="text" id="streetAddress" placeholder="123 Main Street" required>
+            <label>City</label>
+            <input type="text" id="city" placeholder="Johannesburg" required>
+            <label>Postal Code</label>
+            <input type="text" id="postalCode" placeholder="2000" required>
+            <label>Province</label>
+            <select id="province" required>
+                <option value="">Select Province</option>
+                <option>Gauteng</option>
+                <option>KwaZulu-Natal</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>Limpopo</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Northern Cape</option>
+                <option>Free State</option>
+            </select>
 
-    function renderCart() {
-        const c = document.getElementById('cartSection');
-        c.innerHTML = '';
-        if (!cart.length) {
-            c.innerHTML = '<p>Your cart is empty.</p>';
-            document.getElementById('totalPrice').innerText = 0;
-            return;
+            <div class="payment-box" id="paymentBox" style="display:none;">
+                <h2>Account Details</h2>
+                <p><strong>Bank:</strong> TymeBank</p>
+                <p><strong>Account Name:</strong> SATECH ENTERPRISE</p>
+                <p><strong>Account Number:</strong> 51131411363</p>
+                <p><strong>Branch Code:</strong> 678910</p>
+                <p><strong>Reference:</strong> <span id="paymentRef"></span></p>
+                <p><strong>Total Due:</strong> R<span id="checkoutTotal"></span></p>
+                <br>
+                <p>📌 Send proof of payment to:</p>
+                <p>Email: payments@satech.co.za</p>
+                <p>WhatsApp: +27 76 864 1645</p>
+            </div>
+
+            <br>
+            <button class="close-btn" onclick="closeCheckout()">Close</button>
+            <button class="checkout-btn" onclick="showPayment()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let promoApplied = false;
+        const DELIVERY_FEE = 110;
+        const DELIVERY_THRESHOLD = 5000;
+
+        function renderCart() {
+            const c = document.getElementById('cartSection');
+            c.innerHTML = '';
+            if (!cart.length) {
+                c.innerHTML = '<p>Your cart is empty.</p>';
+                document.getElementById('totalPrice').innerText = 0;
+                document.getElementById('deliveryInfo').innerHTML = '';
+                return;
+            }
+
+            cart.forEach((item, i) => {
+                c.innerHTML += `
+      <div class="cart-item">
+        <img src="${item.img}">
+        <div class="item-info">
+          <strong>${item.name}</strong>
+          <p>Code: ${item.code}</p>
+          <div class="qty-delete">
+            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
+            <button class="delete-btn" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+        <strong>R${item.price * item.qty}</strong>
+      </div>
+    `;
+            });
+            updateTotal();
         }
 
-        cart.forEach((item, i) => {
-            c.innerHTML += `
-                <div class="cart-item">
-                    <img src="${item.img}">
-                    <div class="item-info">
-                        <strong>${item.name}</strong>
-                        <p>Code: ${item.code}</p>
-                        <div class="qty-delete">
-                            <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateQty(${i},this.value)">
-                            <button class="delete-btn" onclick="deleteItem(${i})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <strong>R${item.price * item.qty}</strong>
-                </div>
-            `;
-        });
-        updateTotal();
-    }
-
-    function updateQty(i, v) {
-        cart[i].qty = parseInt(v);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        renderCart();
-    }
-
-    function deleteItem(i) {
-        cart.splice(i, 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        renderCart();
-    }
-
-    function updateTotal() {
-        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-        document.getElementById('totalPrice').innerText = total.toLocaleString();
-    }
-
-    function applyPromo() {
-        alert("Promo feature coming soon 🔥");
-    }
-
-    function openCheckout() {
-        if (!cart.length) {
-            alert("Cart is empty");
-            return;
+        function updateQty(i, v) {
+            cart[i].qty = parseInt(v);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
         }
-        const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-        document.getElementById("checkoutTotal").innerText = total.toLocaleString();
-        document.getElementById("paymentRef").innerText = "SATECH-" + Math.floor(Math.random()*900000+100000);
-        document.getElementById("checkoutOverlay").style.display = "flex";
-    }
 
-    function closeCheckout() {
-        document.getElementById("checkoutOverlay").style.display = "none";
-    }
+        function deleteItem(i) {
+            cart.splice(i, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
 
-    renderCart();
-</script>
+        function updateTotal() {
+            let total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            document.getElementById('totalPrice').innerText = total.toLocaleString();
+
+            const deliveryInfo = document.getElementById('deliveryInfo');
+            if (total >= DELIVERY_THRESHOLD) {
+                deliveryInfo.innerHTML = `<span class="cancelled">R${DELIVERY_FEE}</span> Free Delivery!`;
+            } else if (total > 0) {
+                deliveryInfo.innerHTML = `Delivery Fee: R${DELIVERY_FEE}`;
+            } else {
+                deliveryInfo.innerHTML = '';
+            }
+        }
+
+        function applyPromo() {
+            const code = document.getElementById('promoCode').value.trim();
+            if (!code) { alert("Enter a promo code"); return; }
+            if (promoApplied) { alert("Promo already applied!"); return; }
+
+            const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            if (total < 1200) { alert("Total must be at least R1200 to apply promo"); return; }
+
+            if (code.toUpperCase() === "SAVE250") {
+                cart = cart.map(item => {
+                    item.price = item.price - 250;
+                    return item;
+                });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                promoApplied = true;
+                alert("Promo applied! R250 discount on all items");
+                renderCart();
+            } else {
+                alert("Invalid promo code");
+            }
+        }
+
+        function openCheckout() {
+            if (!cart.length) { alert("Cart is empty"); return; }
+            document.getElementById("checkoutOverlay").style.display = "flex";
+            document.getElementById("paymentBox").style.display = "none";
+        }
+
+        function closeCheckout() { document.getElementById("checkoutOverlay").style.display = "none"; }
+
+        function showPayment() {
+            // Validate address fields
+            const name = document.getElementById('fullName').value.trim();
+            const street = document.getElementById('streetAddress').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const postal = document.getElementById('postalCode').value.trim();
+            const province = document.getElementById('province').value;
+
+            if (!name || !street || !city || !postal || !province) {
+                alert("Please fill in all delivery details");
+                return;
+            }
+
+            let total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            if (total < DELIVERY_THRESHOLD) total += DELIVERY_FEE; // add delivery if < 5000
+
+            document.getElementById("checkoutTotal").innerText = total.toLocaleString();
+            document.getElementById("paymentRef").innerText = "SATECH-" + Math.floor(Math.random() * 900000 + 100000);
+            document.getElementById("paymentBox").style.display = "block";
+        }
+
+        renderCart();
+    </script>
 
 </body>
+
 </html>
