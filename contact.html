@@ -1,328 +1,442 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Us | SATECH ENTERPRISE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | SATECH ENTERPRISE</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-:root{
-  --navy:#0b1c2d;
-  --blue:#1e5eff;
-  --light:#f8f9fa;
-  --white:#fff;
-  --muted:#f4f6f8;
-  --radius:12px;
-}
+  <style>
+    :root {
+      --navy: #0b1c2d;
+      --blue: #1e5eff;
+      --light: #f8f9fa;
+      --white: #fff;
+      --muted: #f4f6f8;
+      --radius: 12px;
+    }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:var(--light);color:#111;line-height:1.6}
-a{text-decoration:none;color:inherit}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif
+    }
 
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1rem 2rem;
-  background:#fff;
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
-  position:sticky;
-  top:0;
-  z-index:999;
-}
+    body {
+      background: var(--light);
+      color: #111;
+      line-height: 1.6
+    }
 
-.logo img{height:46px}
+    a {
+      text-decoration: none;
+      color: inherit
+    }
 
-.nav-links{display:flex;gap:1.1rem}
-.nav-links a{
-  font-weight:500;
-  color:var(--navy);
-  position:relative;
-}
-.nav-links a::after{
-  content:'';
-  position:absolute;
-  bottom:-4px;
-  left:0;
-  width:0;
-  height:2px;
-  background:var(--blue);
-  transition:.3s;
-}
-.nav-links a:hover::after{width:100%}
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
 
-/* USER */
-.user-box{display:flex;align-items:center;gap:1rem;position:relative}
-.user-initials{
-  width:42px;height:42px;
-  background:var(--blue);
-  color:#fff;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  cursor:pointer;
-}
-.user-dropdown{
-  position:absolute;
-  top:120%;
-  right:0;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
-  display:none;
-  flex-direction:column;
-}
-.user-dropdown a{
-  padding:.7rem 1.2rem;
-}
-.user-dropdown a:hover{background:var(--muted)}
+    .logo img {
+      height: 46px
+    }
 
-/* MOBILE NAV */
-.hamburger{display:none;flex-direction:column;width:28px;height:22px;cursor:pointer}
-.hamburger span{height:3px;background:var(--navy);border-radius:3px}
+    .nav-links {
+      display: flex;
+      gap: 1.1rem
+    }
 
-.mobile-nav{
-  position:fixed;
-  top:0;right:-100%;
-  width:70%;height:100vh;
-  background:#fff;
-  box-shadow:-4px 0 25px rgba(0,0,0,.1);
-  padding:3rem 1.5rem;
-  display:flex;
-  flex-direction:column;
-  gap:1.4rem;
-  transition:.3s;
-  z-index:1000;
-}
-.mobile-nav.show{right:0}
+    .nav-links a {
+      font-weight: 500;
+      color: var(--navy);
+      position: relative;
+    }
 
-/* HERO */
-.page-header{
-  background:linear-gradient(135deg,#f8fbff,#eef4ff);
-  padding:3.5rem 1.5rem;
-  text-align:center;
-}
-.page-header h1{
-  font-size:2.6rem;
-  color:var(--navy);
-}
-.page-header p{
-  margin-top:1rem;
-  color:#555;
-}
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue);
+      transition: .3s;
+    }
 
-/* CONTENT */
-.container{max-width:1200px;margin:auto;padding:4rem 1.5rem}
+    .nav-links a:hover::after {
+      width: 100%
+    }
 
-/* CONTACT CARDS */
-.contact-cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:2rem;
-  margin-bottom:3rem;
-}
-.card{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:var(--radius);
-  padding:2rem;
-  text-align:center;
-  transition:.25s;
-}
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 16px 40px rgba(0,0,0,.08);
-}
-.card i{
-  font-size:2rem;
-  color:var(--blue);
-  margin-bottom:1rem;
-}
-.card h4{color:var(--navy);margin-bottom:.4rem}
-.card p{color:#555;font-size:.95rem}
+    /* USER */
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative
+    }
 
-/* FORM */
-.contact-form{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:var(--radius);
-  padding:2rem;
-  max-width:700px;
-  margin:auto;
-}
-.contact-form h3{
-  text-align:center;
-  margin-bottom:1.5rem;
-  color:var(--navy);
-}
-.contact-form input,
-.contact-form textarea{
-  width:100%;
-  padding:.85rem 1rem;
-  margin-bottom:1rem;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-.contact-form button{
-  width:100%;
-  background:var(--blue);
-  color:#fff;
-  border:none;
-  padding:.9rem;
-  border-radius:50px;
-  font-weight:600;
-  cursor:pointer;
-}
+    .user-initials {
+      width: 42px;
+      height: 42px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-/* MAP */
-.map{
-  margin-top:3rem;
-  height:380px;
-  border-radius:12px;
-  overflow:hidden;
-}
+    .user-dropdown {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      display: none;
+      flex-direction: column;
+    }
 
-/* FOOTER */
-footer{
-  background:#081426;
-  color:#fff;
-  padding:3rem 1.5rem;
-}
-.footer-wrap{
-  max-width:1200px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:2rem;
-}
-footer p{font-size:.9rem;opacity:.85}
+    .user-dropdown a {
+      padding: .7rem 1.2rem;
+    }
 
-/* MOBILE */
-@media(max-width:850px){
-  .nav-links{display:none}
-  .hamburger{display:flex}
-  .page-header h1{font-size:2.2rem}
-}
-</style>
+    .user-dropdown a:hover {
+      background: var(--muted)
+    }
+
+    /* MOBILE NAV */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      width: 28px;
+      height: 22px;
+      cursor: pointer
+    }
+
+    .hamburger span {
+      height: 3px;
+      background: var(--navy);
+      border-radius: 3px
+    }
+
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background: #fff;
+      box-shadow: -4px 0 25px rgba(0, 0, 0, .1);
+      padding: 3rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      transition: .3s;
+      z-index: 1000;
+    }
+
+    .mobile-nav.show {
+      right: 0
+    }
+
+    /* HERO */
+    .page-header {
+      background: linear-gradient(135deg, #f8fbff, #eef4ff);
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 2.6rem;
+      color: var(--navy);
+    }
+
+    .page-header p {
+      margin-top: 1rem;
+      color: #555;
+    }
+
+    /* CONTENT */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 4rem 1.5rem
+    }
+
+    /* CONTACT CARDS */
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      transition: .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .08);
+    }
+
+    .card i {
+      font-size: 2rem;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+
+    .card h4 {
+      color: var(--navy);
+      margin-bottom: .4rem
+    }
+
+    .card p {
+      color: #555;
+      font-size: .95rem
+    }
+
+    /* FORM */
+    .contact-form {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .contact-form h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--navy);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: .85rem 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .contact-form button {
+      width: 100%;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      padding: .9rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* MAP */
+    .map {
+      margin-top: 3rem;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #081426;
+      color: #fff;
+      padding: 3rem 1.5rem;
+    }
+
+    .footer-wrap {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    footer p {
+      font-size: .9rem;
+      opacity: .85
+    }
+
+    /* MOBILE */
+    @media(max-width:850px) {
+      .nav-links {
+        display: none
+      }
+
+      .hamburger {
+        display: flex
+      }
+
+      .page-header h1 {
+        font-size: 2.2rem
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <a href="dashboard.html" class="logo"><img src="logo.png"></a>
+  <header>
+    <a href="dashboard.html" class="logo"><img src="logo.png"></a>
 
-  <nav class="nav-links">
+    <nav class="nav-links">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New Laptops</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html" class="icon-btn">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+    </nav>
+
+    <div class="user-box">
+      <div class="user-initials" id="userInitials">U</div>
+      <div class="user-dropdown" id="userDropdown">
+        <a href="account.html">Account</a>
+        <a href="orders.html">My Orders</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
     <a href="dashboard.html">Home</a>
     <a href="ref.html">Refurbished</a>
     <a href="new.html">New Laptops</a>
     <a href="acc.html">Accessories</a>
     <a href="repair.html">Repairs</a>
     <a href="contact.html">Contact</a>
-  </nav>
+    <a href="cart.html" class="icon-btn">
+      <i class="fa-solid fa-cart-shopping"></i>
+    </a>
+  </div>
 
-  <div class="user-box">
-    <div class="user-initials" id="userInitials">U</div>
-    <div class="user-dropdown" id="userDropdown">
-      <a href="account.html">Account</a>
-      <a href="orders.html">My Orders</a>
-      <a href="#" id="logoutBtn">Logout</a>
+  <section class="page-header">
+    <h1>Contact SATECH ENTERPRISE</h1>
+    <p>We are ready to assist you with products, repairs & support.</p>
+  </section>
+
+  <section class="container">
+
+    <div class="contact-cards">
+      <div class="card"><i class="fa-solid fa-location-dot"></i>
+        <h4>Location</h4>
+        <p>Emalahleni, Mpumalanga</p>
+      </div>
+      <div class="card"><i class="fa-solid fa-envelope"></i>
+        <h4>Email</h4>
+        <p>info@satech.co.za</p>
+      </div>
+      <div class="card"><i class="fa-solid fa-phone"></i>
+        <h4>Phone</h4>
+        <p>+27 76 864 1645</p>
+      </div>
+      <div class="card"><i class="fa-solid fa-clock"></i>
+        <h4>Hours</h4>
+        <p>Mon–Fri 8AM–6PM<br>Sat 9AM–2PM</p>
+      </div>
     </div>
-  </div>
 
-  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
-</header>
+    <div class="contact-form">
+      <h3>Send Us a Message</h3>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="dashboard.html">Home</a>
-  <a href="ref.html">Refurbished</a>
-  <a href="new.html">New Laptops</a>
-  <a href="acc.html">Accessories</a>
-  <a href="repair.html">Repairs</a>
-  <a href="contact.html">Contact</a>
-</div>
+    <div class="map">
+      <iframe src="https://www.google.com/maps?q=Emalahleni,Mpumalanga&output=embed" width="100%" height="100%"
+        style="border:0;" loading="lazy"></iframe>
+    </div>
 
-<section class="page-header">
-  <h1>Contact SATECH ENTERPRISE</h1>
-  <p>We are ready to assist you with products, repairs & support.</p>
-</section>
+  </section>
 
-<section class="container">
+  <footer>
+    <div class="footer-wrap">
+      <div>
+        <h4>SATECH ENTERPRISE</h4>
+        <p>Gadgets, accessories & repairs you can trust.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <p>Laptop Repairs<br>Phone Repairs</p>
+      </div>
+      <div>
+        <h4>Powered By</h4>
+        <p>CMSTUDIO</p>
+      </div>
+    </div>
+  </footer>
 
-  <div class="contact-cards">
-    <div class="card"><i class="fa-solid fa-location-dot"></i><h4>Location</h4><p>Emalahleni, Mpumalanga</p></div>
-    <div class="card"><i class="fa-solid fa-envelope"></i><h4>Email</h4><p>info@satech.co.za</p></div>
-    <div class="card"><i class="fa-solid fa-phone"></i><h4>Phone</h4><p>+27 76 864 1645</p></div>
-    <div class="card"><i class="fa-solid fa-clock"></i><h4>Hours</h4><p>Mon–Fri 8AM–6PM<br>Sat 9AM–2PM</p></div>
-  </div>
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://nzuwmiyduragtqyaetfr.supabase.co",
+      "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+    );
 
-  <div class="contact-form">
-    <h3>Send Us a Message</h3>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </div>
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) { location.href = "login.html"; return; }
 
-  <div class="map">
-    <iframe src="https://www.google.com/maps?q=Emalahleni,Mpumalanga&output=embed"
-      width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
-  </div>
+      const { data } = await supabaseClient
+        .from("profiles")
+        .select("full_names,surname")
+        .eq("id", user.id)
+        .single();
 
-</section>
+      if (data) {
+        document.getElementById("userInitials").textContent =
+          (data.full_names[0] + data.surname[0]).toUpperCase();
+      }
+    }
+    loadUser();
 
-<footer>
-  <div class="footer-wrap">
-    <div><h4>SATECH ENTERPRISE</h4><p>Gadgets, accessories & repairs you can trust.</p></div>
-    <div><h4>Services</h4><p>Laptop Repairs<br>Phone Repairs</p></div>
-    <div><h4>Powered By</h4><p>CMSTUDIO</p></div>
-  </div>
-</footer>
+    document.getElementById("userInitials").onclick = () => {
+      const d = document.getElementById("userDropdown");
+      d.style.display = d.style.display === "flex" ? "none" : "flex";
+    };
 
-<script>
-const supabaseClient = supabase.createClient(
-  "https://nzuwmiyduragtqyaetfr.supabase.co",
-  "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
-);
+    document.getElementById("logoutBtn").onclick = async () => {
+      await supabaseClient.auth.signOut();
+      location.href = "login.html";
+    };
 
-async function loadUser(){
-  const { data:{ user } } = await supabaseClient.auth.getUser();
-  if(!user){ location.href="login.html"; return; }
-
-  const { data } = await supabaseClient
-    .from("profiles")
-    .select("full_names,surname")
-    .eq("id",user.id)
-    .single();
-
-  if(data){
-    document.getElementById("userInitials").textContent =
-      (data.full_names[0]+data.surname[0]).toUpperCase();
-  }
-}
-loadUser();
-
-document.getElementById("userInitials").onclick=()=>{
-  const d=document.getElementById("userDropdown");
-  d.style.display=d.style.display==="flex"?"none":"flex";
-};
-
-document.getElementById("logoutBtn").onclick=async()=>{
-  await supabaseClient.auth.signOut();
-  location.href="login.html";
-};
-
-function toggleNav(){
-  document.getElementById("mobileNav").classList.toggle("show");
-}
-</script>
+    function toggleNav() {
+      document.getElementById("mobileNav").classList.toggle("show");
+    }
+  </script>
 
 </body>
+
 </html>
