@@ -211,14 +211,14 @@
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
-      z-index: 1100;
+      z-index: 2001; /* FIX */
     }
 
     .hamburger span {
-      width: 25px;
+      width: 26px;
       height: 3px;
       background: var(--navy);
-      border-radius: 10px;
+      border-radius: 6px;
       transition: .3s;
     }
 
@@ -226,43 +226,40 @@
       transform: rotate(45deg) translate(5px, 5px);
     }
 
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
 
     .hamburger.active span:nth-child(3) {
       transform: rotate(-45deg) translate(6px, -6px);
     }
-
-    /* MOBILE MENU */
+    /* ================= MOBILE MENU (FIXED) ================= */
     .mobile-menu {
-      display: none;
-      flex-direction: column;
-      padding: 1rem;
-      background: var(--light);
-      gap: 1rem;
       position: absolute;
       top: 100%;
       left: 0;
       width: 100%;
+      background: var(--light);
       border-top: 1px solid #e5e7eb;
-      transition: max-height 0.4s ease;
       overflow: hidden;
       max-height: 0;
-    }
-
-    .mobile-menu.active {
+      transition: max-height .4s ease;
       display: flex;
-      max-height: 500px;
+      flex-direction: column;
     }
 
     .mobile-menu a {
+      padding: 1rem;
+      border-bottom: 1px solid #f1f1f1;
       font-weight: 500;
       color: var(--navy);
     }
 
-    /* MEDIA */
-    @media(max-width:900px) {
+    .mobile-menu.active {
+      max-height: 80vh;
+      /* FIX: smooth open */
+    }
+
+    /* Media */
+    @media (max-width: 900px) {
       .nav-links {
         display: none;
       }
@@ -390,54 +387,6 @@
       transform: scale(1.05);
     }
 
-    /* CART */
-    .cart {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 350px;
-      height: 100vh;
-      background: #fff;
-      box-shadow: -10px 0 30px rgba(0, 0, 0, .1);
-      padding: 1.5rem;
-      transition: .3s;
-      display: flex;
-      flex-direction: column;
-      z-index: 2000;
-    }
-
-    .cart.active {
-      right: 0;
-    }
-
-    .cart-items {
-      flex: 1;
-      overflow: auto;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      font-size: .9rem;
-    }
-
-    .checkout {
-      margin-top: 1rem;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      padding: 1rem;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .3s;
-    }
-
-    .checkout:hover {
-      transform: scale(1.03);
-    }
-
     /* FOOTER */
     footer {
       background: var(--navy);
@@ -542,21 +491,20 @@
     <div class="products">
       <div class="product">
         <div class="product-img"><img src="hp.png"></div>
-        <h3>Refurbished Laptop</h3>
-        <div class="price">R6.999,99</div>
-        <button class="add-cart" onclick="addToCart('Refurbished Laptop',6999)">Add to Cart</button>
+        <h3>Refurbished & New Laptop</h3>
+        <button class="add-cart" onclick="window.location.href='ref.html'">View Laptops</button>
       </div>
       <div class="product">
         <div class="product-img"><img src="i13.png"></div>
-        <h3>iPhone 13 Pro</h3>
-        <div class="price">R10.999,99</div>
-        <button class="add-cart" onclick="addToCart('iPhone 13 Pro',12999)">Add to Cart</button>
+        <h3>iPhones</h3>
+        <button class="add-cart" onclick="window.location.href='iphones.html'">View Phones</button>
+
       </div>
       <div class="product">
         <div class="product-img"><img src="smart.png"></div>
-        <h3>Smart Watch</h3>
-        <div class="price">R999,99</div>
-        <button class="add-cart" onclick="addToCart('Smart Watch',1499)">Add to Cart</button>
+        <h3>Smart Watches</h3>
+        <button class="add-cart" onclick="window.location.href='acc.html'">View Accessories</button>
+
       </div>
     </div>
   </section>
@@ -595,7 +543,7 @@
     </div>
   </footer>
 
-  
+
 
   <script>
     // Supabase & login
@@ -658,21 +606,38 @@
 
     checkLogin();
 
-    // Hamburger
     const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileMenu.classList.toggle('active');
-    });
+  const mobileMenu = document.getElementById('mobileMenu');
 
-    // Close mobile menu on link click
-    mobileMenu.addEventListener('click', e => {
-      if (e.target.tagName === 'A') {
-        mobileMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-      }
-    });
+  const links = [
+    { text: 'Home', href: 'dashboard.html' },
+    { text: 'Refurbished', href: 'ref.html' },
+    { text: 'New', href: '#' },
+    { text: 'iPhones', href: '#' },
+    { text: 'Accessories', href: '#' },
+    { text: 'Repairs', href: '#' },
+    { text: 'Contact', href: '#' },
+    { text: 'Logout', href: 'index.html' }
+  ];
+
+  links.forEach(l => {
+    const a = document.createElement('a');
+    a.href = l.href;
+    a.textContent = l.text;
+    mobileMenu.appendChild(a);
+  });
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+
+  mobileMenu.addEventListener('click', e => {
+    if (e.target.tagName === 'A') {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    }
+  });
 
     // Close user dropdown when clicking outside
     const userInitials = document.getElementById('userInitials');
