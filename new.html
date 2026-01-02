@@ -2,324 +2,391 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>New Laptops | SATECH ENTERPRISE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refurbished Laptops | SATECH ENTERPRISE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        :root {
-            --navy: #0b1f3b;
-            --blue: #1f4fd8;
-            --light: #f7f9fc;
-            --dark: #111;
-            --radius: 14px;
-        }
+  <style>
+    :root {
+      --navy: #0b1c2d;
+      --blue: #1e5eff;
+      --light: #f8f9fa;
+      --white: #fff;
+      --muted: #f4f6f8;
+      --radius: 12px;
+      --transition: .3s;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-        body {
-            font-family: Segoe UI, Arial, sans-serif;
-            background: #fff;
-            color: #222;
-            line-height: 1.6
-        }
+    body {
+      background: var(--light);
+      color: #111;
+      line-height: 1.5;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        /* HEADER */
-        header {
-            border-bottom: 1px solid #e5e7eb;
-            background: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000
-        }
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--white);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
 
-        .nav {
-            max-width: 1200px;
-            margin: auto;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between
-        }
+    header .logo img {
+      height: 48px;
+    }
 
-        .logo {
-            height: 40px
-        }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: .7rem 1.4rem;
-            border-radius: 50px;
-            background: var(--blue);
-            color: #fff;
-            font-weight: 600
-        }
+    .nav-links a {
+      padding: .5rem 0;
+      font-weight: 500;
+      color: var(--navy);
+      position: relative;
+    }
 
-        /* HERO */
-        .hero {
-            background: var(--light);
-            padding: 4rem 1.5rem
-        }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue);
+      transition: .3s;
+    }
 
-        .hero-wrap {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center
-        }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
 
-        .hero h1 {
-            font-size: 3rem;
-            color: var(--navy)
-        }
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
 
-        .hero p {
-            margin: 1.2rem 0 2rem;
-            max-width: 520px;
-            color: #555
-        }
+    .user-initials {
+      width: 42px;
+      height: 42px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
 
-        .hero img {
-            width: 100%;
-            max-width: 480px
-        }
+    .user-dropdown {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: #fff;
+      color: var(--navy);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
 
-        /* PRODUCTS */
-        .section {
-            padding: 4rem 1.5rem
-        }
+    .user-dropdown a {
+      padding: .7rem 1.2rem;
+      text-decoration: none;
+      color: var(--navy);
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: auto
-        }
+    .user-dropdown a:hover {
+      background: var(--muted);
+    }
 
-        .section-title {
-            font-size: 2.2rem;
-            text-align: center;
-            color: var(--navy);
-            margin-bottom: 2.5rem
-        }
+    /* HERO */
+    .page-header {
+      background: linear-gradient(135deg, #f8fbff, #eef4ff);
+      padding: 3rem 1.5rem;
+    }
 
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem
-        }
+    .hero-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2.5rem;
+    }
 
-        .product {
-            border: 1px solid #e5e7eb;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            background: #fff;
-            transition: .25s ease;
-            display: flex;
-            flex-direction: column
-        }
+    .hero-text h1 {
+      font-size: 2.7rem;
+      color: var(--navy);
+    }
 
-        .product:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .08)
-        }
+    .hero-text p {
+      margin-top: 1rem;
+      color: #555;
+      max-width: 520px;
+    }
 
-        .product-img {
-            height: 180px;
-            background: #f3f5fa;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem
-        }
+    .hero-image img {
+      width: 100%;
+      max-width: 460px;
+    }
 
-        .product-img img {
-            max-height: 140px
-        }
+    /* PRODUCTS */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 4rem 1.5rem;
+    }
 
-        .product h3 {
-            font-size: 1.05rem;
-            color: var(--navy)
-        }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
 
-        .price {
-            font-weight: 700;
-            color: var(--blue);
-            margin: .6rem 0 1rem
-        }
+    .product {
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: .25s;
+      background: #fff;
+    }
 
-        .add-cart {
-            width: 100%;
-            padding: .7rem;
-            border: none;
-            border-radius: 8px;
-            background: var(--navy);
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer
-        }
+    .product:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .06);
+    }
 
-        .add-cart:hover {
-            background: var(--blue)
-        }
+    .product-img {
+      background: var(--muted);
+      height: 180px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
 
-        /* CTA */
-        .cta {
-            background: var(--navy);
-            color: #fff;
-            text-align: center;
-            padding: 3.5rem 1.5rem
-        }
+    .product-img img {
+      max-height: 140px;
+    }
 
-        .cta h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem
-        }
+    .specs {
+      font-size: .9rem;
+      color: #555;
+    }
 
-        .cta a {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: .9rem 1.6rem;
-            border-radius: 50px;
-            background: #fff;
-            color: var(--navy);
-            font-weight: 600
-        }
+    .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: .6rem 0 1rem;
+    }
 
-        /* FOOTER */
-        footer {
-            background: #0a1628;
-            color: #fff;
-            padding: 3.5rem 1.5rem
-        }
+    .add-cart {
+      margin-top: auto;
+      background: var(--navy);
+      color: white;
+      border: none;
+      padding: .85rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      transition: all .3s;
+    }
 
-        .footer-wrap {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem
-        }
+    .add-cart:hover {
+      background: var(--blue);
+    }
 
-        footer h4 {
-            margin-bottom: .8rem
-        }
+    /* POPUP */
+    .cart-popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--blue);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: .4s;
+    }
 
-        footer p,
-        footer a {
-            font-size: .9rem;
-            opacity: .85
-        }
+    .cart-popup.show {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
 
-        /* CART POPUP */
-        .cart-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--blue);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(20px);
-            z-index: 9999
-        }
+    /* HAMBURGER & MOBILE NAV */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.3s;
+    }
 
-        .cart-popup.show {
-            opacity: 1;
-            transform: translateY(0)
-        }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: var(--navy);
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
 
-        /* CART ICON ANIMATION */
-        .cart-btn.animate {
-            animation: bounce 0.5s
-        }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translateY(9px);
+    }
 
-        @keyframes bounce {
-            0% {
-                transform: scale(1)
-            }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
 
-            50% {
-                transform: scale(1.3)
-            }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-9px);
+    }
 
-            100% {
-                transform: scale(1)
-            }
-        }
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      padding: 3rem 1.5rem;
+      gap: 1.5rem;
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+    }
 
-        /* MOBILE */
-        @media(max-width:850px) {
-            .hero-wrap {
-                grid-template-columns: 1fr;
-                text-align: center
-            }
+    .mobile-nav a {
+      font-size: 1.2rem;
+      color: var(--navy);
+      font-weight: 600;
+      padding: 0.5rem 0;
+    }
 
-            .hero p {
-                margin: auto
-            }
+    .mobile-nav.show {
+      display: flex;
+      right: 0;
+    }
 
-            .hero img {
-                margin: auto
-            }
+    /* MOBILE RESPONSIVE */
+    @media(max-width:800px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
 
-            .products {
-                grid-template-columns: 1fr
-            }
-        }
-    </style>
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="nav">
-            <a href="index.html"><img src="logo.png" class="logo" alt="SATECH ENTERPRISE"></a>
-            <a href="index.html" class="btn">← Back to Home</a>
-            <a href="cart.html" class="cart-btn" id="cartIcon"><i class="fa-solid fa-cart-shopping"></i> <span
-                    id="cartCount">0</span></a>
-        </div>
-    </header>
+  <header>
+    <a href="index.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+    <nav class="nav-links">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New Laptops</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="user-box">
+      <div class="user-initials" id="userInitials">UL</div>
+      <div class="user-dropdown" id="userDropdown">
+        <a href="account.html">Account Settings</a>
+        <a href="orders.html">My Orders</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New Laptops</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </header>
 
-    <section class="hero">
-        <div class="hero-wrap">
-            <div>
-                <h1>New Laptops</h1>
-                <p>Powerful, brand-new laptops with manufacturer warranty, perfect for work, business, gaming and study.
-                </p>
-                <a href="#shop" class="btn">Browse Laptops</a>
-            </div>
-            <img src="new.png" alt="New Laptops">
-        </div>
-    </section>
+  <section class="page-header">
+    <div class="hero-container">
+      <div class="hero-text">
+        <h1>Brand New Laptops</h1>
+        <p>Professionally tested laptops ready for work, school & business.</p>
+      </div>
+      <div class="hero-image">
+        <img src="new.png" alt="Refurbished Laptops">
+      </div>
+    </div>
+  </section>
 
-    <section class="section" id="shop">
+  <section class="section" id="shop">
         <div class="container">
             <h2 class="section-title">Available New Laptops</h2>
             <div class="products">
-                <!-- Example products -->
+
                 <div class="product">
                     <div class="product-img"><img src="images/l1.png"></div>
                     <h3>HP Pavilion i5</h3>
-                    <div class="price">R13,999</div><button class="add-cart"
-                        onclick="addToCart('HP Pavilion i5','HP001',13999,'images/l1.png')">Add to Cart</button>
+                    <div class="price">R13,999</div>
+                    <button class="add-cart" onclick="addToCart('HP Pavilion i5','HP001',13999,'images/l1.png')">Add to
+                        Cart</button>
                 </div>
+
+                
                 <div class="product">
                     <div class="product-img"><img src="images/l2.png"></div>
                     <h3>Dell Inspiron i7</h3>
@@ -362,81 +429,88 @@
                     <div class="price">R12,999</div><button class="add-cart"
                         onclick="addToCart('Huawei MateBook D15','HU001',12999,'images/l8.png')">Add to Cart</button>
                 </div>
-                <div class="product">
-                    <div class="product-img"><img src="images/l9.png"></div>
-                    <h3>Samsung Galaxy Book</h3>
-                    <div class="price">R15,999</div><button class="add-cart"
-                        onclick="addToCart('Samsung Galaxy Book','SA001',15999,'images/l9.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="images/l10.png"></div>
-                    <h3>HP Victus Gaming</h3>
-                    <div class="price">R19,999</div><button class="add-cart"
-                        onclick="addToCart('HP Victus Gaming','HP002',19999,'images/l10.png')">Add to Cart</button>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <section class="cta">
-        <h2>Need Help Choosing a Laptop?</h2>
-        <p>Our technicians will guide you to the perfect device.</p>
-        <a href="contact.html">Contact SATECH</a>
-    </section>
+  <div id="cartPopup" class="cart-popup">Added to cart</div>
 
-    <footer>
-        <div class="footer-wrap">
-            <div>
-                <h4>SATECH ENTERPRISE</h4>
-                <p>Premium gadgets, laptops & professional repairs.</p>
-            </div>
-            <div>
-                <h4>Shop</h4>
-                <p><a href="refurbished-laptops.html">Refurbished Laptops</a></p>
-                <p><a href="new-laptops.html">New Laptops</a></p>
-                <p><a href="#">iPhones</a></p>
-            </div>
-            <div>
-                <h4>Support</h4>
-                <p>Repairs & Diagnostics</p>
-                <p>Warranty & Returns</p>
-            </div>
-            <div>
-                <h4>Powered By</h4>
-                <p>CMSTUDIO</p>
-            </div>
-        </div>
-    </footer>
+  <script>
+    // Supabase client
+    const supabaseClient = supabase.createClient(
+      "https://nzuwmiyduragtqyaetfr.supabase.co",
+      "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+    );
 
-    <!-- POPUP -->
-    <div id="cartPopup" class="cart-popup">Added to cart!</div>
+    // Check user login and get initials
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
 
-    <script>
-        function addToCart(name, code, price, img) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existing = cart.find(item => item.code === code);
-            if (existing) { existing.qty += 1; } else { cart.push({ name, code, price, img, qty: 1 }); }
-            localStorage.setItem('cart', JSON.stringify(cart));
+      const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("full_names,surname")
+        .eq("id", user.id)
+        .single();
 
-            // update cart count
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+      if (profile) {
+        const initials = profile.full_names[0] + profile.surname[0];
+        document.getElementById('userInitials').textContent = initials.toUpperCase();
+      }
+    }
 
-            // show popup
-            const popup = document.getElementById('cartPopup');
-            popup.textContent = name + ' added to cart!';
-            popup.classList.add('show');
-            setTimeout(() => { popup.classList.remove('show'); }, 2000);
+    loadUser();
 
-            // animate cart icon
-            const cartIcon = document.getElementById('cartIcon');
-            cartIcon.classList.add('animate');
-            setTimeout(() => { cartIcon.classList.remove('animate'); }, 500);
-        }
+    // Hamburger toggle
+    function toggleNav() {
+      const hamburger = document.querySelector('.hamburger');
+      const mobileNav = document.getElementById('mobileNav');
 
-        // init cart count
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        document.getElementById('cartCount').textContent = savedCart.reduce((sum, item) => sum + item.qty, 0);
-    </script>
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('show');
+    }
+
+    // Close menu when a mobile link is clicked
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.hamburger').classList.remove('active');
+        document.getElementById('mobileNav').classList.remove('show');
+      });
+    });
+
+    // User dropdown
+    document.getElementById('userInitials').addEventListener('click', () => {
+      const dd = document.getElementById('userDropdown');
+      dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener('click', async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    // Cart logic
+    function addToCart(name, code, price, img) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let item = cart.find(p => p.code === code);
+      if (item) item.qty++;
+      else cart.push({ name, code, price, img, qty: 1 });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      showPopup(`${name} added to cart`);
+    }
+
+    function showPopup(message) {
+      const popup = document.getElementById('cartPopup');
+      popup.textContent = message;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 2000);
+    }
+  </script>
 
 </body>
 
