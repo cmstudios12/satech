@@ -2,60 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Repairs | SATECH ENTERPRISE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repairs | SATECH ENTERPRISE</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --navy:#0b1f3b;
-  --blue:#1f4fd8;
-  --light:#f6f8fc;
-  --text:#222;
-  --radius:14px;
+  --navy:#0b1c2d;
+  --blue:#1e5eff;
+  --light:#f8f9fa;
+  --white:#fff;
+  --muted:#f4f6f8;
+  --radius:12px;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-  font-family:Segoe UI, Arial, sans-serif;
-  background:#fff;
-  color:var(--text);
-  line-height:1.6;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:var(--light);color:#111;line-height:1.6}
 a{text-decoration:none;color:inherit}
 
-/* NAV */
+/* HEADER */
 header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-}
-
-.nav{
-  max-width:1200px;
-  margin:auto;
-  padding:1rem 1.5rem;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  padding:1rem 2rem;
+  background:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  position:sticky;
+  top:0;
+  z-index:999;
 }
 
-.logo{height:40px}
+.logo img{height:46px}
 
-.back-btn{
+.nav-links{display:flex;gap:1.1rem}
+.nav-links a{
+  font-weight:500;
+  color:var(--navy);
+  position:relative;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--blue);
+  transition:.3s;
+}
+.nav-links a:hover::after{width:100%}
+
+/* USER */
+.user-box{display:flex;align-items:center;gap:1rem;position:relative}
+.user-initials{
+  width:42px;height:42px;
   background:var(--blue);
   color:#fff;
-  padding:.7rem 1.4rem;
-  border-radius:50px;
-  font-weight:600;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  cursor:pointer;
 }
+.user-dropdown{
+  position:absolute;
+  top:120%;
+  right:0;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  display:none;
+  flex-direction:column;
+}
+.user-dropdown a{
+  padding:.7rem 1.2rem;
+}
+.user-dropdown a:hover{background:var(--muted)}
+
+/* MOBILE NAV */
+.hamburger{display:none;flex-direction:column;width:28px;height:22px;cursor:pointer}
+.hamburger span{height:3px;background:var(--navy);border-radius:3px}
+
+.mobile-nav{
+  position:fixed;
+  top:0;right:-100%;
+  width:70%;height:100vh;
+  background:#fff;
+  box-shadow:-4px 0 25px rgba(0,0,0,.1);
+  padding:3rem 1.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:1.4rem;
+  transition:.3s;
+  z-index:1000;
+}
+.mobile-nav.show{right:0}
 
 /* HERO */
-.hero{
-  background:var(--light);
-  padding:4rem 1.5rem;
+.page-header{
+  background:linear-gradient(135deg,#f8fbff,#eef4ff);
+  padding:3rem 1.5rem;
 }
-
 .hero-wrap{
   max-width:1200px;
   margin:auto;
@@ -64,33 +115,12 @@ header{
   gap:3rem;
   align-items:center;
 }
-
-.hero h1{
-  font-size:3rem;
-  color:var(--navy);
-}
-
-.hero p{
-  margin:1.2rem 0 2rem;
-  max-width:520px;
-  color:#555;
-}
-
-.hero img{
-  width:100%;
-  max-width:460px;
-}
+.hero-wrap h1{font-size:2.6rem;color:var(--navy)}
+.hero-wrap p{margin-top:1rem;color:#555}
+.hero-wrap img{max-width:420px;width:100%}
 
 /* SECTION */
-.section{
-  padding:4rem 1.5rem;
-}
-
-.container{
-  max-width:1200px;
-  margin:auto;
-}
-
+.container{max-width:1200px;margin:auto;padding:4rem 1.5rem}
 .section-title{
   text-align:center;
   font-size:2.2rem;
@@ -98,38 +128,27 @@ header{
   margin-bottom:2.5rem;
 }
 
-/* SERVICES GRID */
+/* SERVICES */
 .services{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:2rem;
 }
-
 .service{
+  background:#fff;
   border:1px solid #e5e7eb;
   border-radius:var(--radius);
-  padding:1.5rem;
-  background:#fff;
+  padding:1.6rem;
   transition:.25s;
 }
-
 .service:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 35px rgba(0,0,0,.08);
+  transform:translateY(-6px);
+  box-shadow:0 16px 40px rgba(0,0,0,.08);
 }
-
-.service h3{
-  font-size:1.1rem;
-  color:var(--navy);
-  margin-bottom:.8rem;
-}
-
-.service p{
-  color:#555;
-  margin-bottom:.8rem;
-}
-
+.service h3{color:var(--navy);margin-bottom:.6rem}
+.service p{color:#555}
 .service .price{
+  margin-top:.8rem;
   font-weight:700;
   color:var(--blue);
 }
@@ -141,26 +160,22 @@ header{
   text-align:center;
   padding:3.5rem 1.5rem;
 }
-
-.cta h2{font-size:2rem}
-
-.cta p{margin:1rem 0 1.8rem}
-
 .cta a{
   background:#fff;
   color:var(--navy);
   padding:.9rem 1.6rem;
   border-radius:50px;
   font-weight:600;
+  display:inline-block;
+  margin-top:1.2rem;
 }
 
 /* FOOTER */
 footer{
   background:#081426;
   color:#fff;
-  padding:3.5rem 1.5rem;
+  padding:3rem 1.5rem;
 }
-
 .footer-wrap{
   max-width:1200px;
   margin:auto;
@@ -168,17 +183,13 @@ footer{
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:2rem;
 }
-
-footer h4{margin-bottom:.8rem}
-footer p{font-size:.9rem;opacity:.85}
+footer p{opacity:.85;font-size:.9rem}
 
 /* MOBILE */
 @media(max-width:850px){
-  .hero-wrap{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-  .hero img{margin:auto}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-wrap{grid-template-columns:1fr;text-align:center}
 }
 </style>
 </head>
@@ -186,102 +197,112 @@ footer p{font-size:.9rem;opacity:.85}
 <body>
 
 <header>
-  <div class="nav">
-    <a href="index.html">
-      <img src="logo.png" class="logo" alt="SATECH ENTERPRISE">
-    </a>
-    <a href="index.html" class="back-btn">← Back to Home</a>
+  <a href="dashboard.html" class="logo"><img src="logo.png"></a>
+
+  <nav class="nav-links">
+    <a href="dashboard.html">Home</a>
+    <a href="ref.html">Refurbished</a>
+    <a href="new.html">New Laptops</a>
+    <a href="acc.html">Accessories</a>
+    <a href="repair.html">Repairs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <div class="user-box">
+    <div class="user-initials" id="userInitials">U</div>
+    <div class="user-dropdown" id="userDropdown">
+      <a href="account.html">Account</a>
+      <a href="orders.html">My Orders</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
   </div>
+
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
 </header>
 
-<section class="hero">
+<div class="mobile-nav" id="mobileNav">
+  <a href="dashboard.html">Home</a>
+  <a href="ref.html">Refurbished</a>
+  <a href="new.html">New Laptops</a>
+  <a href="acc.html">Accessories</a>
+  <a href="repair.html">Repairs</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-header">
   <div class="hero-wrap">
     <div>
-      <h1>Expert Repairs for Devices</h1>
-      <p>
-        Professional laptop & phone repairs, software troubleshooting, diagnostics and performance upgrades. Trusted by businesses & individuals.
-      </p>
+      <h1>Expert Device Repairs</h1>
+      <p>Professional laptop & phone repairs, diagnostics and upgrades you can trust.</p>
     </div>
-    <img src="rep.png" alt="Device Repairs">
+    <img src="rep.png" alt="Repairs">
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <h2 class="section-title">Our Repair Services</h2>
-    <div class="services">
+<section class="container">
+  <h2 class="section-title">Our Repair Services</h2>
 
-      <div class="service">
-        <h3>Laptop Screen Replacement</h3>
-        <p>Broken or cracked screens replaced quickly with high-quality panels.</p>
-        <div class="price">From R1,299</div>
-      </div>
-
-      <div class="service">
-        <h3>Laptop Hardware & Software</h3>
-        <p>Upgrades, virus removal, OS reinstall, and hardware fixes.</p>
-        <div class="price">From R899</div>
-      </div>
-
-      <div class="service">
-        <h3>Phone Screen & Back Cover</h3>
-        <p>Original parts replacement for iPhones & Android devices.</p>
-        <div class="price">From R699</div>
-      </div>
-
-      <div class="service">
-        <h3>Battery Replacement</h3>
-        <p>Fast battery replacement for laptops and smartphones.</p>
-        <div class="price">From R499</div>
-      </div>
-
-      <div class="service">
-        <h3>Software Troubleshooting</h3>
-        <p>Resolve software issues, slow devices, virus removal.</p>
-        <div class="price">From R299</div>
-      </div>
-
-      <div class="service">
-        <h3>Diagnostics & Optimization</h3>
-        <p>Performance checks, speed optimization, and system cleanup.</p>
-        <div class="price">From R199</div>
-      </div>
-
-    </div>
+  <div class="services">
+    <div class="service"><h3>Laptop Screen Replacement</h3><p>High-quality screen replacements.</p><div class="price">From R1,299</div></div>
+    <div class="service"><h3>Hardware & Software Repairs</h3><p>Upgrades, virus removal, OS fixes.</p><div class="price">From R899</div></div>
+    <div class="service"><h3>Phone Screen Repairs</h3><p>iPhone & Android repairs.</p><div class="price">From R699</div></div>
+    <div class="service"><h3>Battery Replacement</h3><p>Fast battery replacements.</p><div class="price">From R499</div></div>
+    <div class="service"><h3>Software Troubleshooting</h3><p>Fix slow & crashing systems.</p><div class="price">From R299</div></div>
+    <div class="service"><h3>Diagnostics & Optimization</h3><p>Performance & health checks.</p><div class="price">From R199</div></div>
   </div>
 </section>
 
 <section class="cta">
-  <h2>Need a Repair? Contact Us Now!</h2>
-  <p>Book your repair and let our experts handle it efficiently.</p>
+  <h2>Need a Repair?</h2>
+  <p>Contact our support team today.</p>
   <a href="contact.html">Contact Support</a>
 </section>
 
 <footer>
   <div class="footer-wrap">
-    <div>
-      <h4>SATECH ENTERPRISE</h4>
-      <p>Gadgets, accessories & repairs you can trust.</p>
-    </div>
-    <div>
-      <h4>Shop</h4>
-      <p>New Laptops</p>
-      <p>Refurbished Laptops</p>
-      <p>iPhones</p>
-      <p>Accessories</p>
-    </div>
-    <div>
-      <h4>Services</h4>
-      <p>Laptop Repairs</p>
-      <p>Phone Repairs</p>
-      <p>Software Troubleshooting</p>
-    </div>
-    <div>
-      <h4>Powered By</h4>
-      <p>CMSTUDIO</p>
-    </div>
+    <div><h4>SATECH ENTERPRISE</h4><p>Reliable gadgets & repairs.</p></div>
+    <div><h4>Services</h4><p>Laptop Repairs<br>Phone Repairs</p></div>
+    <div><h4>Powered By</h4><p>CMSTUDIO</p></div>
   </div>
 </footer>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://nzuwmiyduragtqyaetfr.supabase.co",
+  "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+);
+
+async function loadUser(){
+  const { data:{ user } } = await supabaseClient.auth.getUser();
+  if(!user){ location.href="login.html"; return; }
+
+  const { data } = await supabaseClient
+    .from("profiles")
+    .select("full_names,surname")
+    .eq("id",user.id)
+    .single();
+
+  if(data){
+    document.getElementById("userInitials").textContent =
+      (data.full_names[0]+data.surname[0]).toUpperCase();
+  }
+}
+loadUser();
+
+document.getElementById("userInitials").onclick=()=>{
+  const d=document.getElementById("userDropdown");
+  d.style.display=d.style.display==="flex"?"none":"flex";
+};
+
+document.getElementById("logoutBtn").onclick=async()=>{
+  await supabaseClient.auth.signOut();
+  location.href="login.html";
+};
+
+function toggleNav(){
+  document.getElementById("mobileNav").classList.toggle("show");
+}
+</script>
 
 </body>
 </html>
