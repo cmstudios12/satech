@@ -1,231 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SATECH ENTERPRISE | Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SATECH ENTERPRISE | Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<style>
-:root{
-  --navy:#0b1c2d; --blue:#1e5eff; --light:#fff; --muted:#f4f6f8; --radius:16px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--light);color:#111;line-height:1.6;}
-a{text-decoration:none;color:inherit;}
-img{max-width:100%;display:block;}
-/* HEADER & NAV */
-header{position:sticky;top:0;z-index:1000;background:var(--light);border-bottom:1px solid #e5e7eb;}
-.nav{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:auto;padding:1rem;}
-.brand img.logo{height:48px;max-width:160px;}
-.nav-links{display:flex;align-items:center;gap:1.8rem;}
-.nav-links a{position:relative;padding:.3rem 0;font-weight:500;color:var(--navy);}
-.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:.25s;}
-.nav-links a:hover::after{width:100%;}
+  <style>
+    :root {
+      --navy: #0b1c2d;
+      --blue: #1e5eff;
+      --light: #fff;
+      --muted: #f4f6f8;
+      --radius: 16px;
+    }
 
-/* More dropdown */
-.nav-item{position:relative;}
-.nav-item .dropdown{position:absolute;top:120%;left:0;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.08);padding:.5rem 0;opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s;min-width:180px;z-index:999;}
-.nav-item:hover .dropdown{opacity:1;visibility:visible;transform:translateY(0);}
-.dropdown a{display:block;padding:.5rem 1rem;color:var(--navy);}
-.dropdown a:hover{background:var(--muted);}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* USER PROFILE */
-.nav-actions{display:flex;align-items:center;gap:15px;position:relative;}
-.user-initials{background:var(--blue);color:#fff;font-weight:700;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;position:relative;transition:.3s;}
-.user-initials:hover{transform:scale(1.05);}
-.user-initials .dropdown{right:0;top:120%;}
-.icon-btn{display:flex;align-items:center;justify-content:center;background:var(--navy);color:#fff;width:42px;height:42px;border-radius:50%;font-size:1.1rem;cursor:pointer;position:relative;transition:.3s;}
-.icon-btn:hover{background:var(--blue);}
-.cart-count{position:absolute;top:-6px;right:-6px;background:#fff;color:var(--navy);font-size:.7rem;padding:2px 6px;border-radius:50%;font-weight:600;}
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--light);
+      color: #111;
+      line-height: 1.6;
+    }
 
-/* HAMBURGER */
-.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;}
-.hamburger span{width:25px;height:3px;background:var(--navy);border-radius:10px;}
-.mobile-menu{display:none;flex-direction:column;padding:1rem;background:var(--light);gap:1rem;}
-.mobile-menu a{font-weight:500;}
-.mobile-menu.active{display:flex;}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#f0f4ff,#eef4ff);border-radius:var(--radius);margin:1rem;}
-.hero-inner{max-width:1200px;margin:auto;padding:4rem 1.5rem;display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:center;}
-.hero h1{font-size:3rem;color:var(--navy);}
-.hero p{margin:1rem 0;color:#555;}
-.btn{display:inline-block;padding:.9rem 1.6rem;border-radius:50px;background:var(--blue);color:#fff;font-weight:600;transition:.3s;}
-.btn:hover{transform:scale(1.05);}
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
-/* PRODUCTS */
-section{padding:4rem 1.5rem;}
-.container{max-width:1200px;margin:auto;}
-.section-title{font-size:2rem;margin-bottom:2rem;color:var(--navy);}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
-.product{border:1px solid #e5e7eb;border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;transition:.3s;}
-.product:hover{box-shadow:0 10px 30px rgba(0,0,0,.1);}
-.product-img{background:#f8f9fb;border-radius:12px;padding:1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;}
-.product-img img{max-height:140px;width:auto;transition:transform .25s;}
-.product:hover .product-img img{transform:scale(1.05);}
-.price{font-weight:700;color:var(--blue);margin-bottom:.8rem;}
-.add-cart{border:none;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:10px;cursor:pointer;transition:.3s;}
-.add-cart:hover{background:var(--blue);transform:scale(1.05);}
+    /* HEADER & NAV */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--light);
+      border-bottom: 1px solid #e5e7eb;
+    }
 
-/* SERVICES */
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
-.service{background:var(--muted);padding:2rem;border-radius:var(--radius);transition:.3s;}
-.service:hover{box-shadow:0 10px 30px rgba(0,0,0,.08);}
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
 
-/* CART DRAWER */
-.cart{position:fixed;top:0;right:-100%;width:350px;height:100vh;background:#fff;box-shadow:-10px 0 30px rgba(0,0,0,.1);padding:1.5rem;transition:.3s;display:flex;flex-direction:column;z-index:2000;}
-.cart.active{right:0;}
-.cart-items{flex:1;overflow:auto;}
-.cart-item{display:flex;justify-content:space-between;margin-bottom:1rem;font-size:.9rem;}
-.checkout{margin-top:1rem;background:var(--blue);color:#fff;border:none;padding:1rem;border-radius:12px;font-weight:600;cursor:pointer;transition:.3s;}
-.checkout:hover{transform:scale(1.03);}
+    .brand img.logo {
+      height: 48px;
+      max-width: 160px;
+    }
 
-/* FOOTER */
-footer{background:var(--navy);color:#fff;padding:3rem 1.5rem;}
-footer .container{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;}
-footer a{color:#fff;text-decoration:underline;}
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
 
-/* TOAST */
-.toast{position:fixed;top:1rem;right:1rem;background:#4ade80;color:#fff;padding:1rem 1.5rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15);opacity:0;transform:translateY(-20px);transition:.5s;z-index:9999;}
-.toast.show{opacity:1;transform:translateY(0);}
+    .nav-links a {
+      position: relative;
+      padding: .3rem 0;
+      font-weight: 500;
+      color: var(--navy);
+    }
 
-/* MEDIA */
-@media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;}
-  .nav-links{display:none;}
-  .hamburger{display:flex;}
-}
-</style>
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue);
+      transition: .25s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Dropdown */
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-item .dropdown {
+      position: absolute;
+      top: 120%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+      padding: .5rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: .3s;
+      min-width: 180px;
+      z-index: 999;
+    }
+
+    .nav-item:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown a {
+      display: block;
+      padding: .5rem 1rem;
+      color: var(--navy);
+    }
+
+    .dropdown a:hover {
+      background: var(--muted);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #f0f4ff, #eef4ff);
+      border-radius: var(--radius);
+      margin: 1rem;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 4rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: var(--navy);
+    }
+
+    .hero p {
+      margin: 1rem 0;
+      color: #555;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .9rem 1.6rem;
+      border-radius: 50px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      transition: .3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* PRODUCTS */
+    section {
+      padding: 4rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--navy);
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .product {
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: .3s;
+    }
+
+    .product:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+    }
+
+    .product-img {
+      background: #f8f9fb;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-img img {
+      max-height: 140px;
+      width: auto;
+      transition: transform .25s;
+    }
+
+    .product:hover .product-img img {
+      transform: scale(1.05);
+    }
+
+    .price {
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: .8rem;
+    }
+
+    .add-cart {
+      border: none;
+      background: var(--navy);
+      color: #fff;
+      padding: .7rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .add-cart:hover {
+      background: var(--blue);
+      transform: scale(1.05);
+    }
+
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .service {
+      background: var(--muted);
+      padding: 2rem;
+      border-radius: var(--radius);
+      transition: .3s;
+    }
+
+    .service:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy);
+      color: #fff;
+      padding: 3rem 1.5rem;
+    }
+
+    footer .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      transition: .3s;
+      z-index: 1100;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--navy);
+      border-radius: 10px;
+      transition: .3s;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      padding: 1rem;
+      background: var(--light);
+      gap: 1rem;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-weight: 500;
+    }
+
+    /* MEDIA QUERIES */
+    @media(max-width:900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <div class="nav">
-    <div class="brand"><a href="#"><img src="logo.png" class="logo"/></a></div>
+  <header>
+    <div class="nav">
+      <div class="brand"><a href="#"><img src="logo.png" class="logo" /></a></div>
 
-    <nav class="nav-links" id="navLinks">
+      <!-- Desktop Nav -->
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="ref.html">Refurbished</a>
+        <a href="#">New</a>
+        <a href="#">iPhones</a>
+        <a href="#">Accessories</a>
+        <a href="#">Repairs</a>
+        <div class="nav-item">
+          <a href="#">More <i class="fa-solid fa-chevron-down"></i></a>
+          <div class="dropdown">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Dashboard</a>
+            <a href="#">Orders</a>
+            <a href="settings.html">Account Settings</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hamburger -->
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
       <a href="dashboard.html">Home</a>
       <a href="ref.html">Refurbished</a>
       <a href="#">New</a>
       <a href="#">iPhones</a>
       <a href="#">Accessories</a>
       <a href="#">Repairs</a>
-      <div class="nav-item">
-        <a href="#">More <i class="fa-solid fa-chevron-down"></i></a>
-        <div class="dropdown">
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-          <a href="#">Dashboard</a>
-          <a href="#">Orders</a>
-          <a href="settings.html">Account Settings</a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="nav-actions">
-      <div class="user-initials" id="userInitials">UL
-        <div class="dropdown">
-          <a href="#">Dashboard</a>
-          <a href="#">Orders</a>
-          <a href="#">Account Settings</a>
-          <a href="#" id="logoutBtn">Logout</a>
-        </div>
-      </div>
-
-      <a href="#" class="icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span class="cart-count" id="cartCount">0</span></a>
-
-      <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="settings.html">Account Settings</a>
     </div>
+  </header>
 
-    <div class="mobile-menu" id="mobileMenu"></div>
-  </div>
-</header>
-
-<div class="toast" id="toast"></div>
-
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <h1>Premium Gadgets & Reliable Repairs</h1>
-      <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses and individuals.</p>
-      <a href="#products" class="btn">Shop Now</a>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Premium Gadgets & Reliable Repairs</h1>
+        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
+          and individuals.</p>
+        <a href="#products" class="btn">Shop Now</a>
+      </div>
+      <img src="gadgets.png" />
     </div>
-    <img src="gadgets.png"/>
-  </div>
-</section>
+  </section>
 
-<section id="products" class="container">
-  <h2 class="section-title">Popular Products</h2>
-  <div class="products">
-    <div class="product"><div class="product-img"><img src="hp.png"></div><h3>Refurbished Laptop</h3><div class="price">R6.999,99</div><button class="add-cart" onclick="addToCart('Refurbished Laptop',6999)">Add to Cart</button></div>
-    <div class="product"><div class="product-img"><img src="i13.png"></div><h3>iPhone 13 Pro</h3><div class="price">R10.999,99</div><button class="add-cart" onclick="addToCart('iPhone 13 Pro',12999)">Add to Cart</button></div>
-    <div class="product"><div class="product-img"><img src="smart.png"></div><h3>Smart Watch</h3><div class="price">R999,99</div><button class="add-cart" onclick="addToCart('Smart Watch',1499)">Add to Cart</button></div>
-  </div>
-</section>
+  <section id="products" class="container">
+    <h2 class="section-title">Popular Products</h2>
+    <div class="products">
+      <div class="product">
+        <div class="product-img"><img src="hp.png"></div>
+        <h3>Refurbished Laptop</h3>
+        <div class="price">R6.999,99</div><button class="add-cart">Add to Cart</button>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="i13.png"></div>
+        <h3>iPhone 13 Pro</h3>
+        <div class="price">R10.999,99</div><button class="add-cart">Add to Cart</button>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="smart.png"></div>
+        <h3>Smart Watch</h3>
+        <div class="price">R999,99</div><button class="add-cart">Add to Cart</button>
+      </div>
+    </div>
+  </section>
 
-<section id="services" class="container">
-  <h2 class="section-title">Technical Services</h2>
-  <div class="services">
-    <div class="service">Laptop Software & Hardware Repairs</div>
-    <div class="service">Phone Screen & Back Cover Replacement</div>
-    <div class="service">Diagnostics & Performance Upgrades</div>
-  </div>
-</section>
+  <section id="services" class="container">
+    <h2 class="section-title">Technical Services</h2>
+    <div class="services">
+      <div class="service">Laptop Software & Hardware Repairs</div>
+      <div class="service">Phone Screen & Back Cover Replacement</div>
+      <div class="service">Diagnostics & Performance Upgrades</div>
+    </div>
+  </section>
 
-<section id="contact" class="container">
-  <h2 class="section-title">Contact Us</h2>
-  <p>Email: info@satech.co.za<br>Phone: +27 81 840 1398</p>
-</section>
+  <section id="contact" class="container">
+    <h2 class="section-title">Contact Us</h2>
+    <p>Email: info@satech.co.za<br>Phone: +27 81 840 1398</p>
+  </section>
 
-<footer>
-  <div class="container">
-    <div><h3>SATECH ENTERPRISE</h3><p>Powered by <a href="#">CMSTUDIO</a></p></div>
-    <div><h4>Quick Links</h4><p>Shop • Repairs • Support</p></div>
-    <div><h4>Secure Payments</h4><p>Card • EFT • PayFast (Coming Soon)</p></div>
-  </div>
-</footer>
+  <footer>
+    <div class="container">
+      <div>
+        <h3>SATECH ENTERPRISE</h3>
+        <p>Powered by <a href="#">CMSTUDIO</a></p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <p>Shop • Repairs • Support</p>
+      </div>
+      <div>
+        <h4>Secure Payments</h4>
+        <p>Card • EFT • PayFast (Coming Soon)</p>
+      </div>
+    </div>
+  </footer>
 
-<div class="cart" id="cart">
-  <h2>Your Cart</h2>
-  <div class="cart-items" id="cartItems"></div>
-  <button class="checkout">Proceed to Checkout</button>
-</div>
-
-<script>
-const supabaseClient = supabase.createClient(
-  "https://nzuwmiyduragtqyaetfr.supabase.co",
-  "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
-);
-
-// Check login and show initials + welcome
-async function checkLogin(){
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if(!user) return location.href="login.html";
-  const { data: profile } = await supabaseClient.from("profiles").select("full_names,surname,gender").eq("id",user.id).single();
-  if(profile){
-    const initials = profile.full_names[0]+profile.surname[0];
-    document.getElementById("userInitials").textContent = initials.toUpperCase();
-    const toast = document.getElementById("toast");
-    toast.textContent = `Welcome ${profile.gender==='Male'?'Mr':'Ms'} ${profile.surname}`;
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"),4000);
-  }
-}
-checkLogin();
-
-// Hamburger
-function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('active');}
-
-// Cart
-const cart=[];function toggleCart(){document.getElementById('cart').classList.toggle('active');}
-function addToCart(name,price){cart.push({name,price});document.getElementById('cartCount').innerText=cart.length;renderCart();}
-function renderCart(){const items=document.getElementById('cartItems');items.innerHTML='';cart.forEach(i=>{const div=document.createElement('div');div.className='cart-item';div.innerHTML=`<span>${i.name}</span><span>R${i.price}</span>`;items.appendChild(div);});}
-
-// Logout
-document.getElementById("logoutBtn").addEventListener("click", async ()=>{await supabaseClient.auth.signOut();location.href="login.html";});
-</script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+  </script>
 
 </body>
+
 </html>
