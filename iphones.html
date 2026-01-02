@@ -2,349 +2,382 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>iPhones | SATECH ENTERPRISE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iPhones | SATECH ENTERPRISE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        :root {
-            --navy: #0b1f3b;
-            --blue: #1f4fd8;
-            --light: #f6f8fc;
-            --text: #222;
-            --radius: 14px;
-        }
+  <style>
+    :root {
+      --navy: #0b1c2d;
+      --blue: #1e5eff;
+      --light: #f8f9fa;
+      --white: #fff;
+      --muted: #f4f6f8;
+      --radius: 12px;
+      --transition: .3s;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-        body {
-            font-family: Segoe UI, Arial, sans-serif;
-            background: #fff;
-            color: var(--text);
-            line-height: 1.6
-        }
+    body {
+      background: var(--light);
+      color: #111;
+      line-height: 1.5;
+    }
 
-        a {
-            text-decoration: none;
-            color: inherit
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        /* HEADER */
-        header {
-            background: #fff;
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-            z-index: 1000
-        }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--white);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
 
-        .nav {
-            max-width: 1200px;
-            margin: auto;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center
-        }
+    header .logo img {
+      height: 48px;
+    }
 
-        .logo {
-            height: 40px
-        }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
 
-        .back-btn {
-            background: var(--blue);
-            color: #fff;
-            padding: .7rem 1.4rem;
-            border-radius: 50px;
-            font-weight: 600
-        }
+    .nav-links a {
+      padding: .5rem 0;
+      font-weight: 500;
+      color: var(--navy);
+      position: relative;
+    }
 
-        .cart-btn {
-            color: #000000;
-            padding: .7rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer
-        }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue);
+      transition: .3s;
+    }
 
-        .cart-btn span {
-            background: #fff;
-            color: var(--navy);
-            padding: 2px 6px;
-            border-radius: 50%
-        }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
 
-        /* HERO */
-        .hero {
-            background: var(--light);
-            padding: 4rem 1.5rem
-        }
+    .user-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
 
-        .hero-wrap {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 3rem
-        }
+    .user-initials {
+      width: 42px;
+      height: 42px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
 
-        .hero h1 {
-            font-size: 3rem;
-            color: var(--navy)
-        }
+    .user-dropdown {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: #fff;
+      color: var(--navy);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
 
-        .hero p {
-            margin: 1.2rem 0 2rem;
-            max-width: 520px;
-            color: #555
-        }
+    .user-dropdown a {
+      padding: .7rem 1.2rem;
+      text-decoration: none;
+      color: var(--navy);
+    }
 
-        .hero img {
-            width: 100%;
-            max-width: 460px
-        }
+    .user-dropdown a:hover {
+      background: var(--muted);
+    }
 
-        /* SECTION */
-        .section {
-            padding: 4rem 1.5rem
-        }
+    .page-header {
+      background: linear-gradient(135deg, #f8fbff, #eef4ff);
+      padding: 3rem 1.5rem;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: auto
-        }
+    .hero-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 2.5rem;
+    }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            color: var(--navy);
-            margin-bottom: 2.5rem
-        }
+    .hero-text h1 {
+      font-size: 2.7rem;
+      color: var(--navy);
+    }
 
-        /* PRODUCTS */
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem
-        }
+    .hero-text p {
+      margin-top: 1rem;
+      color: #555;
+      max-width: 520px;
+    }
 
-        .product {
-            border: 1px solid #e5e7eb;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            background: #fff;
-            transition: .25s;
-            display: flex;
-            flex-direction: column
-        }
+    .hero-image img {
+      width: 100%;
+      max-width: 460px;
+    }
 
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, .08)
-        }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 4rem 1.5rem;
+    }
 
-        .product-img {
-            height: 200px;
-            background: #f3f4f8;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem
-        }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
 
-        .product-img img {
-            max-height: 160px
-        }
+    .product {
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: .25s;
+      background: #fff;
+    }
 
-        .product h3 {
-            font-size: 1.05rem;
-            color: var(--navy)
-        }
+    .product:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .06);
+    }
 
-        .price {
-            margin: .6rem 0 1rem;
-            font-weight: 700;
-            color: var(--blue)
-        }
+    .product-img {
+      background: var(--muted);
+      height: 180px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
 
-        .add-cart {
-            width: 100%;
-            padding: .7rem;
-            border: none;
-            border-radius: 8px;
-            background: var(--navy);
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer
-        }
+    .product-img img {
+      max-height: 140px;
+    }
 
-        .add-cart:hover {
-            background: var(--blue)
-        }
+    .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: .6rem 0 1rem;
+    }
 
-        /* CTA */
-        .cta {
-            background: var(--navy);
-            color: #fff;
-            text-align: center;
-            padding: 3.5rem 1.5rem
-        }
+    .add-cart {
+      margin-top: auto;
+      background: var(--navy);
+      color: white;
+      border: none;
+      padding: .85rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      transition: all .3s;
+    }
 
-        .cta h2 {
-            font-size: 2rem
-        }
+    .add-cart:hover {
+      background: var(--blue);
+    }
 
-        .cta p {
-            margin: 1rem 0 1.8rem
-        }
+    .cart-popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--blue);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: .4s;
+    }
 
-        .cta a {
-            background: #fff;
-            color: var(--navy);
-            padding: .9rem 1.6rem;
-            border-radius: 50px;
-            font-weight: 600
-        }
+    .cart-popup.show {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
 
-        /* FOOTER */
-        footer {
-            background: #081426;
-            color: #fff;
-            padding: 3.5rem 1.5rem
-        }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1001;
+      transition: all 0.3s;
+    }
 
-        .footer-wrap {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem
-        }
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: var(--navy);
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
 
-        footer h4 {
-            margin-bottom: .8rem
-        }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translateY(9px);
+    }
 
-        footer p,
-        footer a {
-            font-size: .9rem;
-            opacity: .85
-        }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
 
-        /* CART POPUP */
-        .cart-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--blue);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(20px);
-            z-index: 9999
-        }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-9px);
+    }
 
-        .cart-popup.show {
-            opacity: 1;
-            transform: translateY(0)
-        }
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      padding: 3rem 1.5rem;
+      gap: 1.5rem;
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+    }
 
-        /* CART ICON ANIMATION */
-        .cart-btn.animate {
-            animation: bounce 0.5s
-        }
+    .mobile-nav a {
+      font-size: 1.2rem;
+      color: var(--navy);
+      font-weight: 600;
+      padding: 0.5rem 0;
+    }
 
-        @keyframes bounce {
-            0% {
-                transform: scale(1)
-            }
+    .mobile-nav.show {
+      display: flex;
+      right: 0;
+    }
 
-            50% {
-                transform: scale(1.3)
-            }
+    @media(max-width:800px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
 
-            100% {
-                transform: scale(1)
-            }
-        }
+      .nav-links {
+        display: none;
+      }
 
-        /* MOBILE */
-        @media(max-width:850px) {
-            .hero-wrap {
-                grid-template-columns: 1fr;
-                text-align: center
-            }
-
-            .hero p {
-                margin: auto
-            }
-
-            .hero img {
-                margin: auto
-            }
-
-            .products {
-                grid-template-columns: 1fr
-            }
-        }
-    </style>
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="nav">
-            <a href="index.html"><img src="logo.png" class="logo" alt="SATECH ENTERPRISE"></a>
-            <a href="index.html" class="back-btn">← Back to Home</a>
-            <a href="cart.html" class="cart-btn" id="cartIcon"><i class="fa-solid fa-cart-shopping"></i> <span
-                    id="cartCount">0</span></a>
+  <header>
+    <a href="index.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+    <nav class="nav-links">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New Laptops</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="user-box">
+      <div class="user-initials" id="userInitials">UL</div>
+      <div class="user-dropdown" id="userDropdown">
+        <a href="account.html">Account Settings</a>
+        <a href="orders.html">My Orders</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New Laptops</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="hero-container">
+      <div class="hero-text">
+        <h1>Apple iPhones</h1>
+        <p>Original iPhones, new & used, tested, verified and ready to perform. From iPhone 7 to the latest Pro Max models.</p>
+      </div>
+      <div class="hero-image">
+        <img src="ios.png" alt="iPhones">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shop">
+    <div class="container">
+      <h2 class="section-title">Available iPhones</h2>
+      <div class="products">
+        <div class="product">
+          <div class="product-img"><img src="i7.png"></div>
+          <h3>iPhone 7</h3>
+          <div class="price">R2,999</div>
+          <button class="add-cart" onclick="addToCart('iPhone 7','IP7',2999,'i7.png')">Add to Cart</button>
         </div>
-    </header>
-
-    <section class="hero">
-        <div class="hero-wrap">
-            <div>
-                <h1>Apple iPhones</h1>
-                <p>Original iPhones, new & used, tested, verified and ready to perform. From iPhone 7 to the latest Pro
-                    Max models.</p>
-            </div>
-            <img src="ios.png" alt="iPhones">
+        <div class="product">
+          <div class="product-img"><img src="i8.png"></div>
+          <h3>iPhone 8</h3>
+          <div class="price">R3,499</div>
+          <button class="add-cart" onclick="addToCart('iPhone 8','IP8',3499,'i8.png')">Add to Cart</button>
         </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Available iPhones</h2>
-            <div class="products">
-
-                <!-- Example iPhones -->
-                <div class="product">
-                    <div class="product-img"><img src="i7.png"></div>
-                    <h3>iPhone 7</h3>
-                    <div class="price">R2,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone 7','IP7',2999,'i7.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i8.png"></div>
-                    <h3>iPhone 8</h3>
-                    <div class="price">R3,499</div><button class="add-cart"
-                        onclick="addToCart('iPhone 8','IP8',3499,'i8.png')">Add to Cart</button>
-                </div>
                 <div class="product">
                     <div class="product-img"><img src="ix.png"></div>
                     <h3>iPhone X</h3>
@@ -405,72 +438,75 @@
                     <div class="price">R24,999</div><button class="add-cart"
                         onclick="addToCart('iPhone 17','IPSX',24999,'i17.png')">Add to Cart</button>
                 </div>
+      </div>
+    </div>
+  </section>
 
+  <div id="cartPopup" class="cart-popup">Added to cart</div>
 
-            </div>
-        </div>
-    </section>
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://nzuwmiyduragtqyaetfr.supabase.co",
+      "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+    );
 
-    <section class="cta">
-        <h2>Need Screen Replacement or Repairs?</h2>
-        <p>We fix screens, back covers, batteries & software issues.</p>
-        <a href="contact.html">Book a Repair</a>
-    </section>
+    async function loadUser() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
 
-    <footer>
-        <div class="footer-wrap">
-            <div>
-                <h4>SATECH ENTERPRISE</h4>
-                <p>Premium Apple devices & expert repairs.</p>
-            </div>
-            <div>
-                <h4>Shop</h4>
-                <p><a href="new-laptops.html">New Laptops</a></p>
-                <p><a href="refurbished-laptops.html">Refurbished Laptops</a></p>
-                <p><a href="iphones.html">iPhones</a></p>
-            </div>
-            <div>
-                <h4>Services</h4>
-                <p>Phone Repairs</p>
-                <p>Diagnostics</p>
-            </div>
-            <div>
-                <h4>Powered By</h4>
-                <p>CMSTUDIO</p>
-            </div>
-        </div>
-    </footer>
+      const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("full_names,surname")
+        .eq("id", user.id)
+        .single();
 
-    <!-- POPUP -->
-    <div id="cartPopup" class="cart-popup">Added to cart!</div>
+      if (profile) {
+        const initials = profile.full_names[0] + profile.surname[0];
+        document.getElementById('userInitials').textContent = initials.toUpperCase();
+      }
+    }
 
-    <script>
-        function addToCart(name, code, price, img) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existing = cart.find(item => item.code === code);
-            if (existing) { existing.qty += 1; } else { cart.push({ name, code, price, img, qty: 1 }); }
-            localStorage.setItem('cart', JSON.stringify(cart));
+    loadUser();
 
-            // update cart count
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+    function toggleNav() {
+      const hamburger = document.querySelector('.hamburger');
+      const mobileNav = document.getElementById('mobileNav');
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('show');
+    }
 
-            // show popup
-            const popup = document.getElementById('cartPopup');
-            popup.textContent = name + ' added to cart!';
-            popup.classList.add('show');
-            setTimeout(() => { popup.classList.remove('show'); }, 2000);
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.hamburger').classList.remove('active');
+        document.getElementById('mobileNav').classList.remove('show');
+      });
+    });
 
-            // animate cart icon
-            const cartIcon = document.getElementById('cartIcon');
-            cartIcon.classList.add('animate');
-            setTimeout(() => { cartIcon.classList.remove('animate'); }, 500);
-        }
+    document.getElementById('userInitials').addEventListener('click', () => {
+      const dd = document.getElementById('userDropdown');
+      dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
+    });
 
-        // init cart count
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        document.getElementById('cartCount').textContent = savedCart.reduce((sum, item) => sum + item.qty, 0);
-    </script>
+    document.getElementById("logoutBtn").addEventListener('click', async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    function addToCart(name, code, price, img) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let item = cart.find(p => p.code === code);
+      if (item) item.qty++;
+      else cart.push({ name, code, price, img, qty: 1 });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      const popup = document.getElementById('cartPopup');
+      popup.textContent = `${name} added to cart`;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 2000);
+    }
+  </script>
 
 </body>
-
 </html>
