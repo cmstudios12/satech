@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Refurbished Laptops | SATECH ENTERPRISE</title>
+
+    <!-- FONT AWESOME (PRO ICON LOOK) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <style>
@@ -27,7 +29,6 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--light);
             color: var(--text);
-            line-height: 1.6;
         }
 
         a {
@@ -51,22 +52,50 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 1rem;
         }
 
         .logo {
             height: 46px;
-            object-fit: contain;
         }
 
-        .back-link {
-            background-color: var(--blue);
-            color: white;
-            padding: .7rem 1.4rem;
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            padding: .6rem 1.3rem;
             border-radius: 50px;
             font-weight: 600;
+            font-size: .9rem;
         }
 
-        /* PAGE HEADER */
+        .login-btn {
+            border: 1px solid var(--blue);
+            color: var(--blue);
+        }
+
+        .cart-btn {
+            position: relative;
+            font-size: 1.4rem;
+            color: var(--navy);
+        }
+
+        #cartCount {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+            background: var(--blue);
+            color: white;
+            font-size: .7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: 700;
+        }
+
+        /* HERO */
         .page-header {
             background: linear-gradient(135deg, #f8fbff, #eef4ff);
             padding: 3rem 1.5rem;
@@ -88,23 +117,16 @@
 
         .hero-text p {
             margin-top: 1rem;
-            font-size: 1.05rem;
             color: #555;
             max-width: 520px;
         }
 
-        .hero-image {
-            display: flex;
-            justify-content: center;
-        }
-
         .hero-image img {
             width: 100%;
-            max-width: 480px;
-            object-fit: contain;
+            max-width: 460px;
         }
 
-        /* PRODUCTS GRID */
+        /* PRODUCTS */
         .container {
             max-width: 1200px;
             margin: auto;
@@ -142,77 +164,36 @@
 
         .product-img img {
             max-height: 140px;
-            object-fit: contain;
-        }
-
-        .product h3 {
-            color: var(--navy);
-            margin-bottom: .4rem;
         }
 
         .specs {
             font-size: .9rem;
             color: #555;
-            margin-bottom: .6rem;
         }
 
         .price {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--blue);
-            margin-bottom: 1rem;
+            margin: .6rem 0 1rem;
         }
 
         .add-cart {
             margin-top: auto;
             background: var(--navy);
-            color: #fff;
+            color: white;
             border: none;
-            padding: .8rem;
-            border-radius: 10px;
+            padding: .85rem;
+            border-radius: 12px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
         }
 
-        /* CTA */
-        .cta {
-            background: var(--navy);
-            color: #fff;
-            text-align: center;
-            padding: 3.5rem 1.5rem;
-        }
-
-        .cta h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem
-        }
-
-        .cta a {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: .9rem 1.6rem;
-            border-radius: 50px;
-            background: #fff;
-            color: var(--navy);
-            font-weight: 600;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #0a1628;
-            color: #fff;
-            padding: 2.5rem 1.5rem;
-        }
-
-        footer .container {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-        }
-
-        /* CART POPUP */
+        /* POPUP */
         .cart-popup {
             position: fixed;
             bottom: 20px;
@@ -220,38 +201,16 @@
             background: var(--blue);
             color: white;
             padding: 1rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 14px;
             font-weight: 600;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(20px);
-            z-index: 9999;
+            transition: .4s;
         }
 
         .cart-popup.show {
             opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* CART ICON ANIMATION */
-        .cart-btn.animate {
-            animation: bounce 0.5s;
-        }
-
-        @keyframes bounce {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.3);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            transform: translateY(-10px);
         }
 
         /* MOBILE */
@@ -260,72 +219,64 @@
                 grid-template-columns: 1fr;
                 text-align: center;
             }
-
-            .hero-image {
-                order: -1;
-            }
-
-            .hero-text p {
-                margin: auto;
-            }
-
-            .products {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
     <header>
         <div class="nav">
-            <a href="index.html">
-                <img src="logo.png" alt="SATECH ENTERPRISE Logo" class="logo">
-            </a>
-            <a href="index.html" class="back-link">← Back to Home</a>
-            <a href="cart.html" class="cart-btn" id="cartIcon">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cartCount">0</span>
-            </a>
+            <img src="logo.png" class="logo">
+
+            <div class="nav-right">
+                <a href="login.html" class="nav-btn login-btn">
+                    <i class="fa-solid fa-user-lock"></i> Login
+                </a>
+
+                <a href="cart.html" class="cart-btn" id="cartIcon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cartCount">0</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- HERO -->
     <section class="page-header">
         <div class="hero-container">
             <div class="hero-text">
                 <h1>Refurbished Laptops</h1>
-                <p>High-performance refurbished laptops, professionally tested and ready for work, school, and business use.</p>
+                <p>Professionally tested laptops ready for work, school & business.</p>
             </div>
             <div class="hero-image">
-                <img src="toplap.png" alt="Refurbished Laptops">
+                <img src="toplap.png">
             </div>
         </div>
     </section>
 
-    <!-- PRODUCTS -->
     <section class="container">
         <div class="products">
 
             <div class="product">
-                <div class="product-img">
-                    <img src="Dell_Latitude_5400.png" alt="Dell Latitude">
-                </div>
+                <div class="product-img"><img src="Dell_Latitude_5400.png"></div>
                 <h3>Dell Latitude 5400</h3>
-                <div class="specs">Intel i5 • 8GB RAM • 256GB SSD</div>
+                <div class="specs">Intel i5 • 8GB • 256GB SSD</div>
                 <div class="price">R6,499</div>
-                <button class="add-cart" onclick="addToCart('Dell Latitude 5400','DL5400',6499,'Dell_Latitude_5400.png')">Add to Cart</button>
+                <button class="add-cart"
+                    onclick="addToCart('Dell Latitude 5400','DL5400',6499,'Dell_Latitude_5400.png')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
             </div>
 
-            <!-- Product 2 -->
             <div class="product">
-                <div class="product-img"><img src="HP_ProBook_450_G6.png" alt="HP ProBook"></div>
+                <div class="product-img"><img src="HP_ProBook_450_G6.png"></div>
                 <h3>HP ProBook 450 G6</h3>
-                <div class="specs">Intel i5 • 8GB RAM • 512GB SSD</div>
+                <div class="specs">Intel i5 • 8GB • 512GB SSD</div>
                 <div class="price">R6,999</div>
-                <button class="add-cart" onclick="addToCart('HP ProBook 450 G6','HP450G6',6999,'HP_ProBook_450_G6.png')">Add to Cart</button>
+                <button class="add-cart"
+                    onclick="addToCart('HP ProBook 450 G6','HP450G6',6999,'HP_ProBook_450_G6.png')">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
             </div>
 
             <!-- Product 3 -->
@@ -334,7 +285,8 @@
                 <h3>Lenovo ThinkPad T480</h3>
                 <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
                 <div class="price">R8,499</div>
-                <button class="add-cart" onclick="addToCart('Lenovo ThinkPad T480','LTP480',8499,'Lenovo-T480.png')">Add to Cart</button>
+                <button class="add-cart" onclick="addToCart('Lenovo ThinkPad T480','LTP480',8499,'Lenovo-T480.png')">Add
+                    to Cart</button>
             </div>
 
             <!-- Product 4 -->
@@ -343,7 +295,8 @@
                 <h3>Dell Inspiron 15</h3>
                 <div class="specs">Intel i5 • 8GB RAM • 1TB HDD</div>
                 <div class="price">R5,999</div>
-                <button class="add-cart" onclick="addToCart('Dell Inspiron 15','DI15',5999,'Dell_Inspiron_15.png')">Add to Cart</button>
+                <button class="add-cart" onclick="addToCart('Dell Inspiron 15','DI15',5999,'Dell_Inspiron_15.png')">Add
+                    to Cart</button>
             </div>
 
             <!-- Product 5 -->
@@ -352,7 +305,9 @@
                 <h3>HP EliteBook 840 G5</h3>
                 <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
                 <div class="price">R8,999</div>
-                <button class="add-cart" onclick="addToCart('HP EliteBook 840 G5','HE840G5',8999,'HP_EliteBook_840_G5.png')">Add to Cart</button>
+                <button class="add-cart"
+                    onclick="addToCart('HP EliteBook 840 G5','HE840G5',8999,'HP_EliteBook_840_G5.png')">Add to
+                    Cart</button>
             </div>
 
             <!-- Product 6 -->
@@ -361,7 +316,8 @@
                 <h3>Lenovo Yoga 370</h3>
                 <div class="specs">Intel i5 • 8GB RAM • 256GB SSD</div>
                 <div class="price">R7,299</div>
-                <button class="add-cart" onclick="addToCart('Lenovo Yoga 370','LY370',7299,'Lenovo_Yoga_370.png')">Add to Cart</button>
+                <button class="add-cart" onclick="addToCart('Lenovo Yoga 370','LY370',7299,'Lenovo_Yoga_370.png')">Add
+                    to Cart</button>
             </div>
 
             <!-- Product 7 -->
@@ -370,7 +326,8 @@
                 <h3>Dell XPS 13</h3>
                 <div class="specs">Intel i7 • 16GB RAM • 1TB SSD</div>
                 <div class="price">R12,499</div>
-                <button class="add-cart" onclick="addToCart('Dell XPS 13','DXPS13',12499,'Dell_XPS_13.png')">Add to Cart</button>
+                <button class="add-cart" onclick="addToCart('Dell XPS 13','DXPS13',12499,'Dell_XPS_13.png')">Add to
+                    Cart</button>
             </div>
 
             <!-- Product 8 -->
@@ -379,75 +336,53 @@
                 <h3>HP Pavilion 14</h3>
                 <div class="specs">Intel i5 • 8GB RAM • 512GB SSD</div>
                 <div class="price">R7,999</div>
-                <button class="add-cart" onclick="addToCart('HP Pavilion 14','HP14',7999,'HP_Pavilion_14.png')">Add to Cart</button>
+                <button class="add-cart" onclick="addToCart('HP Pavilion 14','HP14',7999,'HP_Pavilion_14.png')">Add to
+                    Cart</button>
             </div>
 
-        </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta">
-        <h2>Need Help Choosing a Laptop?</h2>
-        <p>Our technicians will guide you to the perfect device.</p>
-        <a href="contact.html">Contact SATECH</a>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div>
-                <h3>SATECH ENTERPRISE</h3>
-                <p>Trusted refurbished tech • Powered by CMSTUDIO</p>
-            </div>
-            <div>
-                <h4>Support</h4>
-                <p>Repairs • Warranty • Returns</p>
-            </div>
-            <div>
-                <h4>Payments</h4>
-                <p>EFT • Card • PayFast (Coming Soon)</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- POPUP -->
-    <div id="cartPopup" class="cart-popup">Added to cart!</div>
+    <div id="cartPopup" class="cart-popup">Added to cart</div>
 
     <script>
-        function addToCart(name, code, price, img) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existing = cart.find(item => item.code === code);
-            if (existing) {
-                existing.qty += 1;
-            } else {
-                cart.push({ name, code, price, img, qty: 1 });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Update cart count
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-
-            // Show popup
-            const popup = document.getElementById('cartPopup');
-            popup.textContent = name + ' added to cart!';
-            popup.classList.add('show');
-            setTimeout(() => {
-                popup.classList.remove('show');
-            }, 2000);
-
-            // Animate cart icon
-            const cartIcon = document.getElementById('cartIcon');
-            cartIcon.classList.add('animate');
-            setTimeout(() => {
-                cartIcon.classList.remove('animate');
-            }, 500);
+        function isLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
         }
 
-        // Initialize cart count on load
-        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        document.getElementById('cartCount').textContent = savedCart.reduce((sum, item) => sum + item.qty, 0);
+        function addToCart(name, code, price, img) {
+
+            if (!isLoggedIn()) {
+                localStorage.setItem('redirectAfterLogin', window.location.href);
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let item = cart.find(p => p.code === code);
+
+            if (item) item.qty++;
+            else cart.push({ name, code, price, img, qty: 1 });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            const popup = document.getElementById('cartPopup');
+            popup.textContent = `${name} added to cart`;
+            popup.classList.add('show');
+
+            setTimeout(() => popup.classList.remove('show'), 2000);
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.getElementById('cartCount').textContent =
+                cart.reduce((sum, i) => sum + i.qty, 0);
+        }
+
+        updateCartCount();
     </script>
+
 </body>
 
 </html>
