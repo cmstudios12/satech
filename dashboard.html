@@ -40,7 +40,7 @@
       display: block;
     }
 
-    /* HEADER & NAV */
+    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -51,8 +51,8 @@
 
     .nav {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       max-width: 1200px;
       margin: auto;
       padding: 1rem;
@@ -63,6 +63,7 @@
       max-width: 160px;
     }
 
+    /* Desktop nav */
     .nav-links {
       display: flex;
       align-items: center;
@@ -91,7 +92,7 @@
       width: 100%;
     }
 
-    /* Dropdowns */
+    /* dropdown */
     .nav-item {
       position: relative;
     }
@@ -129,7 +130,7 @@
       background: var(--muted);
     }
 
-    /* USER PROFILE */
+    /* USER */
     .nav-actions {
       display: flex;
       align-items: center;
@@ -208,7 +209,7 @@
     .hamburger {
       display: none;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       cursor: pointer;
       z-index: 1100;
     }
@@ -233,6 +234,7 @@
       transform: rotate(-45deg) translate(6px, -6px);
     }
 
+    /* MOBILE MENU */
     .mobile-menu {
       display: none;
       flex-direction: column;
@@ -244,7 +246,14 @@
       left: 0;
       width: 100%;
       border-top: 1px solid #e5e7eb;
-      z-index: 1000;
+      transition: max-height 0.4s ease;
+      overflow: hidden;
+      max-height: 0;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+      max-height: 500px;
     }
 
     .mobile-menu a {
@@ -252,8 +261,15 @@
       color: var(--navy);
     }
 
-    .mobile-menu.active {
-      display: flex;
+    /* MEDIA */
+    @media(max-width:900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
     }
 
     /* HERO */
@@ -374,7 +390,7 @@
       transform: scale(1.05);
     }
 
-    /* CART DRAWER */
+    /* CART */
     .cart {
       position: fixed;
       top: 0;
@@ -460,20 +476,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-
-    @media(max-width:900px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
-    }
   </style>
 </head>
 
@@ -481,9 +483,9 @@
 
   <header>
     <div class="nav">
-      <div class="brand"><a href="#"><img src="logo.png" class="logo" /></a></div>
+      <div class="brand"><a href="#"><img src="logo.png" class="logo"></a></div>
 
-      <!-- Desktop Nav -->
+      <!-- Desktop nav -->
       <nav class="nav-links" id="navLinks">
         <a href="dashboard.html">Home</a>
         <a href="ref.html">Refurbished</a>
@@ -499,7 +501,8 @@
             <a href="#">Dashboard</a>
             <a href="#">Orders</a>
             <a href="settings.html">Account Settings</a>
-            <a href="index.html" style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
+            <a href="index.html"
+              style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
           </div>
         </div>
       </nav>
@@ -509,11 +512,8 @@
         <div class="user-initials" id="userInitials">UL
           <div class="dropdown"></div>
         </div>
-
-        <a href="#" class="icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i>
-          <span class="cart-count" id="cartCount">0</span>
-        </a>
-
+        <a href="#" class="icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span
+            class="cart-count" id="cartCount">0</span></a>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       </div>
 
@@ -529,10 +529,11 @@
     <div class="hero-inner">
       <div>
         <h1>Premium Gadgets & Reliable Repairs</h1>
-        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses and individuals.</p>
+        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
+          and individuals.</p>
         <a href="#products" class="btn">Shop Now</a>
       </div>
-      <img src="gadgets.png" />
+      <img src="gadgets.png">
     </div>
   </section>
 
@@ -603,6 +604,7 @@
   </div>
 
   <script>
+    // Supabase & login
     const supabaseClient = supabase.createClient(
       "https://nzuwmiyduragtqyaetfr.supabase.co",
       "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
@@ -621,15 +623,14 @@
         const dropdown = document.createElement('div');
         dropdown.className = 'dropdown';
         dropdown.innerHTML = `
-          <a href="dashboard.html">Dashboard</a>
-          <a href="#">Orders</a>
-          <a href="settings.html">Account Settings</a>
-          <a href="#" id="logoutBtn">Logout</a>
-        `;
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#">Orders</a>
+      <a href="settings.html">Account Settings</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    `;
         userElem.appendChild(dropdown);
 
         userElem.addEventListener('click', () => userElem.classList.toggle('active'));
-
         document.getElementById("logoutBtn").addEventListener("click", async () => {
           await supabaseClient.auth.signOut();
           location.href = "login.html";
@@ -660,33 +661,32 @@
         mobileMenu.appendChild(a);
       });
     }
+
     checkLogin();
 
-    // Hamburger toggle
+    // Hamburger
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     hamburger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
     });
 
     // Close mobile menu on link click
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+    mobileMenu.addEventListener('click', e => {
+      if (e.target.tagName === 'A') {
         mobileMenu.classList.remove('active');
         hamburger.classList.remove('active');
-      });
-    });
-
-    // Close user dropdown if clicking outside
-    const userInitials = document.getElementById('userInitials');
-    document.addEventListener('click', e => {
-      if (!userInitials.contains(e.target)) {
-        userInitials.classList.remove('active');
       }
     });
 
-    // Cart logic
+    // Close user dropdown when clicking outside
+    const userInitials = document.getElementById('userInitials');
+    document.addEventListener('click', e => {
+      if (!userInitials.contains(e.target)) userInitials.classList.remove('active');
+    });
+
+    // Cart
     const cart = [];
     function toggleCart() { document.getElementById('cart').classList.toggle('active'); }
     function addToCart(name, price) { cart.push({ name, price }); document.getElementById('cartCount').innerText = cart.length; renderCart(); }
