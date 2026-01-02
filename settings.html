@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Settings | SATECH</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#0b1c2d;
+  --blue:#1e5eff;
+  --light:#f8f9fa;
+  --white:#fff;
+  --muted:#f4f6f8;
+  --radius:12px;
+  --transition:.3s;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
+body{background:var(--light);color:#111;line-height:1.5;}
+a{text-decoration:none;color:inherit;}
+
+/* HEADER */
+header{
+  display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:var(--white);box-shadow:0 4px 10px rgba(0,0,0,.05);position:sticky;top:0;z-index:999;
+}
+header .logo img{height:48px;}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;}
+.hamburger span{width:25px;height:3px;background:var(--navy);border-radius:10px;}
+
+/* NAV LINKS */
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{padding:.5rem 0;position:relative;font-weight:500;color:var(--navy);}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:.3s;}
+.nav-links a:hover::after{width:100%;}
+
+/* USER BOX */
+.user-box{display:flex;align-items:center;gap:1rem;position:relative;}
+.user-initials{width:42px;height:42px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;}
+.user-dropdown{position:absolute;top:120%;right:0;background:#fff;color:var(--navy);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;display:none;flex-direction:column;}
+.user-dropdown a{padding:.7rem 1.2rem;text-decoration:none;color:var(--navy);}
+.user-dropdown a:hover{background:var(--muted);}
+
+/* MAIN CONTENT */
+.main-content{max-width:900px;margin:2rem auto;padding:2rem;background:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.05);}
+.main-content h1{text-align:center;color:var(--navy);margin-bottom:2rem;}
+.field{margin-bottom:1rem;display:flex;flex-direction:column;}
+.field label{margin-bottom:.4rem;font-weight:500;}
+.field input,.field select{padding:.8rem;border-radius:8px;border:1px solid #ccc;font-size:.95rem;}
+.save-btn{padding:.9rem 1rem;background:var(--navy);color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:.5rem;transition:all .3s;}
+.save-btn:hover{background:var(--blue);}
+.loader{border:4px solid #f3f3f3;border-top:4px solid var(--blue);border-radius:50%;width:18px;height:18px;animation:spin 1s linear infinite;}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+/* TOAST */
+.toast{position:fixed;top:1rem;right:1rem;background:#4ade80;color:#fff;padding:1rem 1.5rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15);opacity:0;transform:translateY(-20px);transition:.5s;z-index:9999;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+  <nav class="nav-links">
+    <a href="dashboard.html">Home</a>
+    <a href="ref.html">Refurbished Laptops</a>
+    <a href="new.html">New Laptops</a>
+    <a href="iphones.html">iPhones</a>
+    <a href="acc.html">Accessories</a>
+    <a href="repair.html">Repairs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="user-box">
+    <div class="user-initials" id="userInitials">UL</div>
+    <div class="user-dropdown" id="userDropdown">
+      <a href="index.html" id="logoutBtn">Logout</a>
+    </div>
+  </div>
+  <div class="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<main class="main-content">
+  <h1 id="welcomeMsg">Welcome User</h1>
+  <form id="accountForm">
+    <div class="field"><label>Full Names</label><input type="text" id="fullNames" required></div>
+    <div class="field"><label>Surname</label><input type="text" id="surname" required></div>
+    <div class="field"><label>Email</label><input type="email" id="email" readonly></div>
+    <div class="field"><label>Phone Number</label><input type="text" id="phone" required placeholder="06xxxxxxxx"></div>
+    <div class="field"><label>Gender</label>
+      <select id="gender" required><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
+    </div>
+    <h3>Change Password</h3>
+    <div class="field"><label>Current Password</label><input type="password" id="currentPassword"></div>
+    <div class="field"><label>New Password</label><input type="password" id="newPassword" placeholder="8+ chars, upper, lower, number, symbol"></div>
+    <div class="field"><label>Confirm New Password</label><input type="password" id="confirmPassword"></div>
+    <button type="submit" class="save-btn">
+      <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i> Save Changes</span>
+      <span class="loader hidden"></span>
+    </button>
+  </form>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const supabaseClient = supabase.createClient(
+  "https://nzuwmiyduragtqyaetfr.supabase.co",
+  "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+);
+
+// Toggle user dropdown
+document.getElementById('userInitials').addEventListener('click',()=>{
+  const dd=document.getElementById('userDropdown');
+  dd.style.display=dd.style.display==='flex'?'none':'flex';
+});
+
+// Mobile nav toggle
+function toggleNav(){
+  const nav=document.querySelector('.nav-links');
+  nav.style.display=nav.style.display==='flex'?'none':'flex';
+}
+
+// Toast
+function showToast(msg, success=true){
+  const toast=document.getElementById('toast');
+  toast.textContent=msg;
+  toast.style.background=success?"#4ade80":"#f87171";
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),4000);
+}
+
+// Load user profile
+async function loadUser(){
+  const { data:{user} } = await supabaseClient.auth.getUser();
+  if(!user) return location.href="login.html";
+  const { data: profile } = await supabaseClient.from("profiles").select("*").eq("id",user.id).single();
+  if(profile){
+    document.getElementById("fullNames").value=profile.full_names;
+    document.getElementById("surname").value=profile.surname;
+    document.getElementById("email").value=profile.email;
+    document.getElementById("phone").value=profile.phone_number;
+    document.getElementById("gender").value=profile.gender;
+    const salutation=profile.gender==="Male"?"Mr":"Ms";
+    document.getElementById("welcomeMsg").textContent=`Welcome ${salutation} ${profile.surname}`;
+    document.getElementById("userInitials").textContent=profile.full_names[0]+profile.surname[0];
+  }
+}
+loadUser();
+
+// Save changes
+document.getElementById('accountForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const btn=document.querySelector('.save-btn');
+  const loader=btn.querySelector('.loader'); const text=btn.querySelector('.btn-text');
+  loader.classList.remove('hidden'); text.classList.add('hidden');
+
+  const full_names=document.getElementById("fullNames").value.trim();
+  const surname=document.getElementById("surname").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const gender=document.getElementById("gender").value;
+
+  if(!/^(06|07|08)\d{8}$/.test(phone)){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Phone must start with 06/07/08",false);}
+  
+  const { data:{user} }=await supabaseClient.auth.getUser();
+  const { error } = await supabaseClient.from("profiles").upsert({id:user.id,full_names,surname,phone_number:phone,gender});
+  if(error){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast(error.message,false);}
+
+  const newPassword=document.getElementById("newPassword").value.trim();
+  const confirmPassword=document.getElementById("confirmPassword").value.trim();
+  if(newPassword){
+    if(newPassword!==confirmPassword){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Passwords do not match",false);}
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(newPassword)){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Password must be strong",false);}
+    const { error: passError } = await supabaseClient.auth.updateUser({password:newPassword});
+    if(passError){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast(passError.message,false);}
+  }
+
+  loader.classList.add('hidden'); text.classList.remove('hidden');
+  showToast("Profile updated successfully!");
+});
+
+// Logout
+document.getElementById("logoutBtn").addEventListener('click', async ()=>{
+  await supabaseClient.auth.signOut(); location.href="login.html";
+});
+</script>
+
+</body>
+</html>

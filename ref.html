@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refurbished Laptops | SATECH ENTERPRISE</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{
+  --navy:#0b1c2d;
+  --blue:#1e5eff;
+  --light:#f8f9fa;
+  --white:#fff;
+  --muted:#f4f6f8;
+  --radius:12px;
+  --transition:.3s;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
+body{background:var(--light);color:#111;line-height:1.5;}
+a{text-decoration:none;color:inherit;}
+
+/* HEADER */
+header{
+  display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:var(--white);box-shadow:0 4px 10px rgba(0,0,0,.05);position:sticky;top:0;z-index:999;
+}
+header .logo img{height:48px;}
+.nav-links{display:flex;gap:1rem;}
+.nav-links a{padding:.5rem 0;font-weight:500;color:var(--navy);position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:.3s;}
+.nav-links a:hover::after{width:100%;}
+
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;}
+.hamburger span{width:25px;height:3px;background:var(--navy);border-radius:10px;}
+
+.user-box{display:flex;align-items:center;gap:1rem;position:relative;}
+.user-initials{width:42px;height:42px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;}
+.user-dropdown{position:absolute;top:120%;right:0;background:#fff;color:var(--navy);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;display:none;flex-direction:column;}
+.user-dropdown a{padding:.7rem 1.2rem;text-decoration:none;color:var(--navy);}
+.user-dropdown a:hover{background:var(--muted);}
+
+/* HERO */
+.page-header{background:linear-gradient(135deg,#f8fbff,#eef4ff);padding:3rem 1.5rem;}
+.hero-container{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:2.5rem;}
+.hero-text h1{font-size:2.7rem;color:var(--navy);}
+.hero-text p{margin-top:1rem;color:#555;max-width:520px;}
+.hero-image img{width:100%;max-width:460px;}
+
+/* PRODUCTS */
+.container{max-width:1200px;margin:auto;padding:4rem 1.5rem;}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
+.product{border:1px solid #e5e7eb;border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;transition:.25s;background:#fff;}
+.product:hover{box-shadow:0 20px 40px rgba(0,0,0,.06);}
+.product-img{background:var(--muted);height:180px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+.product-img img{max-height:140px;}
+.specs{font-size:.9rem;color:#555;}
+.price{font-size:1.1rem;font-weight:700;color:var(--blue);margin:.6rem 0 1rem;}
+.add-cart{margin-top:auto;background:var(--navy);color:white;border:none;padding:.85rem;border-radius:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .3s;}
+.add-cart:hover{background:var(--blue);}
+
+/* POPUP */
+.cart-popup{position:fixed;bottom:20px;right:20px;background:var(--blue);color:white;padding:1rem 1.5rem;border-radius:14px;font-weight:600;opacity:0;pointer-events:none;transition:.4s;}
+.cart-popup.show{opacity:1;transform:translateY(-10px);}
+
+/* MOBILE */
+@media(max-width:800px){
+  .hero-container{grid-template-columns:1fr;text-align:center;}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+  <nav class="nav-links">
+    <a href="dashboard.html">Home</a>
+    <a href="ref.html">Refurbished</a>
+    <a href="new.html">New Laptops</a>
+    <a href="acc.html">Accessories</a>
+    <a href="repair.html">Repairs</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="user-box">
+    <div class="user-initials" id="userInitials">UL</div>
+    <div class="user-dropdown" id="userDropdown">
+      <a href="account.html">Account Settings</a>
+      <a href="orders.html">My Orders</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
+  </div>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</header>
+
+<section class="page-header">
+  <div class="hero-container">
+    <div class="hero-text">
+      <h1>Refurbished Laptops</h1>
+      <p>Professionally tested laptops ready for work, school & business.</p>
+    </div>
+    <div class="hero-image">
+      <img src="toplap.png" alt="Refurbished Laptops">
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="products">
+
+    <div class="product">
+      <div class="product-img"><img src="Dell_Latitude_5400.png" alt="Dell Latitude 5400"></div>
+      <h3>Dell Latitude 5400</h3>
+      <div class="specs">Intel i5 • 8GB • 256GB SSD</div>
+      <div class="price">R6,499</div>
+      <button class="add-cart" onclick="addToCart('Dell Latitude 5400','DL5400',6499,'Dell_Latitude_5400.png')">
+        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+      </button>
+    </div>
+
+    <div class="product">
+      <div class="product-img"><img src="HP_ProBook_450_G6.png" alt="HP ProBook 450 G6"></div>
+      <h3>HP ProBook 450 G6</h3>
+      <div class="specs">Intel i5 • 8GB • 512GB SSD</div>
+      <div class="price">R6,999</div>
+      <button class="add-cart" onclick="addToCart('HP ProBook 450 G6','HP450G6',6999,'HP_ProBook_450_G6.png')">
+        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+      </button>
+    </div>
+
+            <!-- Product 3 -->
+            <div class="product">
+                <div class="product-img"><img src="Lenovo-T480.png" alt="Lenovo ThinkPad"></div>
+                <h3>Lenovo ThinkPad T480</h3>
+                <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
+                <div class="price">R8,499</div>
+                <button class="add-cart" onclick="addToCart('Lenovo ThinkPad T480','LTP480',8499,'Lenovo-T480.png')">Add
+                    to Cart</button>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product">
+                <div class="product-img"><img src="Dell_Inspiron_15.png" alt="Dell Inspiron"></div>
+                <h3>Dell Inspiron 15</h3>
+                <div class="specs">Intel i5 • 8GB RAM • 1TB HDD</div>
+                <div class="price">R5,999</div>
+                <button class="add-cart" onclick="addToCart('Dell Inspiron 15','DI15',5999,'Dell_Inspiron_15.png')">Add
+                    to Cart</button>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product">
+                <div class="product-img"><img src="HP_EliteBook_840_G5.png" alt="HP EliteBook"></div>
+                <h3>HP EliteBook 840 G5</h3>
+                <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
+                <div class="price">R8,999</div>
+                <button class="add-cart"
+                    onclick="addToCart('HP EliteBook 840 G5','HE840G5',8999,'HP_EliteBook_840_G5.png')">Add to
+                    Cart</button>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product">
+                <div class="product-img"><img src="Lenovo_Yoga_370.png" alt="Lenovo Yoga"></div>
+                <h3>Lenovo Yoga 370</h3>
+                <div class="specs">Intel i5 • 8GB RAM • 256GB SSD</div>
+                <div class="price">R7,299</div>
+                <button class="add-cart" onclick="addToCart('Lenovo Yoga 370','LY370',7299,'Lenovo_Yoga_370.png')">Add
+                    to Cart</button>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="product">
+                <div class="product-img"><img src="Dell_XPS_13.png" alt="Dell XPS"></div>
+                <h3>Dell XPS 13</h3>
+                <div class="specs">Intel i7 • 16GB RAM • 1TB SSD</div>
+                <div class="price">R12,499</div>
+                <button class="add-cart" onclick="addToCart('Dell XPS 13','DXPS13',12499,'Dell_XPS_13.png')">Add to
+                    Cart</button>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="product">
+                <div class="product-img"><img src="HP_Pavilion_14.png" alt="HP Pavilion"></div>
+                <h3>HP Pavilion 14</h3>
+                <div class="specs">Intel i5 • 8GB RAM • 512GB SSD</div>
+                <div class="price">R7,999</div>
+                <button class="add-cart" onclick="addToCart('HP Pavilion 14','HP14',7999,'HP_Pavilion_14.png')">Add to
+                    Cart</button>
+            </div>
+
+  </div>
+</section>
+
+<div id="cartPopup" class="cart-popup">Added to cart</div>
+
+<script>
+function toggleNav(){
+  const nav=document.querySelector('.nav-links');
+  nav.style.display=nav.style.display==='flex'?'none':'flex';
+}
+document.getElementById('userInitials').addEventListener('click',()=>{
+  const dd=document.getElementById('userDropdown');
+  dd.style.display=dd.style.display==='flex'?'none':'flex';
+});
+
+function isLoggedIn(){return localStorage.getItem('isLoggedIn')==='true';}
+
+function addToCart(name, code, price, img){
+  if(!isLoggedIn()){
+    localStorage.setItem('redirectAfterLogin',window.location.href);
+    window.location.href='login.html';
+    return;
+  }
+  let cart=JSON.parse(localStorage.getItem('cart'))||[];
+  let item=cart.find(p=>p.code===code);
+  if(item)item.qty++;
+  else cart.push({name,code,price,img,qty:1});
+  localStorage.setItem('cart',JSON.stringify(cart));
+  updateCartCount();
+  const popup=document.getElementById('cartPopup');
+  popup.textContent=`${name} added to cart`;
+  popup.classList.add('show');
+  setTimeout(()=>popup.classList.remove('show'),2000);
+}
+
+function updateCartCount(){
+  let cart=JSON.parse(localStorage.getItem('cart'))||[];
+  document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty,0);
+}
+updateCartCount();
+
+document.getElementById("logoutBtn").addEventListener('click',()=>{
+  localStorage.setItem('isLoggedIn','false');
+  window.location.href='login.html';
+});
+</script>
+
+</body>
+</html>
