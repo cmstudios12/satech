@@ -193,73 +193,75 @@
       background: var(--blue);
     }
 
-    .cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: #fff;
-      color: var(--navy);
-      font-size: .7rem;
-      padding: 2px 6px;
-      border-radius: 50%;
-      font-weight: 600;
-    }
 
-    /* HAMBURGER */
+    /* HAMBURGER & MOBILE NAV */
     .hamburger {
       display: none;
       flex-direction: column;
-      gap: 5px;
+      justify-content: space-between;
+      width: 28px;
+      height: 22px;
       cursor: pointer;
-      z-index: 2001; /* FIX */
+      z-index: 1001;
+      transition: all 0.3s;
     }
 
     .hamburger span {
-      width: 26px;
+      display: block;
       height: 3px;
+      width: 100%;
       background: var(--navy);
-      border-radius: 6px;
-      transition: .3s;
+      border-radius: 3px;
+      transition: all 0.3s;
     }
 
     .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
+      transform: rotate(45deg) translateY(9px);
     }
 
-    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
 
     .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
+      transform: rotate(-45deg) translateY(-9px);
     }
-    /* ================= MOBILE MENU (FIXED) ================= */
-    .mobile-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: var(--light);
-      border-top: 1px solid #e5e7eb;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height .4s ease;
-      display: flex;
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
       flex-direction: column;
+      padding: 3rem 1.5rem;
+      gap: 1.5rem;
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
     }
 
-    .mobile-menu a {
-      padding: 1rem;
-      border-bottom: 1px solid #f1f1f1;
-      font-weight: 500;
+    .mobile-nav a {
+      font-size: 1.2rem;
       color: var(--navy);
+      font-weight: 600;
+      padding: 0.5rem 0;
     }
 
-    .mobile-menu.active {
-      max-height: 80vh;
-      /* FIX: smooth open */
+    .mobile-nav.show {
+      display: flex;
+      right: 0;
     }
 
-    /* Media */
-    @media (max-width: 900px) {
+    /* MOBILE RESPONSIVE */
+    @media(max-width:800px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
       .nav-links {
         display: none;
       }
@@ -366,11 +368,6 @@
       transform: scale(1.05);
     }
 
-    .price {
-      font-weight: 700;
-      color: var(--blue);
-      margin-bottom: .8rem;
-    }
 
     .add-cart {
       border: none;
@@ -432,23 +429,23 @@
 
   <header>
     <div class="nav">
-      <div class="brand"><a href="#"><img src="logo.png" class="logo"></a></div>
+      <div class="brand"><a href="dashboard.html"><img src="logo.png" class="logo"></a></div>
 
       <!-- Desktop nav -->
       <nav class="nav-links" id="navLinks">
         <a href="dashboard.html">Home</a>
         <a href="ref.html">Refurbished</a>
-        <a href="#">New</a>
-        <a href="#">iPhones</a>
-        <a href="#">Accessories</a>
-        <a href="#">Repairs</a>
+        <a href="new.html">New</a>
+        <a href="iphones.html">iPhones</a>
+        <a href="acc.html">Accessories</a>
+        <a href="repair.html">Repairs</a>
         <div class="nav-item">
           <a href="#">More <i class="fa-solid fa-chevron-down"></i></a>
           <div class="dropdown">
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
             <a href="#">Dashboard</a>
-            <a href="#">Orders</a>
+            <a href="orders.html">Orders</a>
             <a href="settings.html">Account Settings</a>
             <a href="index.html"
               style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
@@ -461,13 +458,21 @@
         <div class="user-initials" id="userInitials">UL
           <div class="dropdown"></div>
         </div>
-        <a href="cart.html" class="icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i></a>
-        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        <a href="cart.html" class="icon-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+
       </div>
 
-      <!-- Mobile Menu -->
-      <div class="mobile-menu" id="mobileMenu"></div>
-    </div>
+      <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+      <div class="mobile-nav" id="mobileNav">
+        <a href="dashboard.html">Home</a>
+        <a href="ref.html">Refurbished</a>
+        <a href="new.html">New Laptops</a>
+        <a href="acc.html">Accessories</a>
+        <a href="repair.html">Repairs</a>
+        <a href="contact.html">Contact</a>
+      </div>
   </header>
 
   <div class="toast" id="toast"></div>
@@ -491,8 +496,14 @@
     <div class="products">
       <div class="product">
         <div class="product-img"><img src="hp.png"></div>
-        <h3>Refurbished & New Laptop</h3>
+        <h3>Refurbished Laptop</h3>
         <button class="add-cart" onclick="window.location.href='ref.html'">View Laptops</button>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="HP_Pavilion_14.png"></div>
+        <h3>New Laptops</h3>
+        <button class="add-cart" onclick="window.location.href='new.html'">View Phones</button>
+
       </div>
       <div class="product">
         <div class="product-img"><img src="i13.png"></div>
@@ -584,6 +595,23 @@
         setTimeout(() => toast.classList.remove("show"), 4000);
       }
 
+      // Hamburger toggle
+      function toggleNav() {
+        const hamburger = document.querySelector('.hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburger.classList.toggle('active');
+        mobileNav.classList.toggle('show');
+      }
+
+      // Close menu when a mobile link is clicked
+      document.querySelectorAll('.mobile-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.hamburger').classList.remove('active');
+          document.getElementById('mobileNav').classList.remove('show');
+        });
+      });
+
       // Build mobile menu
       const mobileMenu = document.getElementById('mobileMenu');
       const links = [
@@ -605,39 +633,6 @@
     }
 
     checkLogin();
-
-    const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-
-  const links = [
-    { text: 'Home', href: 'dashboard.html' },
-    { text: 'Refurbished', href: 'ref.html' },
-    { text: 'New', href: '#' },
-    { text: 'iPhones', href: '#' },
-    { text: 'Accessories', href: '#' },
-    { text: 'Repairs', href: '#' },
-    { text: 'Contact', href: '#' },
-    { text: 'Logout', href: 'index.html' }
-  ];
-
-  links.forEach(l => {
-    const a = document.createElement('a');
-    a.href = l.href;
-    a.textContent = l.text;
-    mobileMenu.appendChild(a);
-  });
-
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-  });
-
-  mobileMenu.addEventListener('click', e => {
-    if (e.target.tagName === 'A') {
-      hamburger.classList.remove('active');
-      mobileMenu.classList.remove('active');
-    }
-  });
 
     // Close user dropdown when clicking outside
     const userInitials = document.getElementById('userInitials');
