@@ -17,6 +17,7 @@
       --radius:16px;
       --border:#e5e7eb;
       --danger:#e74c3c;
+      --wa:#25D366;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -321,6 +322,185 @@
     }
     .toast.show{ opacity:1; transform:translateY(0); }
 
+    /* ===== WhatsApp Popup + Floating Button ===== */
+    .wa-fab{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:56px;
+      height:56px;
+      border-radius:999px;
+      background:var(--wa);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 14px 30px rgba(0,0,0,.18);
+      z-index:9500;
+      border:none;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .wa-fab:hover{ transform:translateY(-2px) scale(1.02); }
+
+    .wa-popup{
+      position:fixed;
+      right:18px;
+      bottom:86px;
+      width:min(360px, calc(100vw - 36px));
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:0 18px 55px rgba(0,0,0,.18);
+      overflow:hidden;
+      z-index:9501;
+      opacity:0;
+      transform:translateY(10px);
+      pointer-events:none;
+      transition:.22s ease;
+    }
+    .wa-popup.open{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+
+    .wa-head{
+      background:linear-gradient(135deg, #1fbf5b, #0ea25c);
+      color:#fff;
+      padding:14px 14px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .wa-head .left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .wa-badge{
+      width:38px;height:38px;
+      border-radius:12px;
+      background:rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .wa-head h4{
+      font-size:1rem;
+      line-height:1.1;
+      margin:0;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:220px;
+    }
+    .wa-head small{
+      display:block;
+      opacity:.95;
+      font-weight:700;
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:220px;
+    }
+
+    .wa-close{
+      width:36px;height:36px;
+      border-radius:12px;
+      border:none;
+      background:rgba(255,255,255,.18);
+      color:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:.15s;
+      flex:0 0 auto;
+    }
+    .wa-close:hover{ background:rgba(255,255,255,.28); }
+
+    .wa-body{
+      padding:14px;
+    }
+
+    .wa-note{
+      background:var(--muted);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      color:#222;
+      font-weight:800;
+      margin-bottom:10px;
+    }
+
+    .wa-form{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+    }
+    .wa-input{
+      flex:1;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px 12px;
+      font-weight:800;
+      outline:none;
+    }
+    .wa-input:focus{
+      border-color:#b8c7ff;
+      box-shadow:0 0 0 3px rgba(30,94,255,.12);
+    }
+
+    .wa-send{
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      background:var(--navy);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:.18s;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .wa-send:hover{ background:var(--blue); transform:translateY(-1px); }
+
+    .wa-quick{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .wa-quick button{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 10px;
+      font-weight:800;
+      color:var(--navy);
+      cursor:pointer;
+      transition:.15s;
+    }
+    .wa-quick button:hover{
+      background:var(--muted);
+      transform:translateY(-1px);
+    }
+
+    .wa-privacy{
+      margin-top:10px;
+      color:#666;
+      font-size:.85rem;
+      font-weight:700;
+    }
+
     /* Responsive */
     @media (max-width: 900px){
       .nav-links{ display:none; }
@@ -340,6 +520,8 @@
       .product{ padding:1.15rem; min-height:auto; }
       .product-img{ min-height:140px; }
       .add-cart{ width:100%; }
+      .wa-popup{ bottom:82px; }
+      .wa-fab{ width:54px; height:54px; }
     }
   </style>
 </head>
@@ -486,6 +668,59 @@
   </div>
 </footer>
 
+<!-- ===== WhatsApp Popup UI ===== -->
+<button class="wa-fab" id="waFab" aria-label="Open WhatsApp chat">
+  <i class="fa-brands fa-whatsapp" style="font-size:1.6rem;"></i>
+</button>
+
+<div class="wa-popup" id="waPopup" role="dialog" aria-modal="true" aria-label="WhatsApp chat popup">
+  <div class="wa-head">
+    <div class="left">
+      <div class="wa-badge" aria-hidden="true">
+        <i class="fa-brands fa-whatsapp" style="font-size:1.2rem;"></i>
+      </div>
+      <div style="min-width:0;">
+        <h4>Chat on WhatsApp</h4>
+        <small>Usually replies fast</small>
+      </div>
+    </div>
+    <button class="wa-close" id="waClose" aria-label="Close WhatsApp popup">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="wa-body">
+    <div class="wa-note">
+      Need help with laptops, iPhones, accessories or repairs? Send us a message.
+    </div>
+
+    <form class="wa-form" id="waForm">
+      <input
+        class="wa-input"
+        id="waMessage"
+        type="text"
+        placeholder="Type your message..."
+        maxlength="500"
+        autocomplete="off"
+      />
+      <button class="wa-send" type="submit">
+        <i class="fa-solid fa-paper-plane"></i> Send
+      </button>
+    </form>
+
+    <div class="wa-quick" aria-label="Quick messages">
+      <button type="button" data-msg="Hi, I need help with a repair.">Repair</button>
+      <button type="button" data-msg="Hi, do you have refurbished laptops available?">Refurb Laptops</button>
+      <button type="button" data-msg="Hi, I'm looking for an iPhone. What do you have in stock?">iPhones</button>
+      <button type="button" data-msg="Hi, I need accessories. Please assist.">Accessories</button>
+    </div>
+
+    <div class="wa-privacy">
+      By messaging, you’ll be redirected to WhatsApp.
+    </div>
+  </div>
+</div>
+
 <script>
   // Supabase
   const supabaseClient = supabase.createClient(
@@ -548,6 +783,78 @@
   }
 
   checkLogin();
+
+  /* ===== WhatsApp Popup Logic =====
+     - Uses your business number: +27 81 840 1398
+     - Opens wa.me with a prefilled message
+  */
+  const WA_NUMBER = "27818401398"; // no +, no spaces
+  const waFab = document.getElementById("waFab");
+  const waPopup = document.getElementById("waPopup");
+  const waClose = document.getElementById("waClose");
+  const waForm = document.getElementById("waForm");
+  const waMessage = document.getElementById("waMessage");
+
+  function openWaPopup(){
+    waPopup.classList.add("open");
+    setTimeout(()=>waMessage?.focus(), 50);
+  }
+  function closeWaPopup(){
+    waPopup.classList.remove("open");
+  }
+  function toggleWaPopup(){
+    waPopup.classList.toggle("open");
+    if(waPopup.classList.contains("open")) setTimeout(()=>waMessage?.focus(), 50);
+  }
+
+  function openWhatsAppWithMessage(message){
+    const text = encodeURIComponent(message || "Hi, I need assistance.");
+    const url = `https://wa.me/${27768641645}?text=${text}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  waFab.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    toggleWaPopup();
+  });
+
+  waClose.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    closeWaPopup();
+  });
+
+  // Close popup if clicking outside it (but not when clicking the button itself)
+  document.addEventListener("click", (e)=>{
+    const clickedInside = waPopup.contains(e.target) || waFab.contains(e.target);
+    if(!clickedInside) closeWaPopup();
+  });
+
+  // ESC to close
+  document.addEventListener("keydown", (e)=>{
+    if(e.key === "Escape") closeWaPopup();
+  });
+
+  waForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const msg = (waMessage.value || "").trim();
+    openWhatsAppWithMessage(msg || "Hi, I need assistance.");
+    waMessage.value = "";
+    closeWaPopup();
+  });
+
+  // Quick message buttons
+  document.querySelectorAll(".wa-quick button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const msg = btn.getAttribute("data-msg") || "Hi, I need assistance.";
+      openWhatsAppWithMessage(msg);
+    });
+  });
+
+  // Optional: auto-open once per session after a short delay
+  // if(!sessionStorage.getItem("waPopupShown")){
+  //   setTimeout(openWaPopup, 2500);
+  //   sessionStorage.setItem("waPopupShown", "1");
+  // }
 </script>
 
 </body>
