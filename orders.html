@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders | SATECH ENTERPRISE</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --navy:#0b1c2d;
+      --blue:#1e5eff;
+      --light:#fff;
+      --muted:#f4f6f8;
+      --radius:16px;
+      --border:#e5e7eb;
+      --danger:#e74c3c;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family:'Segoe UI',system-ui,sans-serif;
+      background:var(--light);
+      color:#111;
+      line-height:1.6;
+    }
+    a{ text-decoration:none; color:inherit; }
+
+    /* HEADER */
+    header{
+      position:sticky;
+      top:0;
+      z-index:6000;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      max-width:1200px;
+      margin:auto;
+      padding:1rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+    .brand img.logo{ height:48px; max-width:160px; }
+
+    /* Desktop nav */
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:1.4rem;
+      flex-wrap:wrap;
+    }
+    .nav-links a{
+      position:relative;
+      padding:.35rem 0;
+      font-weight:800;
+      color:var(--navy);
+      white-space:nowrap;
+    }
+    .nav-links a::after{
+      content:'';
+      position:absolute;
+      left:0; bottom:0;
+      width:0; height:2px;
+      background:var(--blue);
+      transition:.25s;
+    }
+    .nav-links a:hover::after{ width:100%; }
+    .nav-links a.active::after{ width:100%; }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:relative;
+    }
+    .icon-btn{
+      width:42px;height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--navy);
+      color:#fff;
+      transition:.2s;
+      flex:0 0 auto;
+    }
+    .icon-btn:hover{ background:var(--blue); }
+
+    /* USER MENU */
+    .user-initials{
+      width:42px;height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--blue);
+      color:#fff;
+      font-weight:900;
+      user-select:none;
+      cursor:pointer;
+      transition:.2s;
+      position:relative;
+      flex:0 0 auto;
+    }
+    .user-initials:hover{ transform:scale(1.05); }
+    .user-menu{
+      position:absolute;
+      top:120%;
+      right:0;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+      min-width:210px;
+      display:none;
+      z-index:7000;
+    }
+    .user-menu a{
+      display:flex;
+      align-items:center;
+      gap:.7rem;
+      padding:.75rem 1rem;
+      font-weight:900;
+      color:var(--navy);
+    }
+    .user-menu a i{ color:var(--blue); }
+    .user-menu a:hover{ background:var(--muted); }
+    .user-menu a.logout i{ color:var(--danger); }
+    .user-initials.open .user-menu{ display:block; }
+
+    /* PROFESSIONAL HAMBURGER + DRAWER (MOBILE) */
+    .hamburger{
+      display:none;
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:.2s;
+      z-index:7100;
+      position:relative;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+    .hamburger:hover{ border-color:#cbd5e1; }
+
+    .hamburger-lines{ width:18px; height:12px; position:relative; }
+    .hamburger-lines span{
+      position:absolute;
+      left:0;
+      width:100%;
+      height:2px;
+      background:var(--navy);
+      border-radius:999px;
+      transition:.25s ease;
+    }
+    .hamburger-lines span:nth-child(1){ top:0; }
+    .hamburger-lines span:nth-child(2){ top:5px; }
+    .hamburger-lines span:nth-child(3){ top:10px; }
+
+    .hamburger.active .hamburger-lines span:nth-child(1){
+      transform:translateY(5px) rotate(45deg);
+    }
+    .hamburger.active .hamburger-lines span:nth-child(2){
+      opacity:0; transform:translateX(6px);
+    }
+    .hamburger.active .hamburger-lines span:nth-child(3){
+      transform:translateY(-5px) rotate(-45deg);
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+      z-index:7050;
+    }
+    .overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .drawer{
+      position:fixed;
+      top:0;
+      right:0;
+      height:100vh;
+      width:min(360px, 86vw);
+      background:#fff;
+      border-left:1px solid var(--border);
+      transform:translateX(105%);
+      transition:.28s ease;
+      z-index:7060;
+      display:flex;
+      flex-direction:column;
+    }
+    .drawer.show{ transform:translateX(0); }
+
+    .drawer-head{
+      padding:1rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+    .drawer-head strong{ color:var(--navy); font-weight:1100; }
+
+    .drawer-close{
+      width:42px;height:42px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+
+    .drawer-body{
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.65rem;
+    }
+    .drawer-link{
+      padding:.95rem 1rem;
+      border-radius:14px;
+      border:1px solid #eef2f7;
+      background:#fbfdff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:1000;
+      color:var(--navy);
+    }
+    .drawer-link span{
+      display:inline-flex;
+      align-items:center;
+      gap:.6rem;
+    }
+    .drawer-link i{ color:var(--blue); }
+
+    .drawer-link.active{
+      border-color:#c7d2fe;
+      background:#eef2ff;
+    }
+
+    .drawer-footer{
+      margin-top:auto;
+      padding:1rem;
+      border-top:1px solid var(--border);
+      color:#6b7280;
+      font-weight:800;
+      font-size:.85rem;
+      line-height:1.35;
+    }
+
+    body.no-scroll{ overflow:hidden; height:100vh; }
+
+    @media (max-width: 900px){
+      .nav-links{ display:none; }
+      .hamburger{ display:inline-flex; }
+    }
+
+    /* HERO */
+    .page-hero{
+      background:linear-gradient(135deg,#f0f4ff,#eef4ff);
+      border-radius:var(--radius);
+      margin:1rem;
+      overflow:hidden;
+    }
+    .page-hero-inner{
+      max-width:1200px;
+      margin:auto;
+      padding:2.2rem 1.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+    .page-hero h1{
+      color:var(--navy);
+      font-size:2rem;
+      letter-spacing:-.02em;
+    }
+    .page-hero p{ color:#555; font-weight:700; max-width:60ch; }
+
+    .btn{
+      display:inline-flex;
+      gap:.6rem;
+      align-items:center;
+      justify-content:center;
+      padding:.85rem 1.1rem;
+      border-radius:14px;
+      background:var(--blue);
+      color:#fff;
+      font-weight:1000;
+      border:none;
+      cursor:pointer;
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform:translateY(-1px); }
+    .btn.secondary{
+      background:#fff;
+      color:var(--navy);
+      border:1px solid var(--border);
+    }
+
+    /* CONTENT */
+    main{ padding:2rem 1.5rem 4rem; }
+    .container{ max-width:1200px; margin:auto; }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,.04);
+      overflow:hidden;
+    }
+    .card-head{
+      padding:1rem 1.1rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+    .card-head h2{
+      font-size:1.05rem;
+      color:var(--navy);
+      font-weight:1100;
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+    }
+    .card-body{ padding:1rem 1.1rem; }
+
+    /* Filters */
+    .filters{
+      display:flex;
+      gap:.75rem;
+      flex-wrap:wrap;
+      align-items:center;
+      width:100%;
+    }
+    .input{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      border:1px solid var(--border);
+      background:#fff;
+      padding:.7rem .85rem;
+      border-radius:14px;
+      min-width:min(340px, 100%);
+      flex:1 1 280px;
+    }
+    .input i{ color:#94a3b8; }
+    .input input{
+      border:none; outline:none;
+      width:100%;
+      font-weight:900;
+      color:#111;
+      background:transparent;
+    }
+    .select{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:.7rem .85rem;
+      border-radius:14px;
+      font-weight:1000;
+      color:var(--navy);
+      outline:none;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+
+    /* Orders list */
+    .order{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:1rem;
+      display:flex;
+      gap:1rem;
+      align-items:flex-start;
+      justify-content:space-between;
+      transition:.18s;
+      margin-bottom:.85rem;
+    }
+    .order:hover{
+      box-shadow:0 12px 28px rgba(0,0,0,.06);
+      transform:translateY(-1px);
+    }
+    .order-left{
+      display:flex;
+      flex-direction:column;
+      gap:.25rem;
+      min-width:0;
+    }
+    .order-title{
+      font-weight:1100;
+      color:var(--navy);
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      align-items:center;
+    }
+    .order-meta{
+      color:#64748b;
+      font-weight:900;
+      font-size:.92rem;
+    }
+    .order-right{
+      display:flex;
+      flex-direction:column;
+      gap:.6rem;
+      align-items:flex-end;
+      flex:0 0 auto;
+    }
+    .badge{
+      font-weight:1100;
+      font-size:.8rem;
+      padding:.35rem .65rem;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--navy);
+      white-space:nowrap;
+    }
+    .badge.paid{ background:#ecfdf5; border-color:#bbf7d0; color:#166534; }
+    .badge.pending{ background:#fff7ed; border-color:#fed7aa; color:#9a3412; }
+    .badge.cancelled{ background:#fff1f2; border-color:#fecdd3; color:#9f1239; }
+    .money{ font-weight:1100; color:var(--blue); }
+
+    .mini-actions{
+      display:flex;
+      gap:.5rem;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .mini-btn{
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--navy);
+      font-weight:1100;
+      padding:.55rem .75rem;
+      border-radius:12px;
+      cursor:pointer;
+      transition:.15s;
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+    }
+    .mini-btn:hover{ background:var(--muted); }
+
+    /* Empty state */
+    .empty{
+      border:1px dashed var(--border);
+      border-radius:14px;
+      padding:1rem;
+      background:#fbfdff;
+    }
+    .empty strong{ display:block; color:var(--navy); font-weight:1100; }
+    .empty p{ color:#64748b; font-weight:900; margin-top:.25rem; }
+
+    /* MODAL (FIXED: scroll INSIDE modal on mobile) */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.45);
+      z-index:9000;
+      padding:1rem;
+    }
+    .modal.show{ display:flex; }
+    .modal-card{
+      width:min(720px, 100%);
+      max-height:90vh;          /* ✅ key */
+      background:#fff;
+      border-radius:18px;
+      border:1px solid var(--border);
+      box-shadow:0 30px 80px rgba(0,0,0,.25);
+      overflow:hidden;
+      display:flex;             /* ✅ key */
+      flex-direction:column;    /* ✅ key */
+    }
+    .modal-head{
+      padding:1rem 1.1rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      flex:0 0 auto;
+    }
+    .modal-head h3{ color:var(--navy); font-weight:1100; font-size:1rem; }
+    .modal-close{
+      width:42px;height:42px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+    .modal-body{
+      padding:1rem 1.1rem;
+      overflow:auto;            /* ✅ key */
+      -webkit-overflow-scrolling:touch;
+      flex:1 1 auto;            /* ✅ key */
+    }
+
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:.75rem;
+    }
+    .detail{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:.8rem .9rem;
+      background:#fbfdff;
+    }
+    .detail label{
+      display:block;
+      color:#64748b;
+      font-weight:1000;
+      font-size:.8rem;
+      margin-bottom:.25rem;
+    }
+    .detail div{
+      font-weight:1100;
+      color:var(--navy);
+      word-break:break-word;
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      top:1rem; right:1rem;
+      background:#4ade80;
+      color:#fff;
+      padding:1rem 1.2rem;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.15);
+      opacity:0;
+      transform:translateY(-20px);
+      transition:.35s;
+      z-index:9999;
+      max-width:340px;
+      font-weight:1100;
+    }
+    .toast.show{ opacity:1; transform:translateY(0); }
+
+    @media (max-width: 560px){
+      .order{ flex-direction:column; align-items:stretch; }
+      .order-right{ align-items:flex-start; }
+      .mini-actions{ justify-content:flex-start; }
+      .detail-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <a href="dashboard.html"><img src="logo.png" class="logo" alt="Logo"></a>
+    </div>
+
+    <!-- Desktop nav -->
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+      <a href="orders.html" class="active">Orders</a>
+      <a href="settings.html">Account Settings</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="user-initials" id="userInitials" aria-label="User menu">
+        U
+        <div class="user-menu" id="userMenu">
+          <a href="orders.html"><i class="fa-solid fa-box"></i> Orders</a>
+          <a href="settings.html"><i class="fa-solid fa-gear"></i> Account Settings</a>
+          <a href="#" class="logout" id="logoutDesktop"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+      </div>
+
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+
+      <!-- ✅ Hamburger (mobile) -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+        <div class="hamburger-lines"><span></span><span></span><span></span></div>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile overlay + drawer -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <strong>Menu</strong>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <a class="drawer-link" href="dashboard.html"><span><i class="fa-solid fa-house"></i> Home</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="ref.html"><span><i class="fa-solid fa-laptop"></i> Refurbished</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="new.html"><span><i class="fa-solid fa-laptop-code"></i> New</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="iphones.html"><span><i class="fa-brands fa-apple"></i> iPhones</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="acc.html"><span><i class="fa-solid fa-headphones"></i> Accessories</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="repair.html"><span><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="contact.html"><span><i class="fa-solid fa-envelope"></i> Contact</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link active" href="orders.html"><span><i class="fa-solid fa-box"></i> Orders</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="settings.html"><span><i class="fa-solid fa-gear"></i> Account Settings</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="cart.html"><span><i class="fa-solid fa-cart-shopping"></i> Cart</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="#" id="logoutMobile" style="border-color:#fecaca;background:#fff5f5;">
+      <span><i class="fa-solid fa-right-from-bracket" style="color:var(--danger)"></i> Logout</span>
+      <i class="fa-solid fa-chevron-right"></i>
+    </a>
+  </div>
+
+  <div class="drawer-footer">
+    SATECH ENTERPRISE — Premium gadgets, refurbished laptops & reliable repairs.
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<!-- Hero -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div>
+      <h1>My Orders</h1>
+      <p>Track your orders and view details. If you haven’t checked out yet, your orders will be empty.</p>
+    </div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+      <button class="btn secondary" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      <a class="btn" href="dashboard.html#products"><i class="fa-solid fa-bag-shopping"></i> Continue Shopping</a>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+    <div class="card">
+      <div class="card-head">
+        <h2><i class="fa-solid fa-box" style="color:var(--blue)"></i> Orders</h2>
+        <div class="filters">
+          <div class="input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="text" placeholder="Search by order number..." />
+          </div>
+          <select id="statusFilter" class="select" aria-label="Filter by status">
+            <option value="all">All</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card-body" id="ordersList">
+        <!-- Orders injected here -->
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Details modal (fixed scroll) -->
+<div class="modal" id="modal">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 id="modalTitle">Order Details</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<footer style="background:var(--navy);color:#fff;padding:3rem 1.5rem;">
+  <div class="container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;">
+    <div>
+      <h3>SATECH ENTERPRISE</h3>
+      <p>Powered by <a href="https://cmstudio.online" target="_blank" rel="noopener noreferrer" style="color:#fff;text-decoration:underline;">CMSTUDIO</a></p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <p>Shop • Repairs • Support</p>
+    </div>
+    <div>
+      <h4>Secure Payments</h4>
+      <p>Card • EFT • PayFast (Coming Soon)</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ======================
+  // Supabase
+  // ======================
+  const supabaseClient = supabase.createClient(
+    "https://nzuwmiyduragtqyaetfr.supabase.co",
+    "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+  );
+
+  const toastEl = document.getElementById("toast");
+  function showToast(msg, ok=true){
+    toastEl.textContent = msg;
+    toastEl.style.background = ok ? "#4ade80" : "#f87171";
+    toastEl.classList.add("show");
+    setTimeout(()=>toastEl.classList.remove("show"), 3500);
+  }
+
+  // ======================
+  // User menu open/close
+  // ======================
+  const userInitials = document.getElementById("userInitials");
+  userInitials.addEventListener("pointerup", (e)=>{
+    e.stopPropagation();
+    userInitials.classList.toggle("open");
+  });
+  document.addEventListener("pointerup", ()=> userInitials.classList.remove("open"));
+
+  async function doLogout(e){
+    if(e) e.preventDefault();
+    await supabaseClient.auth.signOut();
+    location.href = "login.html";
+  }
+  document.getElementById("logoutDesktop").addEventListener("pointerup", doLogout);
+  document.getElementById("logoutMobile").addEventListener("pointerup", doLogout);
+
+  // ======================
+  // Mobile Drawer (Hamburger)
+  // ======================
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("overlay");
+  const drawerClose = document.getElementById("drawerClose");
+
+  function openDrawer(){
+    drawer.classList.add("show");
+    overlay.classList.add("show");
+    hamburgerBtn.classList.add("active");
+    hamburgerBtn.setAttribute("aria-expanded","true");
+    drawer.setAttribute("aria-hidden","false");
+    document.body.classList.add("no-scroll");
+  }
+  function closeDrawer(){
+    drawer.classList.remove("show");
+    overlay.classList.remove("show");
+    hamburgerBtn.classList.remove("active");
+    hamburgerBtn.setAttribute("aria-expanded","false");
+    drawer.setAttribute("aria-hidden","true");
+    document.body.classList.remove("no-scroll");
+  }
+  function toggleDrawer(e){
+    e.preventDefault();
+    e.stopPropagation();
+    drawer.classList.contains("show") ? closeDrawer() : openDrawer();
+  }
+  hamburgerBtn.addEventListener("click", toggleDrawer, { passive:false });
+  hamburgerBtn.addEventListener("touchstart", toggleDrawer, { passive:false });
+  overlay.addEventListener("click", closeDrawer);
+  drawerClose.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape" && drawer.classList.contains("show")) closeDrawer(); });
+  drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
+
+  // ======================
+  // Modal (FIXED scrolling)
+  // ======================
+  const modal = document.getElementById("modal");
+  const modalClose = document.getElementById("modalClose");
+  const modalBody = document.getElementById("modalBody");
+
+  function openModal(html){
+    modalBody.innerHTML = html;
+    modal.classList.add("show");
+    // lock background, but modal still scrolls because modal-body overflow:auto
+    document.body.classList.add("no-scroll");
+    // ensure modal starts at top
+    modalBody.scrollTop = 0;
+  }
+  function closeModal(){
+    modal.classList.remove("show");
+    document.body.classList.remove("no-scroll");
+  }
+  modalClose.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+  document.addEventListener("keydown", (e)=>{ if(e.key==="Escape" && modal.classList.contains("show")) closeModal(); });
+
+  // ======================
+  // Orders UI
+  // ======================
+  const ordersList = document.getElementById("ordersList");
+  const searchInput = document.getElementById("searchInput");
+  const statusFilter = document.getElementById("statusFilter");
+  const refreshBtn = document.getElementById("refreshBtn");
+
+  function money(n){
+    const num = Number(n || 0);
+    return "R" + num.toLocaleString("en-ZA");
+  }
+  function badgeClass(status){
+    const s = (status || "").toLowerCase();
+    if (s === "paid") return "paid";
+    if (s === "pending") return "pending";
+    if (s === "cancelled") return "cancelled";
+    return "pending";
+  }
+  function niceStatus(status){
+    const s = (status || "").toLowerCase();
+    if (s === "paid") return "Paid";
+    if (s === "pending") return "Pending";
+    if (s === "cancelled") return "Cancelled";
+    return status || "Pending";
+  }
+  function formatDate(dateStr){
+    if(!dateStr) return "-";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleString("en-ZA", { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  }
+
+  let ALL_ORDERS = [];
+
+  function matchesFilters(order){
+    const q = (searchInput.value || "").trim().toLowerCase();
+    const filter = statusFilter.value;
+
+    const s = (order.status || "").toLowerCase();
+    if(filter !== "all" && s !== filter) return false;
+
+    if(!q) return true;
+
+    const num = (order.order_number || order.id || "").toLowerCase();
+    return num.includes(q);
+  }
+
+  function renderOrders(){
+    const list = ALL_ORDERS.filter(matchesFilters);
+
+    if(list.length === 0){
+      ordersList.innerHTML = `
+        <div class="empty">
+          <strong>No orders yet</strong>
+          <p>Your cart can be full, but orders only appear after you checkout and create an order.</p>
+          <p style="margin-top:.5rem;">
+            <a href="cart.html" style="text-decoration:underline;font-weight:1000;color:var(--blue);">Go to Cart</a>
+            &nbsp;•&nbsp;
+            <a href="dashboard.html#products" style="text-decoration:underline;font-weight:1000;color:var(--blue);">Shop Products</a>
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    ordersList.innerHTML = list.map(o => {
+      const st = niceStatus(o.status);
+      const b = badgeClass(o.status);
+      return `
+        <div class="order">
+          <div class="order-left">
+            <div class="order-title">
+              <span>${o.order_number || o.id}</span>
+              <span class="badge ${b}">${st}</span>
+            </div>
+            <div class="order-meta">
+              <span><i class="fa-regular fa-calendar" style="color:#94a3b8"></i> ${formatDate(o.created_at)}</span>
+            </div>
+          </div>
+
+          <div class="order-right">
+            <div class="money">${money(o.total)}</div>
+            <div class="mini-actions">
+              <button class="mini-btn" data-view="${o.id}">
+                <i class="fa-regular fa-eye"></i> View
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // Attach view handlers
+    ordersList.querySelectorAll("[data-view]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-view");
+        const o = ALL_ORDERS.find(x => String(x.id) === String(id));
+        if(!o) return;
+
+        const items = Array.isArray(o.items) ? o.items : [];
+        const itemsHtml = items.length ? items.map(i => `
+          <div style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dashed var(--border);padding:.55rem 0;">
+            <div style="font-weight:1100;color:var(--navy);">${i.name || "Item"} <span style="color:#64748b;font-weight:1000;">x${i.qty || 1}</span></div>
+            <div style="font-weight:1100;color:var(--blue);">${money((Number(i.price)||0) * (Number(i.qty)||1))}</div>
+          </div>
+        `).join("") : `<div style="color:#64748b;font-weight:1000;">No items listed.</div>`;
+
+        const html = `
+          <div class="detail-grid">
+            <div class="detail"><label>Order</label><div>${o.order_number || o.id}</div></div>
+            <div class="detail"><label>Status</label><div>${niceStatus(o.status)}</div></div>
+            <div class="detail"><label>Date</label><div>${formatDate(o.created_at)}</div></div>
+            <div class="detail"><label>Total</label><div>${money(o.total)}</div></div>
+          </div>
+
+          <div style="margin-top:1rem;border:1px solid var(--border);border-radius:14px;padding:.9rem;background:#fbfdff;">
+            <div style="font-weight:1100;color:var(--navy);margin-bottom:.5rem;">Items</div>
+            ${itemsHtml}
+          </div>
+
+          <div style="margin-top:1rem;border:1px solid var(--border);border-radius:14px;padding:.9rem;background:#fbfdff;">
+            <div style="font-weight:1100;color:var(--navy);margin-bottom:.35rem;">Delivery</div>
+            <div style="color:#334155;font-weight:1000;">${o.delivery || "-"}</div>
+          </div>
+
+          <div style="margin-top:1rem;border:1px solid var(--border);border-radius:14px;padding:.9rem;background:#fbfdff;">
+            <div style="font-weight:1100;color:var(--navy);margin-bottom:.35rem;">Address</div>
+            <div style="color:#334155;font-weight:1000;">${o.address || "-"}</div>
+          </div>
+        `;
+        openModal(html);
+      });
+    });
+  }
+
+  searchInput.addEventListener("input", renderOrders);
+  statusFilter.addEventListener("change", renderOrders);
+
+  refreshBtn.addEventListener("click", async ()=> {
+    await loadOrders();
+    showToast("Orders refreshed.");
+  });
+
+  // ======================
+  // Auth + Load Orders (NO FAKE ORDERS)
+  // ======================
+  async function checkLoginAndProfile(){
+    const { data:{ user } } = await supabaseClient.auth.getUser();
+    if(!user) return location.href="login.html";
+
+    const { data: profile } = await supabaseClient
+      .from("profiles")
+      .select("full_names,surname")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if(profile?.full_names && profile?.surname){
+      const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
+      userInitials.firstChild.textContent = initials.toUpperCase();
+    } else {
+      userInitials.firstChild.textContent = "U";
+    }
+    return user;
+  }
+
+  async function loadOrders(){
+    // ✅ Real query (and if your orders table doesn't exist yet, we show empty)
+    try{
+      const user = await checkLoginAndProfile();
+      if(!user) return;
+
+      // IMPORTANT:
+      // This expects you have an "orders" table with columns like:
+      // user_id, order_number, status, total, created_at, items, delivery, address
+      const { data, error } = await supabaseClient
+        .from("orders")
+        .select("id, order_number, status, total, created_at, items, delivery, address")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending:false });
+
+      if(error){
+        // If table missing or RLS blocks it, don't show fake orders.
+        ALL_ORDERS = [];
+        renderOrders();
+        console.warn("Orders load error:", error.message);
+        return;
+      }
+
+      ALL_ORDERS = Array.isArray(data) ? data : [];
+      renderOrders();
+    } catch(e){
+      ALL_ORDERS = [];
+      renderOrders();
+      console.warn("Orders load exception:", e);
+    }
+  }
+
+  (async function init(){
+    await checkLoginAndProfile();
+    await loadOrders();
+  })();
+</script>
+
+</body>
+</html>
