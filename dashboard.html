@@ -45,7 +45,8 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: var(--light);
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid #e5e7eb;
     }
 
@@ -56,6 +57,7 @@
       max-width: 1200px;
       margin: auto;
       padding: 1rem;
+      gap: 1rem;
     }
 
     .brand img.logo {
@@ -109,8 +111,8 @@
       opacity: 0;
       visibility: hidden;
       transform: translateY(10px);
-      transition: .3s;
-      min-width: 180px;
+      transition: .25s;
+      min-width: 200px;
       z-index: 999;
     }
 
@@ -122,8 +124,9 @@
 
     .dropdown a {
       display: block;
-      padding: .5rem 1rem;
+      padding: .55rem 1rem;
       color: var(--navy);
+      font-weight: 600;
     }
 
     .dropdown a:hover {
@@ -134,14 +137,14 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
       position: relative;
     }
 
     .user-initials {
       background: var(--blue);
       color: #fff;
-      font-weight: 700;
+      font-weight: 800;
       width: 42px;
       height: 42px;
       border-radius: 50%;
@@ -151,12 +154,11 @@
       font-size: 1rem;
       cursor: pointer;
       position: relative;
-      transition: .3s;
+      transition: .2s;
+      user-select: none;
     }
 
-    .user-initials:hover {
-      transform: scale(1.05);
-    }
+    .user-initials:hover { transform: scale(1.05); }
 
     .user-initials .dropdown {
       right: 0;
@@ -168,11 +170,12 @@
       border-radius: 12px;
       padding: .5rem 0;
       box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+      min-width: 200px;
+      overflow: hidden;
+      z-index: 999;
     }
 
-    .user-initials.active .dropdown {
-      display: block;
-    }
+    .user-initials.active .dropdown { display: block; }
 
     .icon-btn {
       display: flex;
@@ -185,90 +188,161 @@
       border-radius: 50%;
       font-size: 1.1rem;
       cursor: pointer;
-      position: relative;
-      transition: .3s;
+      transition: .2s;
     }
 
-    .icon-btn:hover {
-      background: var(--blue);
-    }
+    .icon-btn:hover { background: var(--blue); }
 
-
-    /* HAMBURGER & MOBILE NAV */
+    /* PROFESSIONAL HAMBURGER + DRAWER */
     .hamburger {
       display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 28px;
-      height: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      z-index: 1001;
-      transition: all 0.3s;
+      transition: .2s;
+      z-index: 1101;
     }
 
-    .hamburger span {
-      display: block;
-      height: 3px;
+    .hamburger:hover { border-color: #cbd5e1; }
+
+    .hamburger-lines {
+      width: 18px;
+      height: 12px;
+      position: relative;
+    }
+
+    .hamburger-lines span {
+      position: absolute;
+      left: 0;
       width: 100%;
+      height: 2px;
       background: var(--navy);
-      border-radius: 3px;
-      transition: all 0.3s;
+      border-radius: 999px;
+      transition: .25s ease;
     }
 
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translateY(9px);
+    .hamburger-lines span:nth-child(1) { top: 0; }
+    .hamburger-lines span:nth-child(2) { top: 5px; }
+    .hamburger-lines span:nth-child(3) { top: 10px; }
+
+    .hamburger.active .hamburger-lines span:nth-child(1) {
+      transform: translateY(5px) rotate(45deg);
     }
 
-    .hamburger.active span:nth-child(2) {
+    .hamburger.active .hamburger-lines span:nth-child(2) {
       opacity: 0;
+      transform: translateX(6px);
     }
 
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translateY(-9px);
+    .hamburger.active .hamburger-lines span:nth-child(3) {
+      transform: translateY(-5px) rotate(-45deg);
     }
 
-    .mobile-nav {
-      display: none;
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 1100;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-drawer {
       position: fixed;
       top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background: var(--white);
-      box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
-      flex-direction: column;
-      padding: 3rem 1.5rem;
-      gap: 1.5rem;
-      transition: right 0.3s ease-in-out;
-      z-index: 1000;
-    }
-
-    .mobile-nav a {
-      font-size: 1.2rem;
-      color: var(--navy);
-      font-weight: 600;
-      padding: 0.5rem 0;
-    }
-
-    .mobile-nav.show {
-      display: flex;
       right: 0;
+      height: 100vh;
+      width: min(360px, 86vw);
+      background: #fff;
+      border-left: 1px solid #e5e7eb;
+      transform: translateX(105%);
+      transition: .28s ease;
+      z-index: 1102;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-drawer.show { transform: translateX(0); }
+
+    .drawer-head {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .drawer-head strong {
+      color: var(--navy);
+      font-size: 1rem;
+    }
+
+    .drawer-close {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .drawer-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .65rem;
+    }
+
+    .drawer-link {
+      padding: .95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid #eef2f7;
+      background: #fbfdff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .drawer-link span {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .drawer-link i { color: var(--blue); }
+
+    .drawer-footer {
+      margin-top: auto;
+      padding: 1rem;
+      border-top: 1px solid #e5e7eb;
+      color: #6b7280;
+      font-size: .85rem;
+      line-height: 1.3;
+    }
+
+    body.no-scroll {
+      overflow: hidden;
+      height: 100vh;
     }
 
     /* MOBILE RESPONSIVE */
-    @media(max-width:800px) {
-      .hero-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
+    @media(max-width:900px) {
+      .nav-links { display: none; }
+      .hamburger { display: inline-flex; }
     }
 
     /* HERO */
@@ -276,6 +350,7 @@
       background: linear-gradient(135deg, #f0f4ff, #eef4ff);
       border-radius: var(--radius);
       margin: 1rem;
+      overflow: hidden;
     }
 
     .hero-inner {
@@ -291,25 +366,40 @@
     .hero h1 {
       font-size: 3rem;
       color: var(--navy);
+      letter-spacing: -0.02em;
     }
 
     .hero p {
       margin: 1rem 0;
       color: #555;
+      max-width: 52ch;
     }
 
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
       padding: .9rem 1.6rem;
       border-radius: 50px;
       background: var(--blue);
       color: #fff;
-      font-weight: 600;
-      transition: .3s;
+      font-weight: 700;
+      transition: .2s;
     }
 
-    .btn:hover {
-      transform: scale(1.05);
+    .btn:hover { transform: scale(1.04); }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: left;
+        padding: 1.4rem;
+        gap: 1.25rem;
+      }
+
+      .hero h1 { font-size: 2rem; }
+      .hero-inner img { order: -1; }
     }
 
     /* PRODUCTS */
@@ -341,11 +431,14 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: .3s;
+      transition: .25s;
+      background: #fff;
+      min-height: 290px;
     }
 
     .product:hover {
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+      transform: translateY(-2px);
     }
 
     .product-img {
@@ -356,6 +449,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 160px;
     }
 
     .product-img img {
@@ -368,20 +462,65 @@
       transform: scale(1.05);
     }
 
+    .product h3 {
+      color: var(--navy);
+      margin: .25rem 0 1rem;
+      font-size: 1.15rem;
+    }
 
     .add-cart {
       border: none;
       background: var(--navy);
       color: #fff;
-      padding: .7rem 1rem;
-      border-radius: 10px;
+      padding: .8rem 1rem;
+      border-radius: 12px;
       cursor: pointer;
-      transition: .3s;
+      transition: .2s;
+      font-weight: 700;
     }
 
     .add-cart:hover {
       background: var(--blue);
-      transform: scale(1.05);
+      transform: scale(1.03);
+    }
+
+    /* More professional cards on mobile */
+    @media (max-width: 560px) {
+      .products { gap: 1rem; }
+      .product {
+        padding: 1.15rem;
+        min-height: auto;
+      }
+      .product-img { min-height: 140px; }
+      .add-cart { width: 100%; }
+    }
+
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .service {
+      background: var(--muted);
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    /* CONTACT */
+    #contact p {
+      color: #444;
+      font-weight: 600;
+      background: var(--muted);
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      max-width: 520px;
     }
 
     /* FOOTER */
@@ -414,8 +553,10 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
       opacity: 0;
       transform: translateY(-20px);
-      transition: .5s;
-      z-index: 9999;
+      transition: .35s;
+      z-index: 2000;
+      max-width: 340px;
+      font-weight: 800;
     }
 
     .toast.show {
@@ -429,7 +570,7 @@
 
   <header>
     <div class="nav">
-      <div class="brand"><a href="dashboard.html"><img src="logo.png" class="logo"></a></div>
+      <div class="brand"><a href="dashboard.html"><img src="logo.png" class="logo" alt="Logo"></a></div>
 
       <!-- Desktop nav -->
       <nav class="nav-links" id="navLinks">
@@ -444,36 +585,62 @@
           <div class="dropdown">
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
-            <a href="#">Dashboard</a>
+            <a href="dashboard.html">Dashboard</a>
             <a href="orders.html">Orders</a>
             <a href="settings.html">Account Settings</a>
-            <a href="index.html"
-              style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
+            <a href="#" id="logoutDesktop"
+              style="background-color:#012141; padding:.55rem 1rem; margin:.25rem .6rem; border-radius:12px; color:#e5e7eb; text-align:center;">
+              Logout
+            </a>
           </div>
         </div>
       </nav>
 
       <!-- Actions -->
       <div class="nav-actions">
-        <div class="user-initials" id="userInitials">UL
-          <div class="dropdown"></div>
-        </div>
-        <a href="cart.html" class="icon-btn">
+        <div class="user-initials" id="userInitials">U</div>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">
           <i class="fa-solid fa-cart-shopping"></i>
         </a>
-
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+          <div class="hamburger-lines"><span></span><span></span><span></span></div>
+        </button>
       </div>
-
-      <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
-      <div class="mobile-nav" id="mobileNav">
-        <a href="dashboard.html">Home</a>
-        <a href="ref.html">Refurbished</a>
-        <a href="new.html">New Laptops</a>
-        <a href="acc.html">Accessories</a>
-        <a href="repair.html">Repairs</a>
-        <a href="contact.html">Contact</a>
-      </div>
+    </div>
   </header>
+
+  <!-- Mobile overlay + drawer -->
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="mobile-drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <a class="drawer-link" href="dashboard.html"><span><i class="fa-solid fa-house"></i> Home</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="ref.html"><span><i class="fa-solid fa-laptop"></i> Refurbished</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="new.html"><span><i class="fa-solid fa-laptop-code"></i> New</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="iphones.html"><span><i class="fa-brands fa-apple"></i> iPhones</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="acc.html"><span><i class="fa-solid fa-headphones"></i> Accessories</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="repair.html"><span><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="contact.html"><span><i class="fa-solid fa-envelope"></i> Contact</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="orders.html"><span><i class="fa-solid fa-box"></i> Orders</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="settings.html"><span><i class="fa-solid fa-gear"></i> Account Settings</span><i class="fa-solid fa-chevron-right"></i></a>
+
+      <a class="drawer-link" href="#" id="logoutMobile" style="border-color:#dbeafe;background:#eff6ff;">
+        <span><i class="fa-solid fa-right-from-bracket"></i> Logout</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
+    </div>
+
+    <div class="drawer-footer">
+      SATECH ENTERPRISE — Premium gadgets, refurbished laptops & reliable repairs.
+    </div>
+  </aside>
 
   <div class="toast" id="toast"></div>
 
@@ -484,9 +651,9 @@
         <h1>Premium Gadgets & Reliable Repairs</h1>
         <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
           and individuals.</p>
-        <a href="#products" class="btn">Shop Now</a>
+        <a href="#products" class="btn"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
       </div>
-      <img src="gadgets.png">
+      <img src="gadgets.png" alt="Gadgets">
     </div>
   </section>
 
@@ -495,27 +662,27 @@
     <h2 class="section-title">Popular Products</h2>
     <div class="products">
       <div class="product">
-        <div class="product-img"><img src="hp.png"></div>
+        <div class="product-img"><img src="hp.png" alt="Refurbished Laptop"></div>
         <h3>Refurbished Laptop</h3>
         <button class="add-cart" onclick="window.location.href='ref.html'">View Laptops</button>
       </div>
-      <div class="product">
-        <div class="product-img"><img src="HP_Pavilion_14.png"></div>
-        <h3>New Laptops</h3>
-        <button class="add-cart" onclick="window.location.href='new.html'">View Phones</button>
 
-      </div>
       <div class="product">
-        <div class="product-img"><img src="i13.png"></div>
+        <div class="product-img"><img src="HP_Pavilion_14.png" alt="New Laptops"></div>
+        <h3>New Laptops</h3>
+        <button class="add-cart" onclick="window.location.href='new.html'">View Laptops</button>
+      </div>
+
+      <div class="product">
+        <div class="product-img"><img src="i13.png" alt="iPhones"></div>
         <h3>iPhones</h3>
         <button class="add-cart" onclick="window.location.href='iphones.html'">View Phones</button>
-
       </div>
+
       <div class="product">
-        <div class="product-img"><img src="smart.png"></div>
+        <div class="product-img"><img src="smart.png" alt="Smart Watches"></div>
         <h3>Smart Watches</h3>
         <button class="add-cart" onclick="window.location.href='acc.html'">View Accessories</button>
-
       </div>
     </div>
   </section>
@@ -541,7 +708,7 @@
     <div class="container">
       <div>
         <h3>SATECH ENTERPRISE</h3>
-        <p>Powered by <a href="#">CMSTUDIO</a></p>
+        <p>Powered by <a href="https://cmstudio.online" target="_blank" rel="noopener noreferrer">CMSTUDIO</a></p>
       </div>
       <div>
         <h4>Quick Links</h4>
@@ -554,99 +721,122 @@
     </div>
   </footer>
 
-
-
   <script>
-    // Supabase & login
+    // Supabase
     const supabaseClient = supabase.createClient(
       "https://nzuwmiyduragtqyaetfr.supabase.co",
       "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
     );
 
+    // Professional drawer controls (global, not inside checkLogin)
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const drawer = document.getElementById("drawer");
+    const overlay = document.getElementById("overlay");
+    const drawerClose = document.getElementById("drawerClose");
+
+    function openDrawer() {
+      drawer.classList.add("show");
+      overlay.classList.add("show");
+      hamburgerBtn.classList.add("active");
+      hamburgerBtn.setAttribute("aria-expanded", "true");
+      drawer.setAttribute("aria-hidden", "false");
+      document.body.classList.add("no-scroll");
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove("show");
+      overlay.classList.remove("show");
+      hamburgerBtn.classList.remove("active");
+      hamburgerBtn.setAttribute("aria-expanded", "false");
+      drawer.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+    }
+
+    hamburgerBtn.addEventListener("click", () => {
+      const isOpen = drawer.classList.contains("show");
+      isOpen ? closeDrawer() : openDrawer();
+    });
+
+    drawerClose.addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && drawer.classList.contains("show")) closeDrawer();
+    });
+
+    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
+
+    // Login check + profile
     async function checkLogin() {
       const { data: { user } } = await supabaseClient.auth.getUser();
       if (!user) return location.href = "login.html";
 
-      const { data: profile } = await supabaseClient.from("profiles").select("full_names,surname,gender").eq("id", user.id).single();
-      if (profile) {
-        const initials = profile.full_names[0] + profile.surname[0];
-        const userElem = document.getElementById("userInitials");
+      const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("full_names,surname,gender")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const userElem = document.getElementById("userInitials");
+
+      if (profile?.full_names && profile?.surname) {
+        const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
         userElem.textContent = initials.toUpperCase();
-
-        const dropdown = document.createElement('div');
-        dropdown.className = 'dropdown';
-        dropdown.innerHTML = `
-      <a href="dashboard.html">Dashboard</a>
-      <a href="#">Orders</a>
-      <a href="settings.html">Account Settings</a>
-      <a href="#" id="logoutBtn">Logout</a>
-    `;
-        userElem.appendChild(dropdown);
-
-        userElem.addEventListener('click', () => userElem.classList.toggle('active'));
-        document.getElementById("logoutBtn").addEventListener("click", async () => {
-          await supabaseClient.auth.signOut();
-          location.href = "login.html";
-        });
-
-        const toast = document.getElementById("toast");
-        toast.textContent = `Welcome ${profile.gender === 'Male' ? 'Mr' : 'Ms'} ${profile.surname}`;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 4000);
+      } else {
+        userElem.textContent = "U";
       }
 
-      // Hamburger toggle
-      function toggleNav() {
-        const hamburger = document.querySelector('.hamburger');
-        const mobileNav = document.getElementById('mobileNav');
+      // Build user dropdown (desktop)
+      const dropdown = document.createElement('div');
+      dropdown.className = 'dropdown';
+      dropdown.innerHTML = `
+        <a href="dashboard.html">Dashboard</a>
+        <a href="orders.html">Orders</a>
+        <a href="settings.html">Account Settings</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      `;
+      userElem.appendChild(dropdown);
 
-        hamburger.classList.toggle('active');
-        mobileNav.classList.toggle('show');
+      // Toggle dropdown
+      userElem.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userElem.classList.toggle('active');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => userElem.classList.remove('active'));
+
+      // Logout handlers
+      async function doLogout(e) {
+        if (e) e.preventDefault();
+        await supabaseClient.auth.signOut();
+        location.href = "login.html";
       }
 
-      // Close menu when a mobile link is clicked
-      document.querySelectorAll('.mobile-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-          document.querySelector('.hamburger').classList.remove('active');
-          document.getElementById('mobileNav').classList.remove('show');
-        });
-      });
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) logoutBtn.addEventListener("click", doLogout);
 
-      // Build mobile menu
-      const mobileMenu = document.getElementById('mobileMenu');
-      const links = [
-        { text: 'Home', href: 'dashboard.html' },
-        { text: 'Refurbished', href: 'ref.html' },
-        { text: 'New', href: '#' },
-        { text: 'iPhones', href: '#' },
-        { text: 'Accessories', href: '#' },
-        { text: 'Repairs', href: '#' },
-        { text: 'About', href: '#' },
-        { text: 'Contact', href: '#' }
-      ];
-      links.forEach(l => {
-        const a = document.createElement('a');
-        a.href = l.href;
-        a.textContent = l.text;
-        mobileMenu.appendChild(a);
-      });
+      const logoutDesktop = document.getElementById("logoutDesktop");
+      if (logoutDesktop) logoutDesktop.addEventListener("click", doLogout);
+
+      const logoutMobile = document.getElementById("logoutMobile");
+      if (logoutMobile) logoutMobile.addEventListener("click", doLogout);
+
+      // Welcome toast (only show Mr/Ms if gender is set)
+      const toast = document.getElementById("toast");
+      const gender = profile?.gender;
+      let title = "";
+      if (gender === "Male") title = "Mr ";
+      else if (gender === "Female") title = "Ms ";
+
+      const surname = profile?.surname || "";
+      toast.textContent = surname ? `Welcome ${title}${surname}` : "Welcome!";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3500);
     }
 
     checkLogin();
-
-    // Close user dropdown when clicking outside
-    const userInitials = document.getElementById('userInitials');
-    document.addEventListener('click', e => {
-      if (!userInitials.contains(e.target)) userInitials.classList.remove('active');
-    });
-
-    // Cart
-    const cart = [];
-    function toggleCart() { document.getElementById('cart').classList.toggle('active'); }
-    function addToCart(name, price) { cart.push({ name, price }); document.getElementById('cartCount').innerText = cart.length; renderCart(); }
-    function renderCart() { const items = document.getElementById('cartItems'); items.innerHTML = ''; cart.forEach(i => { const div = document.createElement('div'); div.className = 'cart-item'; div.innerHTML = `<span>${i.name}</span><span>R${i.price}</span>`; items.appendChild(div); }); }
   </script>
 
 </body>
-
 </html>
