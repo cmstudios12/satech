@@ -1,842 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SATECH ENTERPRISE | Dashboard</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    :root {
-      --navy: #0b1c2d;
-      --blue: #1e5eff;
-      --light: #fff;
-      --muted: #f4f6f8;
-      --radius: 16px;
+    :root{
+      --navy:#0b1c2d;
+      --blue:#1e5eff;
+      --light:#fff;
+      --muted:#f4f6f8;
+      --radius:16px;
+      --border:#e5e7eb;
+      --danger:#e74c3c;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family:'Segoe UI',system-ui,sans-serif;
+      background:var(--light);
+      color:#111;
+      line-height:1.6;
     }
-
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--light);
-      color: #111;
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
+    a{ text-decoration:none; color:inherit; }
+    img{ max-width:100%; display:block; }
 
     /* HEADER */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, .92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid #e5e7eb;
+    header{
+      position:sticky;
+      top:0;
+      z-index:5000;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
     }
 
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: auto;
-      padding: 1rem;
-      gap: 1rem;
+    .nav{
+      max-width:1200px;
+      margin:auto;
+      padding:1rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
     }
 
-    .brand img.logo {
-      height: 48px;
-      max-width: 160px;
+    .brand img.logo{
+      height:48px;
+      max-width:160px;
     }
 
-    /* Desktop nav */
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.8rem;
+    /* Desktop nav links (simple + clean) */
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:1.4rem;
+      flex-wrap:wrap;
     }
 
-    .nav-links a {
-      position: relative;
-      padding: .3rem 0;
-      font-weight: 500;
-      color: var(--navy);
+    .nav-links a{
+      position:relative;
+      padding:.35rem 0;
+      font-weight:700;
+      color:var(--navy);
+      white-space:nowrap;
     }
 
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--blue);
-      transition: .25s;
+    .nav-links a::after{
+      content:'';
+      position:absolute;
+      left:0; bottom:0;
+      width:0; height:2px;
+      background:var(--blue);
+      transition:.25s;
+    }
+    .nav-links a:hover::after{ width:100%; }
+
+    /* Right actions */
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:relative;
     }
 
-    .nav-links a:hover::after {
-      width: 100%;
+    .icon-btn{
+      width:42px;height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--navy);
+      color:#fff;
+      transition:.2s;
+      flex:0 0 auto;
+    }
+    .icon-btn:hover{ background:var(--blue); }
+
+    .user-initials{
+      width:42px;height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--blue);
+      color:#fff;
+      font-weight:900;
+      user-select:none;
+      cursor:pointer;
+      transition:.2s;
+      position:relative;
+      flex:0 0 auto;
+    }
+    .user-initials:hover{ transform:scale(1.05); }
+
+    /* User dropdown */
+    .user-menu{
+      position:absolute;
+      top:120%;
+      right:0;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+      min-width:210px;
+      display:none;
+      z-index:6000;
+    }
+    .user-menu a{
+      display:flex;
+      align-items:center;
+      gap:.7rem;
+      padding:.75rem 1rem;
+      font-weight:800;
+      color:var(--navy);
+    }
+    .user-menu a i{ color:var(--blue); }
+    .user-menu a:hover{ background:var(--muted); }
+    .user-menu a.logout i{ color:var(--danger); }
+
+    .user-initials.open .user-menu{ display:block; }
+
+    /* MOBILE MENU BAR (NO HAMBURGER) */
+    .mobile-menu-bar{
+      display:none;
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 1rem 1rem;
     }
 
-    /* dropdown */
-    .nav-item {
-      position: relative;
+    .chip-row{
+      display:flex;
+      gap:.65rem;
+      overflow-x:auto;
+      padding:.25rem .15rem;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .chip-row::-webkit-scrollbar{ display:none; }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      padding:.65rem .9rem;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--navy);
+      font-weight:800;
+      white-space:nowrap;
+      flex:0 0 auto;
+      transition:.18s;
+    }
+    .chip i{ color:var(--blue); }
+    .chip:hover{
+      border-color:#cbd5e1;
+      transform:translateY(-1px);
     }
 
-    .nav-item .dropdown {
-      position: absolute;
-      top: 120%;
-      left: 0;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
-      padding: .5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: .25s;
-      min-width: 200px;
-      z-index: 999;
+    .chip.primary{
+      background:var(--navy);
+      border-color:var(--navy);
+      color:#fff;
     }
+    .chip.primary i{ color:#fff; }
 
-    .nav-item:hover .dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
+    .chip.logout{
+      background:#fff5f5;
+      border-color:#fecaca;
+      color:var(--navy);
     }
-
-    .dropdown a {
-      display: block;
-      padding: .55rem 1rem;
-      color: var(--navy);
-      font-weight: 600;
-    }
-
-    .dropdown a:hover {
-      background: var(--muted);
-    }
-
-    /* USER */
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-    }
-
-    .user-initials {
-      background: var(--blue);
-      color: #fff;
-      font-weight: 800;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      cursor: pointer;
-      position: relative;
-      transition: .2s;
-      user-select: none;
-    }
-
-    .user-initials:hover { transform: scale(1.05); }
-
-    .user-initials .dropdown {
-      right: 0;
-      top: 120%;
-      display: none;
-      position: absolute;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: .5rem 0;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
-      min-width: 200px;
-      overflow: hidden;
-      z-index: 999;
-    }
-
-    .user-initials.active .dropdown { display: block; }
-
-    .icon-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--navy);
-      color: #fff;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .icon-btn:hover { background: var(--blue); }
-
-    /* PROFESSIONAL HAMBURGER + DRAWER */
-    .hamburger {
-      display: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: .2s;
-      z-index: 1101;
-    }
-
-    .hamburger:hover { border-color: #cbd5e1; }
-
-    .hamburger-lines {
-      width: 18px;
-      height: 12px;
-      position: relative;
-    }
-
-    .hamburger-lines span {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--navy);
-      border-radius: 999px;
-      transition: .25s ease;
-    }
-
-    .hamburger-lines span:nth-child(1) { top: 0; }
-    .hamburger-lines span:nth-child(2) { top: 5px; }
-    .hamburger-lines span:nth-child(3) { top: 10px; }
-
-    .hamburger.active .hamburger-lines span:nth-child(1) {
-      transform: translateY(5px) rotate(45deg);
-    }
-
-    .hamburger.active .hamburger-lines span:nth-child(2) {
-      opacity: 0;
-      transform: translateX(6px);
-    }
-
-    .hamburger.active .hamburger-lines span:nth-child(3) {
-      transform: translateY(-5px) rotate(-45deg);
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .45);
-      opacity: 0;
-      pointer-events: none;
-      transition: .25s ease;
-      z-index: 1100;
-    }
-
-    .overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .mobile-drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: min(360px, 86vw);
-      background: #fff;
-      border-left: 1px solid #e5e7eb;
-      transform: translateX(105%);
-      transition: .28s ease;
-      z-index: 1102;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .mobile-drawer.show { transform: translateX(0); }
-
-    .drawer-head {
-      padding: 1rem;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .drawer-head strong {
-      color: var(--navy);
-      font-size: 1rem;
-    }
-
-    .drawer-close {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      cursor: pointer;
-    }
-
-    .drawer-body {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: .65rem;
-    }
-
-    .drawer-link {
-      padding: .95rem 1rem;
-      border-radius: 14px;
-      border: 1px solid #eef2f7;
-      background: #fbfdff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 700;
-      color: var(--navy);
-    }
-
-    .drawer-link span {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-    }
-
-    .drawer-link i { color: var(--blue); }
-
-    .drawer-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid #e5e7eb;
-      color: #6b7280;
-      font-size: .85rem;
-      line-height: 1.3;
-    }
-
-    body.no-scroll {
-      overflow: hidden;
-      height: 100vh;
-    }
-
-    /* MOBILE RESPONSIVE */
-    @media(max-width:900px) {
-      .nav-links { display: none; }
-      .hamburger { display: inline-flex; }
-    }
+    .chip.logout i{ color:var(--danger); }
 
     /* HERO */
-    .hero {
-      background: linear-gradient(135deg, #f0f4ff, #eef4ff);
-      border-radius: var(--radius);
-      margin: 1rem;
-      overflow: hidden;
+    .hero{
+      background:linear-gradient(135deg,#f0f4ff,#eef4ff);
+      border-radius:var(--radius);
+      margin:1rem;
+      overflow:hidden;
     }
-
-    .hero-inner {
-      max-width: 1200px;
-      margin: auto;
-      padding: 4rem 1.5rem;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 3rem;
-      align-items: center;
+    .hero-inner{
+      max-width:1200px;
+      margin:auto;
+      padding:4rem 1.5rem;
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:3rem;
+      align-items:center;
     }
-
-    .hero h1 {
-      font-size: 3rem;
-      color: var(--navy);
-      letter-spacing: -0.02em;
+    .hero h1{
+      font-size:3rem;
+      color:var(--navy);
+      letter-spacing:-.02em;
     }
-
-    .hero p {
-      margin: 1rem 0;
-      color: #555;
-      max-width: 52ch;
+    .hero p{
+      margin:1rem 0;
+      color:#555;
+      max-width:52ch;
     }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .6rem;
-      padding: .9rem 1.6rem;
-      border-radius: 50px;
-      background: var(--blue);
-      color: #fff;
-      font-weight: 700;
-      transition: .2s;
+    .btn{
+      display:inline-flex;
+      gap:.6rem;
+      align-items:center;
+      justify-content:center;
+      padding:.9rem 1.6rem;
+      border-radius:50px;
+      background:var(--blue);
+      color:#fff;
+      font-weight:900;
+      transition:.2s;
     }
+    .btn:hover{ transform:scale(1.03); }
 
-    .btn:hover { transform: scale(1.04); }
+    /* Sections */
+    section{ padding:4rem 1.5rem; }
+    .container{ max-width:1200px; margin:auto; }
+    .section-title{ font-size:2rem; margin-bottom:2rem; color:var(--navy); }
 
-    @media (max-width: 900px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-        text-align: left;
-        padding: 1.4rem;
-        gap: 1.25rem;
+    /* Products */
+    .products{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:2rem;
+    }
+    .product{
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      min-height:290px;
+      transition:.25s;
+    }
+    .product:hover{
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      transform:translateY(-2px);
+    }
+    .product-img{
+      background:#f8f9fb;
+      border-radius:12px;
+      padding:1rem;
+      min-height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:1rem;
+    }
+    .product-img img{ max-height:140px; width:auto; transition:transform .25s; }
+    .product:hover .product-img img{ transform:scale(1.05); }
+    .product h3{ color:var(--navy); margin:.25rem 0 1rem; font-size:1.15rem; }
+
+    .add-cart{
+      border:none;
+      background:var(--navy);
+      color:#fff;
+      padding:.8rem 1rem;
+      border-radius:12px;
+      font-weight:900;
+      cursor:pointer;
+      transition:.2s;
+      margin-top:auto;
+    }
+    .add-cart:hover{ background:var(--blue); transform:scale(1.02); }
+
+    /* Footer */
+    footer{
+      background:var(--navy);
+      color:#fff;
+      padding:3rem 1.5rem;
+    }
+    footer .container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:2rem;
+    }
+    footer a{ color:#fff; text-decoration:underline; }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      top:1rem; right:1rem;
+      background:#4ade80;
+      color:#fff;
+      padding:1rem 1.2rem;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.15);
+      opacity:0;
+      transform:translateY(-20px);
+      transition:.35s;
+      z-index:9000;
+      max-width:340px;
+      font-weight:900;
+    }
+    .toast.show{ opacity:1; transform:translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .nav-links{ display:none; }
+      .mobile-menu-bar{ display:block; }
+
+      .hero-inner{
+        grid-template-columns:1fr;
+        padding:1.4rem;
+        gap:1.25rem;
       }
-
-      .hero h1 { font-size: 2rem; }
-      .hero-inner img { order: -1; }
+      .hero h1{ font-size:2rem; }
+      .hero-inner img{ order:-1; }
     }
 
-    /* PRODUCTS */
-    section {
-      padding: 4rem 1.5rem;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .section-title {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: var(--navy);
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .product {
-      border: 1px solid #e5e7eb;
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: .25s;
-      background: #fff;
-      min-height: 290px;
-    }
-
-    .product:hover {
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
-      transform: translateY(-2px);
-    }
-
-    .product-img {
-      background: #f8f9fb;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 160px;
-    }
-
-    .product-img img {
-      max-height: 140px;
-      width: auto;
-      transition: transform .25s;
-    }
-
-    .product:hover .product-img img {
-      transform: scale(1.05);
-    }
-
-    .product h3 {
-      color: var(--navy);
-      margin: .25rem 0 1rem;
-      font-size: 1.15rem;
-    }
-
-    .add-cart {
-      border: none;
-      background: var(--navy);
-      color: #fff;
-      padding: .8rem 1rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: .2s;
-      font-weight: 700;
-    }
-
-    .add-cart:hover {
-      background: var(--blue);
-      transform: scale(1.03);
-    }
-
-    /* More professional cards on mobile */
-    @media (max-width: 560px) {
-      .products { gap: 1rem; }
-      .product {
-        padding: 1.15rem;
-        min-height: auto;
-      }
-      .product-img { min-height: 140px; }
-      .add-cart { width: 100%; }
-    }
-
-    /* SERVICES */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .service {
-      background: var(--muted);
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 1rem 1.1rem;
-      font-weight: 700;
-      color: var(--navy);
-    }
-
-    /* CONTACT */
-    #contact p {
-      color: #444;
-      font-weight: 600;
-      background: var(--muted);
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 1rem 1.1rem;
-      max-width: 520px;
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--navy);
-      color: #fff;
-      padding: 3rem 1.5rem;
-    }
-
-    footer .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2rem;
-    }
-
-    footer a {
-      color: #fff;
-      text-decoration: underline;
-    }
-
-    /* TOAST */
-    .toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: #4ade80;
-      color: #fff;
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: .35s;
-      z-index: 2000;
-      max-width: 340px;
-      font-weight: 800;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    @media(max-width:560px){
+      .products{ gap:1rem; }
+      .product{ padding:1.15rem; min-height:auto; }
+      .product-img{ min-height:140px; }
+      .add-cart{ width:100%; }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="nav">
-      <div class="brand"><a href="dashboard.html"><img src="logo.png" class="logo" alt="Logo"></a></div>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <a href="dashboard.html"><img src="logo.png" class="logo" alt="Logo"></a>
+    </div>
 
-      <!-- Desktop nav -->
-      <nav class="nav-links" id="navLinks">
-        <a href="dashboard.html">Home</a>
-        <a href="ref.html">Refurbished</a>
-        <a href="new.html">New</a>
-        <a href="iphones.html">iPhones</a>
-        <a href="acc.html">Accessories</a>
-        <a href="repair.html">Repairs</a>
-        <div class="nav-item">
-          <a href="#">More <i class="fa-solid fa-chevron-down"></i></a>
-          <div class="dropdown">
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="orders.html">Orders</a>
-            <a href="settings.html">Account Settings</a>
-            <a href="#" id="logoutDesktop"
-              style="background-color:#012141; padding:.55rem 1rem; margin:.25rem .6rem; border-radius:12px; color:#e5e7eb; text-align:center;">
-              Logout
-            </a>
-          </div>
+    <!-- Desktop nav -->
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="dashboard.html">Home</a>
+      <a href="ref.html">Refurbished</a>
+      <a href="new.html">New</a>
+      <a href="iphones.html">iPhones</a>
+      <a href="acc.html">Accessories</a>
+      <a href="repair.html">Repairs</a>
+      <a href="contact.html">Contact</a>
+      <a href="orders.html">Orders</a>
+      <a href="settings.html">Account Settings</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="user-initials" id="userInitials" aria-label="User menu">
+        U
+        <div class="user-menu" id="userMenu">
+          <a href="orders.html"><i class="fa-solid fa-box"></i> Orders</a>
+          <a href="settings.html"><i class="fa-solid fa-gear"></i> Account Settings</a>
+          <a href="#" class="logout" id="logoutDesktop"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </div>
-      </nav>
-
-      <!-- Actions -->
-      <div class="nav-actions">
-        <div class="user-initials" id="userInitials">U</div>
-        <a href="cart.html" class="icon-btn" aria-label="Cart">
-          <i class="fa-solid fa-cart-shopping"></i>
-        </a>
-        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
-          <div class="hamburger-lines"><span></span><span></span><span></span></div>
-        </button>
       </div>
-    </div>
-  </header>
 
-  <!-- Mobile overlay + drawer -->
-  <div class="overlay" id="overlay"></div>
-
-  <aside class="mobile-drawer" id="drawer" aria-hidden="true">
-    <div class="drawer-head">
-      <strong>Menu</strong>
-      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-
-    <div class="drawer-body">
-      <a class="drawer-link" href="dashboard.html"><span><i class="fa-solid fa-house"></i> Home</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="ref.html"><span><i class="fa-solid fa-laptop"></i> Refurbished</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="new.html"><span><i class="fa-solid fa-laptop-code"></i> New</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="iphones.html"><span><i class="fa-brands fa-apple"></i> iPhones</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="acc.html"><span><i class="fa-solid fa-headphones"></i> Accessories</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="repair.html"><span><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="contact.html"><span><i class="fa-solid fa-envelope"></i> Contact</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="orders.html"><span><i class="fa-solid fa-box"></i> Orders</span><i class="fa-solid fa-chevron-right"></i></a>
-      <a class="drawer-link" href="settings.html"><span><i class="fa-solid fa-gear"></i> Account Settings</span><i class="fa-solid fa-chevron-right"></i></a>
-
-      <a class="drawer-link" href="#" id="logoutMobile" style="border-color:#dbeafe;background:#eff6ff;">
-        <span><i class="fa-solid fa-right-from-bracket"></i> Logout</span>
-        <i class="fa-solid fa-chevron-right"></i>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
       </a>
     </div>
+  </div>
 
-    <div class="drawer-footer">
-      SATECH ENTERPRISE — Premium gadgets, refurbished laptops & reliable repairs.
+  <!-- Mobile menu bar (chips) -->
+  <div class="mobile-menu-bar">
+    <div class="chip-row" aria-label="Mobile navigation">
+      <a class="chip primary" href="dashboard.html"><i class="fa-solid fa-house"></i> Home</a>
+      <a class="chip" href="ref.html"><i class="fa-solid fa-laptop"></i> Refurbished</a>
+      <a class="chip" href="new.html"><i class="fa-solid fa-laptop-code"></i> New</a>
+      <a class="chip" href="iphones.html"><i class="fa-brands fa-apple"></i> iPhones</a>
+      <a class="chip" href="acc.html"><i class="fa-solid fa-headphones"></i> Accessories</a>
+      <a class="chip" href="repair.html"><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</a>
+      <a class="chip" href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a>
+      <a class="chip" href="orders.html"><i class="fa-solid fa-box"></i> Orders</a>
+      <a class="chip" href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a class="chip logout" href="#" id="logoutMobile"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
-  </aside>
+  </div>
+</header>
 
-  <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <h1>Premium Gadgets & Reliable Repairs</h1>
-        <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses
-          and individuals.</p>
-        <a href="#products" class="btn"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
-      </div>
-      <img src="gadgets.png" alt="Gadgets">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>Premium Gadgets & Reliable Repairs</h1>
+      <p>Refurbished & new laptops, iPhones, smart devices and professional technical repairs, trusted by businesses and individuals.</p>
+      <a href="#products" class="btn"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
     </div>
-  </section>
+    <img src="gadgets.png" alt="Gadgets">
+  </div>
+</section>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="container">
-    <h2 class="section-title">Popular Products</h2>
-    <div class="products">
-      <div class="product">
-        <div class="product-img"><img src="hp.png" alt="Refurbished Laptop"></div>
-        <h3>Refurbished Laptop</h3>
-        <button class="add-cart" onclick="window.location.href='ref.html'">View Laptops</button>
-      </div>
+<!-- PRODUCTS -->
+<section id="products" class="container">
+  <h2 class="section-title">Popular Products</h2>
 
-      <div class="product">
-        <div class="product-img"><img src="HP_Pavilion_14.png" alt="New Laptops"></div>
-        <h3>New Laptops</h3>
-        <button class="add-cart" onclick="window.location.href='new.html'">View Laptops</button>
-      </div>
-
-      <div class="product">
-        <div class="product-img"><img src="i13.png" alt="iPhones"></div>
-        <h3>iPhones</h3>
-        <button class="add-cart" onclick="window.location.href='iphones.html'">View Phones</button>
-      </div>
-
-      <div class="product">
-        <div class="product-img"><img src="smart.png" alt="Smart Watches"></div>
-        <h3>Smart Watches</h3>
-        <button class="add-cart" onclick="window.location.href='acc.html'">View Accessories</button>
-      </div>
+  <div class="products">
+    <div class="product">
+      <div class="product-img"><img src="hp.png" alt="Refurbished Laptop"></div>
+      <h3>Refurbished Laptop</h3>
+      <button class="add-cart" onclick="window.location.href='ref.html'">View Laptops</button>
     </div>
-  </section>
 
-  <!-- SERVICES -->
-  <section id="services" class="container">
-    <h2 class="section-title">Technical Services</h2>
-    <div class="services">
-      <div class="service">Laptop Software & Hardware Repairs</div>
-      <div class="service">Phone Screen & Back Cover Replacement</div>
-      <div class="service">Diagnostics & Performance Upgrades</div>
+    <div class="product">
+      <div class="product-img"><img src="HP_Pavilion_14.png" alt="New Laptops"></div>
+      <h3>New Laptops</h3>
+      <button class="add-cart" onclick="window.location.href='new.html'">View Laptops</button>
     </div>
-  </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="container">
-    <h2 class="section-title">Contact Us</h2>
-    <p>Email: info@satech.co.za<br>Phone: +27 81 840 1398</p>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div>
-        <h3>SATECH ENTERPRISE</h3>
-        <p>Powered by <a href="https://cmstudio.online" target="_blank" rel="noopener noreferrer">CMSTUDIO</a></p>
-      </div>
-      <div>
-        <h4>Quick Links</h4>
-        <p>Shop • Repairs • Support</p>
-      </div>
-      <div>
-        <h4>Secure Payments</h4>
-        <p>Card • EFT • PayFast (Coming Soon)</p>
-      </div>
+    <div class="product">
+      <div class="product-img"><img src="i13.png" alt="iPhones"></div>
+      <h3>iPhones</h3>
+      <button class="add-cart" onclick="window.location.href='iphones.html'">View Phones</button>
     </div>
-  </footer>
 
-  <script>
-    // Supabase
-    const supabaseClient = supabase.createClient(
-      "https://nzuwmiyduragtqyaetfr.supabase.co",
-      "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
-    );
+    <div class="product">
+      <div class="product-img"><img src="smart.png" alt="Smart Watches"></div>
+      <h3>Smart Watches</h3>
+      <button class="add-cart" onclick="window.location.href='acc.html'">View Accessories</button>
+    </div>
+  </div>
+</section>
 
-    // Professional drawer controls (global, not inside checkLogin)
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
-    const drawer = document.getElementById("drawer");
-    const overlay = document.getElementById("overlay");
-    const drawerClose = document.getElementById("drawerClose");
+<!-- SERVICES -->
+<section id="services" class="container">
+  <h2 class="section-title">Technical Services</h2>
 
-    function openDrawer() {
-      drawer.classList.add("show");
-      overlay.classList.add("show");
-      hamburgerBtn.classList.add("active");
-      hamburgerBtn.setAttribute("aria-expanded", "true");
-      drawer.setAttribute("aria-hidden", "false");
-      document.body.classList.add("no-scroll");
-    }
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;">
+    <div style="background:var(--muted);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;font-weight:900;color:var(--navy);">
+      Laptop Software & Hardware Repairs
+    </div>
+    <div style="background:var(--muted);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;font-weight:900;color:var(--navy);">
+      Phone Screen & Back Cover Replacement
+    </div>
+    <div style="background:var(--muted);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;font-weight:900;color:var(--navy);">
+      Diagnostics & Performance Upgrades
+    </div>
+  </div>
+</section>
 
-    function closeDrawer() {
-      drawer.classList.remove("show");
-      overlay.classList.remove("show");
-      hamburgerBtn.classList.remove("active");
-      hamburgerBtn.setAttribute("aria-expanded", "false");
-      drawer.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("no-scroll");
-    }
+<!-- CONTACT -->
+<section id="contact" class="container">
+  <h2 class="section-title">Contact Us</h2>
+  <p style="color:#444;font-weight:800;background:var(--muted);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;max-width:520px;">
+    Email: info@satech.co.za<br>Phone: +27 81 840 1398
+  </p>
+</section>
 
-    hamburgerBtn.addEventListener("click", () => {
-      const isOpen = drawer.classList.contains("show");
-      isOpen ? closeDrawer() : openDrawer();
-    });
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div>
+      <h3>SATECH ENTERPRISE</h3>
+      <p>Powered by <a href="https://cmstudio.online" target="_blank" rel="noopener noreferrer">CMSTUDIO</a></p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <p>Shop • Repairs • Support</p>
+    </div>
+    <div>
+      <h4>Secure Payments</h4>
+      <p>Card • EFT • PayFast (Coming Soon)</p>
+    </div>
+  </div>
+</footer>
 
-    drawerClose.addEventListener("click", closeDrawer);
-    overlay.addEventListener("click", closeDrawer);
+<script>
+  // Supabase
+  const supabaseClient = supabase.createClient(
+    "https://nzuwmiyduragtqyaetfr.supabase.co",
+    "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
+  );
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && drawer.classList.contains("show")) closeDrawer();
-    });
+  const toast = document.getElementById("toast");
+  const userInitials = document.getElementById("userInitials");
 
-    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 3500);
+  }
 
-    // Login check + profile
-    async function checkLogin() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) return location.href = "login.html";
+  // User menu open/close
+  userInitials.addEventListener("pointerup", (e)=>{
+    e.stopPropagation();
+    userInitials.classList.toggle("open");
+  });
 
-      const { data: profile } = await supabaseClient
-        .from("profiles")
-        .select("full_names,surname,gender")
-        .eq("id", user.id)
-        .maybeSingle();
+  document.addEventListener("pointerup", ()=>{
+    userInitials.classList.remove("open");
+  });
 
-      const userElem = document.getElementById("userInitials");
+  async function doLogout(e){
+    if(e) e.preventDefault();
+    await supabaseClient.auth.signOut();
+    location.href = "login.html";
+  }
 
-      if (profile?.full_names && profile?.surname) {
-        const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
-        userElem.textContent = initials.toUpperCase();
-      } else {
-        userElem.textContent = "U";
-      }
+  document.getElementById("logoutDesktop").addEventListener("pointerup", doLogout);
+  document.getElementById("logoutMobile").addEventListener("pointerup", doLogout);
 
-      // Build user dropdown (desktop)
-      const dropdown = document.createElement('div');
-      dropdown.className = 'dropdown';
-      dropdown.innerHTML = `
-        <a href="dashboard.html">Dashboard</a>
-        <a href="orders.html">Orders</a>
-        <a href="settings.html">Account Settings</a>
-        <a href="#" id="logoutBtn">Logout</a>
-      `;
-      userElem.appendChild(dropdown);
+  async function checkLogin(){
+    const { data:{ user } } = await supabaseClient.auth.getUser();
+    if(!user) return location.href="login.html";
 
-      // Toggle dropdown
-      userElem.addEventListener('click', (e) => {
-        e.stopPropagation();
-        userElem.classList.toggle('active');
-      });
+    const { data: profile } = await supabaseClient
+      .from("profiles")
+      .select("full_names,surname,gender")
+      .eq("id", user.id)
+      .maybeSingle();
 
-      // Close dropdown when clicking outside
-      document.addEventListener('click', () => userElem.classList.remove('active'));
+    // initials
+    if(profile?.full_names && profile?.surname){
+      const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
+      userInitials.firstChild.textContent = initials.toUpperCase();
 
-      // Logout handlers
-      async function doLogout(e) {
-        if (e) e.preventDefault();
-        await supabaseClient.auth.signOut();
-        location.href = "login.html";
-      }
-
-      const logoutBtn = document.getElementById("logoutBtn");
-      if (logoutBtn) logoutBtn.addEventListener("click", doLogout);
-
-      const logoutDesktop = document.getElementById("logoutDesktop");
-      if (logoutDesktop) logoutDesktop.addEventListener("click", doLogout);
-
-      const logoutMobile = document.getElementById("logoutMobile");
-      if (logoutMobile) logoutMobile.addEventListener("click", doLogout);
-
-      // Welcome toast (only show Mr/Ms if gender is set)
-      const toast = document.getElementById("toast");
-      const gender = profile?.gender;
+      // toast
       let title = "";
-      if (gender === "Male") title = "Mr ";
-      else if (gender === "Female") title = "Ms ";
-
-      const surname = profile?.surname || "";
-      toast.textContent = surname ? `Welcome ${title}${surname}` : "Welcome!";
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3500);
+      if(profile.gender === "Male") title = "Mr ";
+      else if(profile.gender === "Female") title = "Ms ";
+      showToast(profile.surname ? `Welcome ${title}${profile.surname}` : "Welcome!");
+    } else {
+      userInitials.firstChild.textContent = "U";
+      showToast("Welcome!");
     }
+  }
 
-    checkLogin();
-  </script>
+  checkLogin();
+</script>
 
 </body>
 </html>
