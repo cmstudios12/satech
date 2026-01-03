@@ -16,52 +16,274 @@
   --muted:#f4f6f8;
   --radius:12px;
   --transition:.3s;
+  --red:#e74c3c;
+  --border:#e5e7eb;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif;}
 body{background:var(--light);color:#111;line-height:1.5;}
 a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block}
 
 /* HEADER */
 header{
-  display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:var(--white);box-shadow:0 4px 10px rgba(0,0,0,.05);position:sticky;top:0;z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem 2rem;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  position:sticky;
+  top:0;
+  z-index:2000;
+  gap:1rem;
 }
 header .logo img{height:48px;}
-.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;}
-.hamburger span{width:25px;height:3px;background:var(--navy);border-radius:10px;}
 
 /* NAV LINKS */
-.nav-links{display:flex;gap:1.5rem;align-items:center;}
-.nav-links a{padding:.5rem 0;position:relative;font-weight:500;color:var(--navy);}
+.nav-links{display:flex;gap:1.2rem;align-items:center;}
+.nav-links a{padding:.5rem 0;position:relative;font-weight:600;color:var(--navy);}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:.3s;}
 .nav-links a:hover::after{width:100%;}
 
 /* USER BOX */
-.user-box{display:flex;align-items:center;gap:1rem;position:relative;}
-.user-initials{width:42px;height:42px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;cursor:pointer;}
-.user-dropdown{position:absolute;top:120%;right:0;background:#fff;color:var(--navy);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.1);overflow:hidden;display:none;flex-direction:column;}
-.user-dropdown a{padding:.7rem 1.2rem;text-decoration:none;color:var(--navy);}
+.user-box{display:flex;align-items:center;gap:.8rem;position:relative;}
+.user-initials{
+  width:42px;height:42px;background:var(--blue);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;cursor:pointer;
+  user-select:none;transition:.2s;
+}
+.user-initials:hover{transform:scale(1.05);}
+.user-dropdown{
+  position:absolute;top:120%;right:0;background:#fff;color:var(--navy);
+  border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.1);
+  overflow:hidden;display:none;flex-direction:column;min-width:190px;border:1px solid var(--border);
+  z-index:2100;
+}
+.user-dropdown a{padding:.75rem 1.1rem;font-weight:700;display:flex;align-items:center;gap:.6rem;}
+.user-dropdown a i{color:var(--blue);}
 .user-dropdown a:hover{background:var(--muted);}
+.user-dropdown .logout i{color:var(--red);}
+
+/* ✅ Professional hamburger + drawer (mobile) */
+.hamburger{
+  display:none;
+  width:44px;height:44px;border-radius:12px;border:1px solid var(--border);
+  background:#fff;align-items:center;justify-content:center;cursor:pointer;transition:.2s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.hamburger:hover{border-color:#cbd5e1;}
+.hamburger-lines{width:18px;height:12px;position:relative;}
+.hamburger-lines span{
+  position:absolute;left:0;width:100%;height:2px;background:var(--navy);border-radius:999px;transition:.25s ease;
+}
+.hamburger-lines span:nth-child(1){top:0;}
+.hamburger-lines span:nth-child(2){top:5px;}
+.hamburger-lines span:nth-child(3){top:10px;}
+.hamburger.active .hamburger-lines span:nth-child(1){transform:translateY(5px) rotate(45deg);}
+.hamburger.active .hamburger-lines span:nth-child(2){opacity:0;transform:translateX(6px);}
+.hamburger.active .hamburger-lines span:nth-child(3){transform:translateY(-5px) rotate(-45deg);}
+
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;transition:.25s ease;z-index:2050;
+}
+.overlay.show{opacity:1;pointer-events:auto;}
+
+.mobile-drawer{
+  position:fixed;top:0;right:0;height:100vh;width:min(360px,86vw);
+  background:#fff;border-left:1px solid var(--border);
+  transform:translateX(105%);transition:.28s ease;
+  z-index:2060;display:flex;flex-direction:column;
+}
+.mobile-drawer.show{transform:translateX(0);}
+.drawer-head{
+  padding:1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.drawer-head strong{color:var(--navy);font-size:1rem;}
+.drawer-close{
+  width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+  background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.drawer-body{padding:1rem;display:flex;flex-direction:column;gap:.65rem;}
+.drawer-link{
+  padding:.95rem 1rem;border-radius:14px;border:1px solid #eef2f7;background:#fbfdff;
+  display:flex;align-items:center;justify-content:space-between;font-weight:800;color:var(--navy);
+}
+.drawer-link span{display:inline-flex;align-items:center;gap:.6rem;}
+.drawer-link i{color:var(--blue);}
+.drawer-footer{
+  margin-top:auto;padding:1rem;border-top:1px solid var(--border);
+  color:#6b7280;font-size:.85rem;line-height:1.3;
+}
+body.no-scroll{overflow:hidden;height:100vh;}
 
 /* MAIN CONTENT */
-.main-content{max-width:900px;margin:2rem auto;padding:2rem;background:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.05);}
-.main-content h1{text-align:center;color:var(--navy);margin-bottom:2rem;}
-.field{margin-bottom:1rem;display:flex;flex-direction:column;}
-.field label{margin-bottom:.4rem;font-weight:500;}
-.field input,.field select{padding:.8rem;border-radius:8px;border:1px solid #ccc;font-size:.95rem;}
-.save-btn{padding:.9rem 1rem;background:var(--navy);color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:.5rem;transition:all .3s;}
-.save-btn:hover{background:var(--blue);}
-.loader{border:4px solid #f3f3f3;border-top:4px solid var(--blue);border-radius:50%;width:18px;height:18px;animation:spin 1s linear infinite;}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.main-content{
+  max-width:980px;
+  margin:1.75rem auto;
+  padding:1.5rem;
+}
+.page-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+  overflow:hidden;
+}
+.page-head{
+  padding:1.2rem 1.25rem;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  background:linear-gradient(135deg,#f8fbff,#eef4ff);
+}
+.page-head h1{
+  color:var(--navy);
+  font-size:1.35rem;
+  margin-bottom:.25rem;
+}
+.page-head p{
+  color:#556;
+  font-weight:600;
+  font-size:.95rem;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.55rem .9rem;
+  border-radius:999px;
+  border:1px solid #dbeafe;
+  background:#eff6ff;
+  color:var(--navy);
+  font-weight:800;
+  white-space:nowrap;
+}
+.badge i{color:var(--blue);}
+
+/* Form layout */
+.form-wrap{padding:1.25rem;}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+}
+.section-title{
+  margin:1.25rem 0 .75rem;
+  color:var(--navy);
+  font-size:1rem;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+.section-title i{color:var(--blue);}
+.field{display:flex;flex-direction:column;gap:.4rem;}
+.field label{font-weight:800;color:var(--navy);font-size:.9rem;}
+.field input,.field select{
+  padding:.85rem;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  font-size:.95rem;
+  outline:none;
+  transition:.15s;
+  background:#fff;
+}
+.field input:focus,.field select:focus{
+  border-color:#93c5fd;
+  box-shadow:0 0 0 4px rgba(30,94,255,.12);
+}
+.helper{
+  color:#6b7280;
+  font-size:.82rem;
+  font-weight:600;
+}
+
+/* Buttons */
+.actions{
+  display:flex;
+  gap:.75rem;
+  justify-content:flex-end;
+  margin-top:1.1rem;
+  flex-wrap:wrap;
+}
+.save-btn{
+  padding:.9rem 1.05rem;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:.55rem;
+  transition:all .2s;
+  min-width:190px;
+}
+.save-btn:hover{background:var(--blue);transform:translateY(-1px);}
+.save-btn:disabled{opacity:.7;cursor:not-allowed;transform:none;}
+.secondary-btn{
+  padding:.9rem 1.05rem;
+  background:#fff;
+  color:var(--navy);
+  border:1px solid var(--border);
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  transition:.2s;
+}
+.secondary-btn:hover{background:var(--muted);}
+
+.hidden{display:none;}
+.loader{
+  border:3px solid rgba(255,255,255,.35);
+  border-top:3px solid #fff;
+  border-radius:50%;
+  width:18px;height:18px;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
 
 /* TOAST */
-.toast{position:fixed;top:1rem;right:1rem;background:#4ade80;color:#fff;padding:1rem 1.5rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15);opacity:0;transform:translateY(-20px);transition:.5s;z-index:9999;}
+.toast{
+  position:fixed;
+  top:1rem;
+  right:1rem;
+  background:#4ade80;
+  color:#fff;
+  padding:1rem 1.2rem;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  opacity:0;
+  transform:translateY(-12px);
+  transition:.35s;
+  z-index:3000;
+  max-width:360px;
+  font-weight:800;
+}
 .toast.show{opacity:1;transform:translateY(0);}
 
 /* MOBILE RESPONSIVE */
-@media(max-width:768px){
+@media(max-width:900px){
   .nav-links{display:none;}
-  .hamburger{display:flex;}
+  .hamburger{display:inline-flex;}
+  header{padding:1rem 1.25rem;}
+}
+@media(max-width:760px){
+  .grid{grid-template-columns:1fr;}
+  .main-content{padding:1rem;}
+  .actions{justify-content:stretch;}
+  .save-btn,.secondary-btn{width:100%;}
 }
 </style>
 </head>
@@ -69,45 +291,139 @@ header .logo img{height:48px;}
 
 <header>
   <a href="dashboard.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+
   <nav class="nav-links">
     <a href="dashboard.html">Home</a>
-    <a href="ref.html">Refurbished Laptops</a>
-    <a href="new.html">New Laptops</a>
+    <a href="ref.html">Refurbished</a>
+    <a href="new.html">New</a>
     <a href="iphones.html">iPhones</a>
     <a href="acc.html">Accessories</a>
     <a href="repair.html">Repairs</a>
     <a href="contact.html">Contact</a>
   </nav>
+
   <div class="user-box">
     <div class="user-initials" id="userInitials">UL</div>
     <div class="user-dropdown" id="userDropdown">
-      <a href="index.html" id="logoutBtn">Logout</a>
+      <a href="#" class="logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
   </div>
-  <div class="hamburger" onclick="toggleNav()">
-    <span></span><span></span><span></span>
-  </div>
+
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+    <div class="hamburger-lines"><span></span><span></span><span></span></div>
+  </button>
 </header>
 
-<main class="main-content">
-  <h1 id="welcomeMsg">Welcome User</h1>
-  <form id="accountForm">
-    <div class="field"><label>Full Names</label><input type="text" id="fullNames" required></div>
-    <div class="field"><label>Surname</label><input type="text" id="surname" required></div>
-    <div class="field"><label>Email</label><input type="email" id="email" readonly></div>
-    <div class="field"><label>Phone Number</label><input type="text" id="phone" required placeholder="06xxxxxxxx"></div>
-    <div class="field"><label>Gender</label>
-      <select id="gender" required><option value="">Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select>
-    </div>
-    <h3>Change Password</h3>
-    <div class="field"><label>Current Password</label><input type="password" id="currentPassword"></div>
-    <div class="field"><label>New Password</label><input type="password" id="newPassword" placeholder="8+ chars, upper, lower, number, symbol"></div>
-    <div class="field"><label>Confirm New Password</label><input type="password" id="confirmPassword"></div>
-    <button type="submit" class="save-btn">
-      <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i> Save Changes</span>
-      <span class="loader hidden"></span>
+<!-- Mobile overlay + drawer -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="mobile-drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <strong>Menu</strong>
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
     </button>
-  </form>
+  </div>
+
+  <div class="drawer-body">
+    <a class="drawer-link" href="dashboard.html"><span><i class="fa-solid fa-house"></i> Home</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="ref.html"><span><i class="fa-solid fa-laptop"></i> Refurbished</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="new.html"><span><i class="fa-solid fa-laptop-code"></i> New</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="iphones.html"><span><i class="fa-brands fa-apple"></i> iPhones</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="acc.html"><span><i class="fa-solid fa-headphones"></i> Accessories</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="repair.html"><span><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="contact.html"><span><i class="fa-solid fa-envelope"></i> Contact</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="drawer-link" href="#" id="logoutMobile" style="border-color:#fecaca;background:#fff5f5;">
+      <span><i class="fa-solid fa-right-from-bracket" style="color:var(--red)"></i> Logout</span>
+      <i class="fa-solid fa-chevron-right"></i>
+    </a>
+  </div>
+
+  <div class="drawer-footer">
+    SATECH — Manage your account details securely.
+  </div>
+</aside>
+
+<main class="main-content">
+  <div class="page-card">
+    <div class="page-head">
+      <div>
+        <h1 id="welcomeMsg">Account Settings</h1>
+        <p>Update your personal details and secure your account.</p>
+      </div>
+      <div class="badge" id="badgeUser">
+        <i class="fa-solid fa-user-shield"></i> Logged in
+      </div>
+    </div>
+
+    <div class="form-wrap">
+      <form id="accountForm">
+        <div class="grid">
+          <div class="field">
+            <label>Full Names</label>
+            <input type="text" id="fullNames" required>
+          </div>
+
+          <div class="field">
+            <label>Surname</label>
+            <input type="text" id="surname" required>
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="email" readonly>
+            <div class="helper">Email can’t be changed here.</div>
+          </div>
+
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="text" id="phone" required placeholder="06xxxxxxxx">
+            <div class="helper">Must start with 06, 07 or 08.</div>
+          </div>
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-lock"></i> Change Password</div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Current Password</label>
+            <input type="password" id="currentPassword" placeholder="Optional">
+            <div class="helper">Not required for Supabase update, but kept for UI.</div>
+          </div>
+
+          <div class="field">
+            <label>New Password</label>
+            <input type="password" id="newPassword" placeholder="8+ chars, upper, lower, number, symbol">
+          </div>
+
+          <div class="field">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPassword" placeholder="Repeat new password">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="secondary-btn" id="resetBtn">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </button>
+
+          <button type="submit" class="save-btn">
+            <span class="btn-text"><i class="fa-solid fa-floppy-disk"></i> Save Changes</span>
+            <span class="loader hidden"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -118,80 +434,217 @@ const supabaseClient = supabase.createClient(
   "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
 );
 
-// Toggle user dropdown
-document.getElementById('userInitials').addEventListener('click',()=>{
-  const dd=document.getElementById('userDropdown');
-  dd.style.display=dd.style.display==='flex'?'none':'flex';
+const LOGIN_PAGE = "login.html";
+
+// ✅ User dropdown
+const userInitials = document.getElementById('userInitials');
+const userDropdown = document.getElementById('userDropdown');
+
+userInitials.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  userDropdown.style.display = userDropdown.style.display==='flex' ? 'none' : 'flex';
+  userDropdown.style.flexDirection = 'column';
 });
 
-// Mobile nav toggle
-function toggleNav(){
-  const nav=document.querySelector('.nav-links');
-  nav.style.display=nav.style.display==='flex'?'none':'flex';
+document.addEventListener('click',()=>{
+  userDropdown.style.display = "none";
+});
+
+// ✅ Professional drawer controls (reliable mobile hamburger)
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const drawer = document.getElementById("drawer");
+const overlay = document.getElementById("overlay");
+const drawerClose = document.getElementById("drawerClose");
+
+function openDrawer(){
+  drawer.classList.add("show");
+  overlay.classList.add("show");
+  hamburgerBtn.classList.add("active");
+  hamburgerBtn.setAttribute("aria-expanded","true");
+  drawer.setAttribute("aria-hidden","false");
+  document.body.classList.add("no-scroll");
+}
+function closeDrawer(){
+  drawer.classList.remove("show");
+  overlay.classList.remove("show");
+  hamburgerBtn.classList.remove("active");
+  hamburgerBtn.setAttribute("aria-expanded","false");
+  drawer.setAttribute("aria-hidden","true");
+  document.body.classList.remove("no-scroll");
+}
+function toggleDrawer(e){
+  e.preventDefault();
+  e.stopPropagation();
+  drawer.classList.contains("show") ? closeDrawer() : openDrawer();
 }
 
-// Toast
+hamburgerBtn.addEventListener("click", toggleDrawer, { passive:false });
+hamburgerBtn.addEventListener("touchstart", toggleDrawer, { passive:false });
+overlay.addEventListener("click", closeDrawer);
+drawerClose.addEventListener("click", closeDrawer);
+document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && drawer.classList.contains("show")) closeDrawer(); });
+drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
+
+// ✅ Toast
 function showToast(msg, success=true){
   const toast=document.getElementById('toast');
   toast.textContent=msg;
-  toast.style.background=success?"#4ade80":"#f87171";
+  toast.style.background = success ? "#4ade80" : "#f87171";
   toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),4000);
+  setTimeout(()=>toast.classList.remove("show"),3500);
 }
 
-// Load user profile
+// ✅ Auth guard
+async function requireAuth(){
+  const { data:{ session } } = await supabaseClient.auth.getSession();
+  if(!session){ window.location.href = LOGIN_PAGE; return null; }
+  return session;
+}
+
+supabaseClient.auth.onAuthStateChange((event)=>{
+  if(event==="SIGNED_OUT" || event==="USER_DELETED" || event==="TOKEN_REFRESH_FAILED"){
+    window.location.href = LOGIN_PAGE;
+  }
+});
+
+// ✅ Load profile
+let originalProfile = null;
+
 async function loadUser(){
-  const { data:{user} } = await supabaseClient.auth.getUser();
-  if(!user) return location.href="login.html";
-  const { data: profile } = await supabaseClient.from("profiles").select("*").eq("id",user.id).single();
+  const session = await requireAuth();
+  if(!session) return;
+
+  const user = session.user;
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if(error) showToast(error.message, false);
+
   if(profile){
-    document.getElementById("fullNames").value=profile.full_names;
-    document.getElementById("surname").value=profile.surname;
-    document.getElementById("email").value=profile.email;
-    document.getElementById("phone").value=profile.phone_number;
-    document.getElementById("gender").value=profile.gender;
-    const salutation=profile.gender==="Male"?"Mr":"Ms";
-    document.getElementById("welcomeMsg").textContent=`Welcome ${salutation} ${profile.surname}`;
-    document.getElementById("userInitials").textContent=profile.full_names[0]+profile.surname[0];
+    originalProfile = { ...profile };
+
+    document.getElementById("fullNames").value = profile.full_names || "";
+    document.getElementById("surname").value = profile.surname || "";
+    document.getElementById("email").value = profile.email || (user.email || "");
+    document.getElementById("phone").value = profile.phone_number || "";
+    document.getElementById("gender").value = profile.gender || "";
+
+    const salutation = profile.gender === "Male" ? "Mr" : (profile.gender === "Female" ? "Ms" : "");
+    document.getElementById("welcomeMsg").textContent =
+      profile.surname ? `Welcome ${salutation ? salutation + " " : ""}${profile.surname}` : "Account Settings";
+
+    const initials =
+      ((profile.full_names || "U")[0] || "U") + ((profile.surname || "")[0] || "");
+    userInitials.textContent = initials.toUpperCase();
+  } else {
+    document.getElementById("email").value = user.email || "";
+    userInitials.textContent = "U";
+    document.getElementById("welcomeMsg").textContent = "Account Settings";
   }
 }
 loadUser();
 
-// Save changes
-document.getElementById('accountForm').addEventListener('submit', async e=>{
+// ✅ Reset button
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(!originalProfile) return;
+  document.getElementById("fullNames").value = originalProfile.full_names || "";
+  document.getElementById("surname").value = originalProfile.surname || "";
+  document.getElementById("phone").value = originalProfile.phone_number || "";
+  document.getElementById("gender").value = originalProfile.gender || "";
+  document.getElementById("currentPassword").value = "";
+  document.getElementById("newPassword").value = "";
+  document.getElementById("confirmPassword").value = "";
+  showToast("Changes reset.");
+});
+
+// ✅ Save changes
+document.getElementById('accountForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const btn=document.querySelector('.save-btn');
-  const loader=btn.querySelector('.loader'); const text=btn.querySelector('.btn-text');
-  loader.classList.remove('hidden'); text.classList.add('hidden');
 
-  const full_names=document.getElementById("fullNames").value.trim();
-  const surname=document.getElementById("surname").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const gender=document.getElementById("gender").value;
+  const btn = document.querySelector('.save-btn');
+  const loader = btn.querySelector('.loader');
+  const text = btn.querySelector('.btn-text');
+  btn.disabled = true;
+  loader.classList.remove('hidden');
+  text.classList.add('hidden');
 
-  if(!/^(06|07|08)\d{8}$/.test(phone)){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Phone must start with 06/07/08",false);}
-  
-  const { data:{user} }=await supabaseClient.auth.getUser();
-  const { error } = await supabaseClient.from("profiles").upsert({id:user.id,full_names,surname,phone_number:phone,gender});
-  if(error){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast(error.message,false);}
+  const full_names = document.getElementById("fullNames").value.trim();
+  const surname = document.getElementById("surname").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const gender = document.getElementById("gender").value;
 
-  const newPassword=document.getElementById("newPassword").value.trim();
-  const confirmPassword=document.getElementById("confirmPassword").value.trim();
-  if(newPassword){
-    if(newPassword!==confirmPassword){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Passwords do not match",false);}
-    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(newPassword)){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast("Password must be strong",false);}
-    const { error: passError } = await supabaseClient.auth.updateUser({password:newPassword});
-    if(passError){loader.classList.add('hidden'); text.classList.remove('hidden'); return showToast(passError.message,false);}
+  if(!/^(06|07|08)\d{8}$/.test(phone)){
+    btn.disabled = false;
+    loader.classList.add('hidden'); text.classList.remove('hidden');
+    return showToast("Phone must start with 06/07/08 and be 10 digits.", false);
   }
 
+  const { data:{ user } } = await supabaseClient.auth.getUser();
+  if(!user){
+    btn.disabled = false;
+    loader.classList.add('hidden'); text.classList.remove('hidden');
+    return window.location.href = LOGIN_PAGE;
+  }
+
+  const { error } = await supabaseClient
+    .from("profiles")
+    .upsert({ id:user.id, full_names, surname, phone_number:phone, gender });
+
+  if(error){
+    btn.disabled = false;
+    loader.classList.add('hidden'); text.classList.remove('hidden');
+    return showToast(error.message, false);
+  }
+
+  // Password update (optional)
+  const newPassword = document.getElementById("newPassword").value.trim();
+  const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+  if(newPassword){
+    if(newPassword !== confirmPassword){
+      btn.disabled = false;
+      loader.classList.add('hidden'); text.classList.remove('hidden');
+      return showToast("New passwords do not match.", false);
+    }
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(newPassword)){
+      btn.disabled = false;
+      loader.classList.add('hidden'); text.classList.remove('hidden');
+      return showToast("Password must be 8+ and include upper, lower, number, symbol.", false);
+    }
+
+    const { error: passError } = await supabaseClient.auth.updateUser({ password: newPassword });
+    if(passError){
+      btn.disabled = false;
+      loader.classList.add('hidden'); text.classList.remove('hidden');
+      return showToast(passError.message, false);
+    }
+  }
+
+  btn.disabled = false;
   loader.classList.add('hidden'); text.classList.remove('hidden');
+
+  // Update initials + welcome immediately
+  const initials = (full_names[0] || "U") + (surname[0] || "");
+  userInitials.textContent = initials.toUpperCase();
+
+  const salutation = gender === "Male" ? "Mr" : (gender === "Female" ? "Ms" : "");
+  document.getElementById("welcomeMsg").textContent = surname ? `Welcome ${salutation ? salutation + " " : ""}${surname}` : "Account Settings";
+
   showToast("Profile updated successfully!");
 });
 
-// Logout
-document.getElementById("logoutBtn").addEventListener('click', async ()=>{
-  await supabaseClient.auth.signOut(); location.href="login.html";
-});
+// ✅ Logout (desktop dropdown + mobile drawer)
+async function doLogout(e){
+  if(e) e.preventDefault();
+  await supabaseClient.auth.signOut();
+  location.href = LOGIN_PAGE;
+}
+document.getElementById("logoutBtn").addEventListener("click", doLogout);
+document.getElementById("logoutMobile").addEventListener("click", doLogout);
 </script>
 
 </body>
