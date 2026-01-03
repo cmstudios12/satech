@@ -57,6 +57,7 @@
     .nav-links {
       display: flex;
       gap: 1rem;
+      align-items: center;
     }
 
     .nav-links a {
@@ -81,6 +82,15 @@
       width: 100%;
     }
 
+    .icon-btn i { font-size: 1.1rem; }
+
+    .logout-pill {
+      background-color: #012141;
+      padding: .4rem 1.2rem;
+      border-radius: 10px;
+      color: #e5e7eb;
+    }
+
     .user-box {
       display: flex;
       align-items: center;
@@ -100,6 +110,7 @@
       font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
+      user-select: none;
     }
 
     .user-dropdown {
@@ -113,11 +124,11 @@
       overflow: hidden;
       display: none;
       flex-direction: column;
+      min-width: 180px;
     }
 
     .user-dropdown a {
       padding: .7rem 1.2rem;
-      text-decoration: none;
       color: var(--navy);
     }
 
@@ -310,20 +321,13 @@
       right: 0;
     }
 
-    /* MOBILE RESPONSIVE */
     @media(max-width:800px) {
       .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
       }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
     }
   </style>
 </head>
@@ -332,6 +336,7 @@
 
   <header>
     <a href="dashboard.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
+
     <nav class="nav-links">
       <a href="dashboard.html">Home</a>
       <a href="ref.html">Refurbished</a>
@@ -340,22 +345,21 @@
       <a href="acc.html">Accessories</a>
       <a href="repair.html">Repairs</a>
       <a href="contact.html">Contact</a>
-      <a href="cart.html" class="icon-btn">
-        <i class="fa-solid fa-cart-shopping"></i>
-      </a>
-      <a href="index.html"
-        style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
-    </div>
+      <a href="cart.html" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
+      <a href="#" id="logoutTop" class="logout-pill">Logout</a>
     </nav>
+
     <div class="user-box">
-      <div class="user-initials" id="userInitials">UL</div>
+      <div class="user-initials" id="userInitials">U</div>
       <div class="user-dropdown" id="userDropdown">
         <a href="account.html">Account Settings</a>
         <a href="orders.html">My Orders</a>
-        <a href="#" id="logoutBtn">Logout</a>
+        <a href="index.html" id="logoutBtn" style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
       </div>
     </div>
+
     <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+
     <div class="mobile-nav" id="mobileNav">
       <a href="dashboard.html">Home</a>
       <a href="ref.html">Refurbished</a>
@@ -364,11 +368,8 @@
       <a href="acc.html">Accessories</a>
       <a href="repair.html">Repairs</a>
       <a href="contact.html">Contact</a>
-      <a href="cart.html" class="icon-btn">
-        <i class="fa-solid fa-cart-shopping"></i>
-      </a>
-      <a href="index.html"
-        style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
+      <a href="cart.html" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i></a>
+      <a href="#" id="logoutMobile" class="logout-pill" style="color: #f4f6f8;">Logout</a>
     </div>
   </header>
 
@@ -402,8 +403,9 @@
         <h3>Lenovo ThinkPad T480</h3>
         <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
         <div class="price">R8,499</div>
-        <button class="add-cart" onclick="addToCart('Lenovo ThinkPad T480','LTP480',8499,'Lenovo-T480.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('Lenovo ThinkPad T480','LTP480',8499,'Lenovo-T480.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
       <div class="product">
@@ -411,8 +413,9 @@
         <h3>Dell Inspiron 15</h3>
         <div class="specs">Intel i5 • 8GB RAM • 1TB HDD</div>
         <div class="price">R5,999</div>
-        <button class="add-cart" onclick="addToCart('Dell Inspiron 15','DI15',5999,'Dell_Inspiron_15.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('Dell Inspiron 15','DI15',5999,'Dell_Inspiron_15.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
       <div class="product">
@@ -420,8 +423,9 @@
         <h3>HP EliteBook 840 G5</h3>
         <div class="specs">Intel i7 • 16GB RAM • 512GB SSD</div>
         <div class="price">R8,999</div>
-        <button class="add-cart" onclick="addToCart('HP EliteBook 840 G5','HE840G5',8999,'HP_EliteBook_840_G5.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('HP EliteBook 840 G5','HE840G5',8999,'HP_EliteBook_840_G5.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
       <div class="product">
@@ -429,8 +433,9 @@
         <h3>Lenovo Yoga 370</h3>
         <div class="specs">Intel i5 • 8GB RAM • 256GB SSD</div>
         <div class="price">R7,299</div>
-        <button class="add-cart" onclick="addToCart('Lenovo Yoga 370','LY370',7299,'Lenovo_Yoga_370.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('Lenovo Yoga 370','LY370',7299,'Lenovo_Yoga_370.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
       <div class="product">
@@ -438,8 +443,9 @@
         <h3>Dell XPS 13</h3>
         <div class="specs">Intel i7 • 16GB RAM • 1TB SSD</div>
         <div class="price">R12,499</div>
-        <button class="add-cart" onclick="addToCart('Dell XPS 13','DXPS13',12499,'Dell_XPS_13.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('Dell XPS 13','DXPS13',12499,'Dell_XPS_13.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
       <div class="product">
@@ -447,8 +453,9 @@
         <h3>HP Pavilion 14</h3>
         <div class="specs">Intel i5 • 8GB RAM • 512GB SSD</div>
         <div class="price">R7,999</div>
-        <button class="add-cart" onclick="addToCart('HP Pavilion 14','HP14',7999,'HP_Pavilion_14.png')">Add
-          to Cart</button>
+        <button class="add-cart" onclick="addToCart('HP Pavilion 14','HP14',7999,'HP_Pavilion_14.png')">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
       </div>
 
     </div>
@@ -457,29 +464,71 @@
   <div id="cartPopup" class="cart-popup">Added to cart</div>
 
   <script>
-    // Supabase client
     const supabaseClient = supabase.createClient(
       "https://nzuwmiyduragtqyaetfr.supabase.co",
       "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
     );
 
-    // Check user login and get initials
-    async function loadUser() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) {
-        window.location.href = "login.html";
-        return;
+    // ✅ CHANGE THIS to your actual login page filename
+    const LOGIN_PAGE = "login.html";
+
+    // ========= AUTH GUARD + FORCE LOGOUT ON CANCEL/LEAVE =========
+
+    async function forceLogoutAndGoLogin() {
+      try { await supabaseClient.auth.signOut(); } catch (e) {}
+      // optional: clear local data too (uncomment if you want)
+      // localStorage.removeItem("cart");
+      window.location.href = LOGIN_PAGE;
+    }
+
+    async function requireAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.href = LOGIN_PAGE;
+        return null;
       }
+      return session;
+    }
+
+    // If auth state changes (signed out / token fails), kick them out.
+    supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT" || event === "USER_DELETED" || event === "TOKEN_REFRESH_FAILED") {
+        window.location.href = LOGIN_PAGE;
+      }
+    });
+
+    // ✅ If user closes/cancels/changes tab (common with Google popups), log out immediately.
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        // best-effort signout; can run when they leave/cancel popup
+        forceLogoutAndGoLogin();
+      }
+    });
+
+    // Fallback: on closing the tab/window
+    window.addEventListener("beforeunload", () => {
+      // best-effort signout (some browsers may not wait)
+      supabaseClient.auth.signOut();
+    });
+
+    // ========= LOAD USER + INITIALS =========
+    async function loadUser() {
+      const session = await requireAuth();
+      if (!session) return;
+
+      const user = session.user;
 
       const { data: profile } = await supabaseClient
         .from("profiles")
         .select("full_names,surname")
         .eq("id", user.id)
-        .single();
+        .maybeSingle();
 
-      if (profile) {
-        const initials = profile.full_names[0] + profile.surname[0];
+      if (profile && profile.full_names && profile.surname) {
+        const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
         document.getElementById('userInitials').textContent = initials.toUpperCase();
+      } else {
+        document.getElementById('userInitials').textContent = "U";
       }
     }
 
@@ -489,7 +538,6 @@
     function toggleNav() {
       const hamburger = document.querySelector('.hamburger');
       const mobileNav = document.getElementById('mobileNav');
-
       hamburger.classList.toggle('active');
       mobileNav.classList.toggle('show');
     }
@@ -508,11 +556,14 @@
       dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
     });
 
-    // Logout
-    document.getElementById("logoutBtn").addEventListener('click', async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = 'login.html';
-    });
+    // Logout buttons
+    async function logoutNow(e) {
+      e.preventDefault();
+      await forceLogoutAndGoLogin();
+    }
+    document.getElementById("logoutBtn").addEventListener('click', logoutNow);
+    document.getElementById("logoutTop").addEventListener('click', logoutNow);
+    document.getElementById("logoutMobile").addEventListener('click', logoutNow);
 
     // Cart logic
     function addToCart(name, code, price, img) {
@@ -533,5 +584,4 @@
   </script>
 
 </body>
-
 </html>
