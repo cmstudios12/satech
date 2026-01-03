@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>iPhones | SATECH ENTERPRISE</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -15,115 +16,291 @@
       --light: #f8f9fa;
       --white: #fff;
       --muted: #f4f6f8;
-      --radius: 12px;
-      --transition: .3s;
+      --radius: 16px;
+      --red: #e74c3c;
+      --border: #e5e7eb;
+      --shadow: 0 18px 40px rgba(0, 0, 0, .06);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: var(--light); color: #111; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
 
-    body {
-      background: var(--light);
-      color: #111;
-      line-height: 1.5;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
+    /* ===== HEADER (Dashboard style) ===== */
     header {
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: var(--white);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-
-    header .logo img {
-      height: 48px;
-    }
-
-    .nav-links {
-      display: flex;
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
       gap: 1rem;
     }
 
+    .brand img.logo { height: 48px; max-width: 160px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
     .nav-links a {
-      padding: .5rem 0;
-      font-weight: 500;
-      color: var(--navy);
       position: relative;
+      padding: .25rem 0;
+      font-weight: 800;
+      color: var(--navy);
+      opacity: .92;
+      white-space: nowrap;
     }
 
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: 0;
+      bottom: -2px;
       left: 0;
       width: 0;
       height: 2px;
       background: var(--blue);
-      transition: .3s;
+      transition: .25s;
     }
 
-    .nav-links a:hover::after {
-      width: 100%;
-    }
+    .nav-links a:hover::after { width: 100%; }
 
-    .user-box {
+    .nav-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 10px;
       position: relative;
     }
 
-    .user-initials {
-      width: 42px;
-      height: 42px;
+    .icon-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--navy);
+      cursor: pointer;
+      transition: .2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .icon-btn:hover { border-color: #cbd5e1; transform: translateY(-1px); }
+    .icon-btn i { font-size: 1.1rem; }
+
+    .badge {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 999px;
       background: var(--blue);
       color: #fff;
-      border-radius: 50%;
+      font-size: .75rem;
+      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
+      border: 2px solid #fff;
     }
 
-    .user-dropdown {
+    .badge.red { background: var(--red); }
+
+    .user-initials {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .user-menu {
       position: absolute;
-      top: 120%;
+      top: 115%;
       right: 0;
+      min-width: 220px;
       background: #fff;
-      color: var(--navy);
-      border-radius: var(--radius);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .08);
       overflow: hidden;
       display: none;
+      z-index: 2205;
+    }
+
+    .user-menu a {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .85rem 1rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .user-menu a i { color: var(--blue); }
+    .user-menu a:hover { background: var(--muted); }
+
+    /* ===== Professional Hamburger + Drawer (reliable) ===== */
+    .hamburger {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: .2s;
+      z-index: 2200;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .hamburger:hover { border-color: #cbd5e1; }
+    .hamburger-lines { width: 18px; height: 12px; position: relative; }
+
+    .hamburger-lines span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--navy);
+      border-radius: 999px;
+      transition: .25s ease;
+    }
+
+    .hamburger-lines span:nth-child(1) { top: 0; }
+    .hamburger-lines span:nth-child(2) { top: 5px; }
+    .hamburger-lines span:nth-child(3) { top: 10px; }
+
+    .hamburger.active .hamburger-lines span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+    .hamburger.active .hamburger-lines span:nth-child(2) { opacity: 0; transform: translateX(6px); }
+    .hamburger.active .hamburger-lines span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 2050;
+    }
+
+    .overlay.show { opacity: 1; pointer-events: auto; }
+
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(360px, 86vw);
+      background: #fff;
+      border-left: 1px solid var(--border);
+      transform: translateX(105%);
+      transition: .28s ease;
+      z-index: 2060;
+      display: flex;
       flex-direction: column;
     }
 
-    .user-dropdown a {
-      padding: .7rem 1.2rem;
-      text-decoration: none;
+    .mobile-drawer.show { transform: translateX(0); }
+
+    .drawer-head {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .drawer-head strong { color: var(--navy); font-size: 1rem; font-weight: 900; }
+
+    .drawer-close {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .drawer-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .65rem;
+    }
+
+    .drawer-link {
+      padding: .95rem 1rem;
+      border-radius: 14px;
+      border: 1px solid #eef2f7;
+      background: #fbfdff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 900;
       color: var(--navy);
     }
 
-    .user-dropdown a:hover {
-      background: var(--muted);
+    .drawer-link span {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
     }
 
+    .drawer-link i { color: var(--blue); }
+
+    .drawer-footer {
+      margin-top: auto;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      color: #6b7280;
+      font-size: .85rem;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+
+    body.no-scroll { overflow: hidden; height: 100vh; }
+
+    @media(max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: inline-flex; }
+    }
+
+    /* ===== HERO ===== */
     .page-header {
       background: linear-gradient(135deg, #f8fbff, #eef4ff);
       padding: 3rem 1.5rem;
@@ -138,383 +315,628 @@
       gap: 2.5rem;
     }
 
-    .hero-text h1 {
-      font-size: 2.7rem;
+    .hero-text h1 { font-size: 2.7rem; color: var(--navy); letter-spacing: -0.02em; }
+    .hero-text p { margin-top: 1rem; color: #555; max-width: 56ch; font-weight: 700; }
+    .hero-image img { width: 100%; max-width: 460px; }
+
+    @media(max-width: 900px) {
+      .hero-container { grid-template-columns: 1fr; text-align: left; }
+      .hero-image { order: -1; }
+      .hero-text h1 { font-size: 2rem; }
+    }
+
+    /* ===== PRODUCTS ===== */
+    .container { max-width: 1200px; margin: auto; padding: 3.2rem 1.5rem 4rem; }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 1.4rem;
       color: var(--navy);
-    }
-
-    .hero-text p {
-      margin-top: 1rem;
-      color: #555;
-      max-width: 520px;
-    }
-
-    .hero-image img {
-      width: 100%;
-      max-width: 460px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 4rem 1.5rem;
+      font-weight: 1000;
+      letter-spacing: -0.01em;
     }
 
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     .product {
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.5rem;
+      padding: 1.2rem;
       display: flex;
       flex-direction: column;
-      transition: .25s;
+      transition: .2s;
       background: #fff;
+      min-height: 320px;
     }
 
-    .product:hover {
-      box-shadow: 0 20px 40px rgba(0, 0, 0, .06);
-    }
+    .product:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
 
     .product-img {
       background: var(--muted);
-      height: 180px;
-      border-radius: 12px;
+      border-radius: 14px;
+      padding: 1rem;
+      margin: .2rem 0 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1rem;
+      min-height: 170px;
     }
 
-    .product-img img {
-      max-height: 140px;
-    }
+    .product-img img { max-height: 140px; width: auto; }
 
-    .price {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--blue);
-      margin: .6rem 0 1rem;
+    .product h3 { color: var(--navy); font-size: 1.12rem; margin: .15rem 0 .35rem; font-weight: 900; }
+
+    .specs { font-size: .92rem; color: #586170; font-weight: 800; }
+
+    .price { font-size: 1.15rem; font-weight: 1000; color: var(--blue); margin: .75rem 0 1rem; }
+
+    .actions-row {
+      margin-top: auto;
+      display: flex;
+      gap: .75rem;
+      align-items: center;
     }
 
     .add-cart {
-      margin-top: auto;
+      flex: 1 1 auto;
       background: var(--navy);
-      color: white;
+      color: #fff;
       border: none;
-      padding: .85rem;
-      border-radius: 12px;
-      font-weight: 600;
+      padding: .85rem 1rem;
+      border-radius: 14px;
+      font-weight: 900;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: .6rem;
-      transition: all .3s;
+      transition: .2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    .add-cart:hover {
-      background: var(--blue);
-    }
+    .add-cart:hover { background: var(--blue); transform: translateY(-1px); }
 
-    .cart-popup {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--blue);
-      color: white;
-      padding: 1rem 1.5rem;
+    .fav-btn {
+      width: 46px;
+      height: 46px;
       border-radius: 14px;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: .4s;
-    }
-
-    .cart-popup.show {
-      opacity: 1;
-      transform: translateY(-10px);
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 28px;
-      height: 22px;
+      border: 1px solid var(--border);
+      background: #fff;
       cursor: pointer;
-      z-index: 1001;
-      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+      flex: 0 0 auto;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    .hamburger span {
-      display: block;
-      height: 3px;
-      width: 100%;
-      background: var(--navy);
-      border-radius: 3px;
-      transition: all 0.3s;
-    }
+    .fav-btn i { color: #94a3b8; font-size: 1.1rem; transition: .2s; }
+    .fav-btn:hover { background: var(--muted); transform: translateY(-1px); }
+    .fav-btn.active { border-color: #fecaca; background: #fff5f5; }
+    .fav-btn.active i { color: var(--red); }
 
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translateY(9px);
-    }
-
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translateY(-9px);
-    }
-
-    .mobile-nav {
-      display: none;
+    /* ===== TOP TOAST ===== */
+    .top-toast {
       position: fixed;
-      top: 0;
-      right: -100%;
-      width: 70%;
-      height: 100vh;
-      background: var(--white);
-      box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
-      flex-direction: column;
-      padding: 3rem 1.5rem;
-      gap: 1.5rem;
-      transition: right 0.3s ease-in-out;
-      z-index: 1000;
-    }
-
-    .mobile-nav a {
-      font-size: 1.2rem;
-      color: var(--navy);
-      font-weight: 600;
-      padding: 0.5rem 0;
-    }
-
-    .mobile-nav.show {
+      top: 74px;
+      right: 16px;
+      z-index: 2600;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 14px;
+      padding: .9rem 1rem;
       display: flex;
-      right: 0;
+      align-items: center;
+      gap: .75rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,.18);
+      opacity: 0;
+      transform: translateY(-12px);
+      pointer-events: none;
+      transition: .25s;
+      max-width: min(420px, 92vw);
     }
 
-    @media(max-width:800px) {
-      .hero-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
+    .top-toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-      .nav-links {
-        display: none;
-      }
+    .top-toast .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .55rem .8rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      font-weight: 900;
+      white-space: nowrap;
+    }
 
-      .hamburger {
-        display: flex;
-      }
+    .top-toast .actions {
+      margin-left: auto;
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-toast .actions a,
+    .top-toast .actions button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .55rem .75rem;
+      border-radius: 12px;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.2);
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .top-toast .actions a:hover,
+    .top-toast .actions button:hover { background: rgba(255,255,255,.08); }
+
+    @media(max-width: 900px) {
+      .top-toast { top: 70px; right: 12px; }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <a href="dashboard.html" class="logo"><img src="logo.png" alt="SATECH Logo"></a>
-    <nav class="nav-links">
-      <a href="dashboard.html">Home</a>
-      <a href="ref.html">Refurbished</a>
-      <a href="new.html">New Laptops</a>
-      <a href="iphones.html">iPhones</a>
-      <a href="acc.html">Accessories</a>
-      <a href="repair.html">Repairs</a>
-      <a href="contact.html">Contact</a>
-      <a href="cart.html" class="icon-btn">
-          <i class="fa-solid fa-cart-shopping"></i>
-        </a>
-      <a href="index.html"
-        style="background-color:#012141; padding:.4rem 1.2rem; border-radius:10px; color:#e5e7eb;">Logout</a>
+  <!-- Top toast -->
+  <div class="top-toast" id="topToast" aria-live="polite">
+    <div class="pill" id="toastText"><i class="fa-solid fa-check"></i> Added to cart</div>
+    <div class="actions">
+      <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i>&nbsp;View</a>
+      <button type="button" id="toastClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    </nav>
-    <div class="user-box">
-      <div class="user-initials" id="userInitials">UL</div>
-      <div class="user-dropdown" id="userDropdown">
-        <a href="account.html">Account Settings</a>
-        <a href="orders.html">My Orders</a>
-        <a href="#" id="logoutBtn">Logout</a>
+  </div>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <a href="dashboard.html"><img src="logo.png" class="logo" alt="SATECH Logo" /></a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="ref.html">Refurbished</a>
+        <a href="new.html">New</a>
+        <a href="iphones.html">iPhones</a>
+        <a href="acc.html">Accessories</a>
+        <a href="repair.html">Repairs</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- real pages -->
+        <a class="icon-btn" href="favorites.html" aria-label="Open favourites">
+          <i class="fa-solid fa-heart"></i>
+          <span class="badge red" id="favBadge">0</span>
+        </a>
+
+        <a class="icon-btn" href="cart.html" aria-label="Open cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="badge" id="cartBadge">0</span>
+        </a>
+
+        <div class="user-initials" id="userInitials" aria-label="User menu">U</div>
+        <div class="user-menu" id="userMenu">
+          <a href="account.html"><i class="fa-solid fa-gear"></i> Account Settings</a>
+          <a href="orders.html"><i class="fa-solid fa-box"></i> My Orders</a>
+          <a href="favorites.html"><i class="fa-solid fa-heart"></i> Favourites</a>
+          <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+          <div class="hamburger-lines"><span></span><span></span><span></span></div>
+        </button>
       </div>
     </div>
-    <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
-    <div class="mobile-nav" id="mobileNav">
-      <a href="dashboard.html">Home</a>
-      <a href="ref.html">Refurbished</a>
-      <a href="new.html">New Laptops</a>
-      <a href="iphones.html">iPhones</a>
-      <a href="acc.html">Accessories</a>
-      <a href="repair.html">Repairs</a>
-      <a href="contact.html">Contact</a>
-      <a href="cart.html" class="icon-btn">
-          <i class="fa-solid fa-cart-shopping"></i>
-        </a>
-    </div>
   </header>
+
+  <!-- Mobile overlay + drawer -->
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="mobile-drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <a class="drawer-link" href="dashboard.html"><span><i class="fa-solid fa-house"></i> Home</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="ref.html"><span><i class="fa-solid fa-laptop"></i> Refurbished</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="new.html"><span><i class="fa-solid fa-laptop-code"></i> New Laptops</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="iphones.html"><span><i class="fa-brands fa-apple"></i> iPhones</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="acc.html"><span><i class="fa-solid fa-headphones"></i> Accessories</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="repair.html"><span><i class="fa-solid fa-screwdriver-wrench"></i> Repairs</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="contact.html"><span><i class="fa-solid fa-envelope"></i> Contact</span><i class="fa-solid fa-chevron-right"></i></a>
+
+      <a class="drawer-link" href="favorites.html"><span><i class="fa-solid fa-heart"></i> Favourites</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="cart.html"><span><i class="fa-solid fa-cart-shopping"></i> Cart</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="orders.html"><span><i class="fa-solid fa-box"></i> Orders</span><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="drawer-link" href="account.html"><span><i class="fa-solid fa-gear"></i> Account Settings</span><i class="fa-solid fa-chevron-right"></i></a>
+
+      <a class="drawer-link" href="#" id="logoutMobile" style="border-color:#fecaca;background:#fff5f5;">
+        <span><i class="fa-solid fa-right-from-bracket" style="color:var(--red)"></i> Logout</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
+    </div>
+
+    <div class="drawer-footer">
+      SATECH ENTERPRISE — Premium iPhones, gadgets & reliable repairs.
+    </div>
+  </aside>
 
   <section class="page-header">
     <div class="hero-container">
       <div class="hero-text">
         <h1>Apple iPhones</h1>
-        <p>Original iPhones, new & used, tested, verified and ready to perform. From iPhone 7 to the latest Pro Max models.</p>
+        <p>Original iPhones, new & used, tested, verified and ready to perform. From iPhone 7 to the latest Pro models.</p>
       </div>
       <div class="hero-image">
-        <img src="ios.png" alt="iPhones">
+        <img src="ios.png" alt="iPhones" />
       </div>
     </div>
   </section>
 
-  <section class="section" id="shop">
-    <div class="container">
-      <h2 class="section-title">Available iPhones</h2>
-      <div class="products">
-        <div class="product">
-          <div class="product-img"><img src="i7.png"></div>
-          <h3>iPhone 7</h3>
-          <div class="price">R2,999</div>
-          <button class="add-cart" onclick="addToCart('iPhone 7','IP7',2999,'i7.png')">Add to Cart</button>
+  <section class="container" id="shop">
+    <h2 class="section-title">Available iPhones</h2>
+
+    <div class="products">
+      <!-- Prices updated to realistic SA ranges for used/verified devices (storage/condition can change these). -->
+      <div class="product" data-code="IP7" data-name="iPhone 7" data-price="2999" data-img="i7.png">
+        <div class="product-img"><img src="i7.png" alt="iPhone 7" /></div>
+        <h3>iPhone 7</h3>
+        <div class="specs">32GB / 128GB • Used • Tested</div>
+        <div class="price">R2,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 7','IP7',2999,'i7.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 7','IP7',2999,'i7.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
         </div>
-        <div class="product">
-          <div class="product-img"><img src="i8.png"></div>
-          <h3>iPhone 8</h3>
-          <div class="price">R3,499</div>
-          <button class="add-cart" onclick="addToCart('iPhone 8','IP8',3499,'i8.png')">Add to Cart</button>
-        </div>
-                <div class="product">
-                    <div class="product-img"><img src="ix.png"></div>
-                    <h3>iPhone X</h3>
-                    <div class="price">R4,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone X','IPX',4999,'ix.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="ixr.png"></div>
-                    <h3>iPhone XR</h3>
-                    <div class="price">R5,499</div><button class="add-cart"
-                        onclick="addToCart('iPhone XR','IPXR',5499,'ixr.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="ixs.png"></div>
-                    <h3>iPhone XS</h3>
-                    <div class="price">R24,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone XS','IPSX',24999,'ixs.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i11.png"></div>
-                    <h3>iPhone 11</h3>
-                    <div class="price">R5,499</div><button class="add-cart"
-                        onclick="addToCart('iPhone 11','IPXR',5499,'i11.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i12.png"></div>
-                    <h3>iPhone 12</h3>
-                    <div class="price">R24,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone 12','IPSX',24999,'i12.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i13.png"></div>
-                    <h3>iPhone 13</h3>
-                    <div class="price">R5,499</div><button class="add-cart"
-                        onclick="addToCart('iPhone 13','IP13',5499,'i13.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i14.png"></div>
-                    <h3>iPhone 14</h3>
-                    <div class="price">R24,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone 14','IPSX',24999,'i14.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i15.png"></div>
-                    <h3>iPhone 15</h3>
-                    <div class="price">R5,499</div><button class="add-cart"
-                        onclick="addToCart('iPhone 15','IPXR',5499,'i15.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i16.png"></div>
-                    <h3>iPhone 16</h3>
-                    <div class="price">R24,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone 16','IPSX',24999,'i16.png')">Add to Cart</button>
-                </div>
-                <div class="product">
-                    <div class="product-img"><img src="i17.png"></div>
-                    <h3>iPhone 17</h3>
-                    <div class="price">R24,999</div><button class="add-cart"
-                        onclick="addToCart('iPhone 17','IPSX',24999,'i17.png')">Add to Cart</button>
-                </div>
       </div>
+
+      <div class="product" data-code="IP8" data-name="iPhone 8" data-price="3499" data-img="i8.png">
+        <div class="product-img"><img src="i8.png" alt="iPhone 8" /></div>
+        <h3>iPhone 8</h3>
+        <div class="specs">64GB / 256GB • Used • Tested</div>
+        <div class="price">R3,499</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 8','IP8',3499,'i8.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 8','IP8',3499,'i8.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="product" data-code="IPX" data-name="iPhone X" data-price="4999" data-img="ix.png">
+        <div class="product-img"><img src="ix.png" alt="iPhone X" /></div>
+        <h3>iPhone X</h3>
+        <div class="specs">64GB / 256GB • Used • Tested</div>
+        <div class="price">R4,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone X','IPX',4999,'ix.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone X','IPX',4999,'ix.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="product" data-code="IPXR" data-name="iPhone XR" data-price="5499" data-img="ixr.png">
+        <div class="product-img"><img src="ixr.png" alt="iPhone XR" /></div>
+        <h3>iPhone XR</h3>
+        <div class="specs">64GB / 128GB • Used • Tested</div>
+        <div class="price">R5,499</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone XR','IPXR',5499,'ixr.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone XR','IPXR',5499,'ixr.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- FIXED: XS was 24,999 (wrong). -->
+      <div class="product" data-code="IPXS" data-name="iPhone XS" data-price="5999" data-img="ixs.png">
+        <div class="product-img"><img src="ixs.png" alt="iPhone XS" /></div>
+        <h3>iPhone XS</h3>
+        <div class="specs">64GB / 256GB • Used • Tested</div>
+        <div class="price">R5,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone XS','IPXS',5999,'ixs.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone XS','IPXS',5999,'ixs.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- FIXED: duplicate wrong code in your old file -->
+      <div class="product" data-code="IP11" data-name="iPhone 11" data-price="7999" data-img="i11.png">
+        <div class="product-img"><img src="i11.png" alt="iPhone 11" /></div>
+        <h3>iPhone 11</h3>
+        <div class="specs">64GB / 128GB • Used • Tested</div>
+        <div class="price">R7,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 11','IP11',7999,'i11.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 11','IP11',7999,'i11.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="product" data-code="IP12" data-name="iPhone 12" data-price="9999" data-img="i12.png">
+        <div class="product-img"><img src="i12.png" alt="iPhone 12" /></div>
+        <h3>iPhone 12</h3>
+        <div class="specs">64GB / 128GB • Used • Tested</div>
+        <div class="price">R9,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 12','IP12',9999,'i12.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 12','IP12',9999,'i12.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- FIXED: your old iPhone 13 price was 5,499 (too low) -->
+      <div class="product" data-code="IP13" data-name="iPhone 13" data-price="11999" data-img="i13.png">
+        <div class="product-img"><img src="i13.png" alt="iPhone 13" /></div>
+        <h3>iPhone 13</h3>
+        <div class="specs">128GB • Used • Tested</div>
+        <div class="price">R11,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 13','IP13',11999,'i13.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 13','IP13',11999,'i13.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="product" data-code="IP14" data-name="iPhone 14" data-price="14999" data-img="i14.png">
+        <div class="product-img"><img src="i14.png" alt="iPhone 14" /></div>
+        <h3>iPhone 14</h3>
+        <div class="specs">128GB • Used • Tested</div>
+        <div class="price">R14,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 14','IP14',14999,'i14.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 14','IP14',14999,'i14.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="product" data-code="IP15" data-name="iPhone 15" data-price="17999" data-img="i15.png">
+        <div class="product-img"><img src="i15.png" alt="iPhone 15" /></div>
+        <h3>iPhone 15</h3>
+        <div class="specs">128GB • Used/New • Verified</div>
+        <div class="price">R17,999</div>
+        <div class="actions-row">
+          <button class="add-cart" onclick="addToCart('iPhone 15','IP15',17999,'i15.png')">
+            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+          </button>
+          <button class="fav-btn" onclick="toggleFavourite('iPhone 15','IP15',17999,'i15.png', this)" aria-label="Add to favourites">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Removed fake iPhone 16/17 (not real products yet). If you want placeholders, we can label them “Coming soon”. -->
     </div>
   </section>
-
-  <div id="cartPopup" class="cart-popup">Added to cart</div>
 
   <script>
+    // ===== Supabase =====
     const supabaseClient = supabase.createClient(
       "https://nzuwmiyduragtqyaetfr.supabase.co",
       "sb_publishable_0VN3EDApVH9bzKu2eH7fvg_5JfYOGMh"
     );
 
-    async function loadUser() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) {
-        window.location.href = "login.html";
-        return;
+    const LOGIN_PAGE = "login.html";
+
+    async function requireAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) { window.location.href = LOGIN_PAGE; return null; }
+      return session;
+    }
+
+    supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT" || event === "USER_DELETED" || event === "TOKEN_REFRESH_FAILED") {
+        window.location.href = LOGIN_PAGE;
       }
+    });
+
+    // ===== User initials + menu =====
+    const userInitials = document.getElementById("userInitials");
+    const userMenu = document.getElementById("userMenu");
+
+    async function loadUser() {
+      const session = await requireAuth();
+      if (!session) return;
+
+      const user = session.user;
 
       const { data: profile } = await supabaseClient
         .from("profiles")
         .select("full_names,surname")
         .eq("id", user.id)
-        .single();
+        .maybeSingle();
 
-      if (profile) {
-        const initials = profile.full_names[0] + profile.surname[0];
-        document.getElementById('userInitials').textContent = initials.toUpperCase();
+      if (profile?.full_names && profile?.surname) {
+        const initials = (profile.full_names[0] || "U") + (profile.surname[0] || "");
+        userInitials.textContent = initials.toUpperCase();
+      } else {
+        userInitials.textContent = "U";
       }
     }
 
-    loadUser();
+    userInitials.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userMenu.style.display = (userMenu.style.display === "block") ? "none" : "block";
+    });
 
-    function toggleNav() {
-      const hamburger = document.querySelector('.hamburger');
-      const mobileNav = document.getElementById('mobileNav');
-      hamburger.classList.toggle('active');
-      mobileNav.classList.toggle('show');
+    document.addEventListener("click", () => { userMenu.style.display = "none"; });
+
+    // ===== Drawer (hamburger) =====
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const drawer = document.getElementById("drawer");
+    const overlay = document.getElementById("overlay");
+    const drawerClose = document.getElementById("drawerClose");
+
+    function openDrawer() {
+      drawer.classList.add("show");
+      overlay.classList.add("show");
+      hamburgerBtn.classList.add("active");
+      hamburgerBtn.setAttribute("aria-expanded", "true");
+      drawer.setAttribute("aria-hidden", "false");
+      document.body.classList.add("no-scroll");
     }
 
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.querySelector('.hamburger').classList.remove('active');
-        document.getElementById('mobileNav').classList.remove('show');
-      });
+    function closeDrawer() {
+      drawer.classList.remove("show");
+      overlay.classList.remove("show");
+      hamburgerBtn.classList.remove("active");
+      hamburgerBtn.setAttribute("aria-expanded", "false");
+      drawer.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+    }
+
+    function toggleDrawer(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      drawer.classList.contains("show") ? closeDrawer() : openDrawer();
+    }
+
+    hamburgerBtn.addEventListener("click", toggleDrawer);
+    overlay.addEventListener("click", closeDrawer);
+    drawerClose.addEventListener("click", closeDrawer);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && drawer.classList.contains("show")) closeDrawer();
     });
 
-    document.getElementById('userInitials').addEventListener('click', () => {
-      const dd = document.getElementById('userDropdown');
-      dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
-    });
+    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
 
-    document.getElementById("logoutBtn").addEventListener('click', async () => {
+    // ===== Logout =====
+    async function doLogout(e) {
+      if (e) e.preventDefault();
       await supabaseClient.auth.signOut();
-      window.location.href = 'login.html';
+      window.location.href = LOGIN_PAGE;
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", doLogout);
+    document.getElementById("logoutMobile").addEventListener("click", doLogout);
+
+    // ===== Storage keys (same as other updated pages) =====
+    const CART_KEY = "cart";
+    const FAV_KEY = "favourites";
+
+    function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+    function setCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+
+    function getFavs() { try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; } catch { return []; } }
+    function setFavs(favs) { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }
+
+    function cartCount() { return getCart().reduce((sum, item) => sum + (Number(item.qty) || 0), 0); }
+    function favCount() { return getFavs().length; }
+
+    function updateBadges() {
+      document.getElementById("cartBadge").textContent = String(cartCount());
+      document.getElementById("favBadge").textContent = String(favCount());
+    }
+
+    // ===== Top toast =====
+    const topToast = document.getElementById("topToast");
+    const toastText = document.getElementById("toastText");
+    const toastClose = document.getElementById("toastClose");
+    let toastTimer = null;
+
+    function showTopToast(message) {
+      toastText.innerHTML = `<i class="fa-solid fa-check"></i> ${message}`;
+      topToast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => topToast.classList.remove("show"), 2500);
+    }
+
+    toastClose.addEventListener("click", () => {
+      topToast.classList.remove("show");
+      clearTimeout(toastTimer);
     });
 
+    // ===== Cart logic =====
     function addToCart(name, code, price, img) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let item = cart.find(p => p.code === code);
-      if (item) item.qty++;
-      else cart.push({ name, code, price, img, qty: 1 });
-      localStorage.setItem('cart', JSON.stringify(cart));
-      const popup = document.getElementById('cartPopup');
-      popup.textContent = `${name} added to cart`;
-      popup.classList.add('show');
-      setTimeout(() => popup.classList.remove('show'), 2000);
+      let cart = getCart();
+      const existing = cart.find(p => p.code === code);
+      if (existing) existing.qty = (Number(existing.qty) || 0) + 1;
+      else cart.push({ name, code, price: Number(price), img, qty: 1 });
+
+      setCart(cart);
+      updateBadges();
+      showTopToast(`${name} added to cart`);
     }
+
+    // ===== Favourites logic =====
+    function isFaved(code) {
+      return getFavs().some(x => x.code === code);
+    }
+
+    function toggleFavourite(name, code, price, img, btnEl) {
+      let favs = getFavs();
+      const idx = favs.findIndex(x => x.code === code);
+
+      if (idx >= 0) {
+        favs.splice(idx, 1);
+        if (btnEl) btnEl.classList.remove("active");
+      } else {
+        favs.push({ name, code, price: Number(price), img });
+        if (btnEl) btnEl.classList.add("active");
+      }
+
+      setFavs(favs);
+      updateBadges();
+    }
+
+    function syncFavButtons() {
+      document.querySelectorAll(".product").forEach(card => {
+        const code = card.getAttribute("data-code");
+        const favBtn = card.querySelector(".fav-btn");
+        if (!favBtn) return;
+        favBtn.classList.toggle("active", isFaved(code));
+      });
+    }
+
+    // ===== Init =====
+    (async function init() {
+      await loadUser();
+      updateBadges();
+      syncFavButtons();
+    })();
   </script>
 
 </body>
